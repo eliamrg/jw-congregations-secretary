@@ -1,0 +1,7 @@
+{
+  "name": "JW Congregation's Secretary",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
