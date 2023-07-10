@@ -1,0 +1,180 @@
+<ion-header [translucent]="false" mode="ios">
+  <ion-toolbar>
+    <ion-title>Informes de Predicación</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" mode="ios">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title  size="large">Informes de Predicación</ion-title>
+      <ion-buttons slot="end">
+        <ion-button id="open-modal-informe"> <ion-icon name="calendar-outline"></ion-icon> </ion-button>
+      </ion-buttons>
+      
+      
+    </ion-toolbar>
+  </ion-header>
+
+
+  <ion-list>
+    <ion-item>
+      <ion-select aria-label="Grupos de Predicación" interface="popover" value="Todos">
+        <ion-select-option value="Todos">Todos los Grupos</ion-select-option>
+        <ion-select-option *ngFor="let number of [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]" value={{number}}  >Grupo {{number}}</ion-select-option>
+        
+      </ion-select>
+    </ion-item>
+  </ion-list>
+
+
+  
+  
+  <ion-modal trigger="open-modal-informe" (willDismiss)="onWillDismiss($event)">
+    <ng-template>
+      <ion-header>
+        <ion-toolbar>
+          <ion-buttons slot="start">
+            
+          </ion-buttons>
+          <ion-title>Seleccionar</ion-title>
+          <ion-buttons slot="end">
+            <ion-button (click)="confirm()" [strong]="true">Aceptar</ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content class="ion-padding">
+        <ion-card>
+          <ion-card-header>
+            <ion-card-title>Mes y Año</ion-card-title>
+            <ion-card-subtitle>Selección de Fecha</ion-card-subtitle>
+          </ion-card-header>
+        
+          <ion-card-content>
+            <ion-datetime size="cover" [(ngModel)]="wheelDate"  (ngModelChange)="showdate()" locale="es-MX" style="--background: translucent; --background-rgb: transluscent" presentation="month-year"></ion-datetime>
+        
+          </ion-card-content>
+        </ion-card>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
+  
+  
+  
+  
+ 
+  <ion-card>
+
+    <ion-card-header>
+      <ion-card-title>{{stringDate}}</ion-card-title>
+      <ion-card-subtitle>Registro de Informes</ion-card-subtitle>
+      
+    </ion-card-header>
+
+
+    <ion-label style="padding-left: 15px;">Usar TAB para desplazarse entre celdas </ion-label>
+
+    <div class="table-responsive" *ngFor=" let grupo of Grupos" style="padding-top: 15px;">
+      <!-- <ion-card-header>
+       
+        <ion-card-title>Grupo {{grupo.id}}</ion-card-title>
+        
+      </ion-card-header> -->
+
+
+      <ion-item-divider>
+        <ion-label> Grupo {{grupo.id}} </ion-label>
+      </ion-item-divider>
+
+
+
+
+      <table mat-table style="background-color: transparent;" [dataSource]="dataSource" class="mat-elevation-z8">
+  
+        <!--- Note that these columns can be defined in any order.
+              The actual rendered columns are set as a property on the row definition" -->
+      
+        <!-- Position Column -->
+        <ng-container matColumnDef="position">
+          <th mat-header-cell *matHeaderCellDef> <ion-label color="dark">No.</ion-label> </th>
+          <td mat-cell *matCellDef="let element"> 
+            <ion-item color="none"  lines="none">
+              <ion-input  value="{{element.position}}"> </ion-input>
+            </ion-item>
+          </td>
+        </ng-container>
+      
+        <!-- Name Column -->
+        <ng-container matColumnDef="name">
+          <th mat-header-cell *matHeaderCellDef> <ion-label color="dark">Nombre</ion-label> </th>
+          <td mat-cell *matCellDef="let element"> 
+            <ion-item color="none"  lines="none">
+              <ion-input  value="{{element.name}}"> </ion-input>
+            </ion-item>
+          </td>
+        </ng-container>
+      
+        <!-- Weight Column -->
+        <ng-container matColumnDef="weight">
+          <th mat-header-cell *matHeaderCellDef> <ion-label color="dark">Horas</ion-label> </th>
+          <td mat-cell *matCellDef="let element"> 
+            <ion-item color="none"  lines="none">
+              <ion-input  value="{{element.weight}}"> </ion-input>
+            </ion-item>   
+          </td>
+        </ng-container>
+      
+        <!-- Symbol Column -->
+        <ng-container matColumnDef="symbol">
+          <th mat-header-cell *matHeaderCellDef> <ion-label color="dark">Videos</ion-label> </th>
+          <td mat-cell *matCellDef="let element"> 
+          
+            <ion-item  color="none"  lines="none">
+              <ion-input  value="{{element.symbol}}"> </ion-input>
+            </ion-item>
+          </td>
+        </ng-container>
+      
+        <ng-container matColumnDef="x">
+          <th mat-header-cell *matHeaderCellDef> <ion-label color="dark">Revisitas</ion-label> </th>
+          <td mat-cell *matCellDef="let element"> 
+           
+            <ion-item color="none"  lines="none" >
+              <ion-input  value="{{element.x}}"> </ion-input>
+            </ion-item>
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="y">
+          <th mat-header-cell *matHeaderCellDef> <ion-label color="dark">Cursos</ion-label> </th>
+          <td mat-cell *matCellDef="let element"> 
+          
+            <ion-item color="none"  lines="none">
+              <ion-input  value="{{element.y}}"> </ion-input>
+            </ion-item>
+            
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="comments">
+          <th mat-header-cell *matHeaderCellDef> <ion-label color="dark">Comentario</ion-label> </th>
+          <td mat-cell *matCellDef="let element"> 
+          
+            <ion-button fill="clear" slot="icon-only" ><ion-icon name="add-circle-outline"></ion-icon></ion-button>
+            
+          </td>
+        </ng-container>
+  
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+    </div>
+    
+    
+  </ion-card>
+
+  
+  
+  
+
+<ion-label style="padding: 15px; ">Girar en caso de utilizar dispositivo móvil</ion-label>
+
+</ion-content>

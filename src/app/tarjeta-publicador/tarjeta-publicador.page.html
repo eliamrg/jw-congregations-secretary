@@ -1,0 +1,145 @@
+<ion-header [translucent]="false" mode="ios">
+  <ion-toolbar>
+    <ion-title>Tarjeta de Publicador</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" mode="ios">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Tarjeta de Publicador</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Santiago Eliam Ramírez García</ion-card-title>
+      <ion-card-subtitle>Publicado Bautizado</ion-card-subtitle>
+    </ion-card-header>
+  
+    <ion-card-content>
+      <ion-grid>
+        <ion-row>
+          <ion-col size="4" style="font-weight:bold;">Dirección:</ion-col>
+          <ion-col>Donato Elizondo 307, Col. Las Encinas, Gral. Escobedo, Nuevo León</ion-col>
+          
+        </ion-row>
+        <ion-row style="font-weight:bold;">
+          <ion-col size="4" >Teléfono:</ion-col>
+          <ion-col size="4" >Teléfono móvil:</ion-col>
+          <ion-col size="4" >Fecha de Nacimiento :</ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col size="4" >8189010673</ion-col>
+          <ion-col size="4" >8112726371</ion-col>
+          <ion-col size="4" style="padding-bottom: 0%;">
+            04/10/2001
+            <br>
+            <p style="font-size: xx-small;" >Formato: dd/mm/aaaa</p>
+          </ion-col>
+        </ion-row>
+
+        <ion-row style="font-weight:bold;">
+          <ion-col size="4" >Fecha de Bautismo:</ion-col>
+          <ion-col size="4" >Ungido / Otras ovejas:</ion-col>
+          <ion-col size="4" >Nombramiento :</ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col size="4" style="padding-bottom: 0%;">
+            27/10/2018
+            <br>
+            <p style="font-size: xx-small;" >Formato: dd/mm/aaaa</p>
+          </ion-col>
+          <ion-col size="4" >Otras ovejas</ion-col>
+          <ion-col size="4" style="padding-left: 15px;">-</ion-col>
+        </ion-row>
+        
+      </ion-grid>
+    </ion-card-content>
+
+
+      <div class="table-responsive" >
+
+        <table mat-table style="background-color: transparent;" [dataSource]="dataSource" class="mat-elevation-z8">
+    
+          <!--- Note that these columns can be defined in any order.
+                The actual rendered columns are set as a property on the row definition" -->
+        
+          <!-- Position Column -->
+          <ng-container matColumnDef="mes">
+            <th mat-header-cell *matHeaderCellDef> <ion-label color="dark">Mes</ion-label> </th>
+            <td mat-cell *matCellDef="let element"> 
+              <ion-item class="ion-no-padding" color="none"  lines="none">
+                <p style="font-size: small;" >{{element.mes}} </p>
+              </ion-item>
+            </td>
+          </ng-container>
+          
+          <!-- Name Column -->
+          <ng-container matColumnDef="publicaciones">
+            <th mat-header-cell *matHeaderCellDef> <ion-label color="dark">Publicaciones</ion-label> </th>
+            <td mat-cell *matCellDef="let element"> 
+              <ion-item class="ion-no-padding" color="none"  lines="none">
+                <ion-input  value="{{element.publicaciones}}"> </ion-input>
+              </ion-item>
+            </td>
+          </ng-container>
+        
+          <!-- Weight Column -->
+          <ng-container matColumnDef="horas">
+            <th mat-header-cell *matHeaderCellDef> <ion-label color="dark">Horas</ion-label> </th>
+            <td mat-cell *matCellDef="let element"> 
+              <ion-item class="ion-no-padding" color="none"  lines="none">
+                <ion-input  value="{{element.horas}}"> </ion-input>
+              </ion-item>   
+            </td>
+          </ng-container>
+        
+          <!-- Symbol Column -->
+          <ng-container matColumnDef="videos">
+            <th mat-header-cell *matHeaderCellDef> <ion-label color="dark">Videos</ion-label> </th>
+            <td mat-cell *matCellDef="let element"> 
+            
+              <ion-item class="ion-no-padding"  color="none"  lines="none">
+                <ion-input  value="{{element.videos}}"> </ion-input>
+              </ion-item>
+            </td>
+          </ng-container>
+        
+          <ng-container matColumnDef="revisitas">
+            <th mat-header-cell *matHeaderCellDef> <ion-label color="dark">Revisitas</ion-label> </th>
+            <td mat-cell *matCellDef="let element"> 
+             
+              <ion-item class="ion-no-padding" color="none"  lines="none" >
+                <ion-input  value="{{element.revisitas}}"> </ion-input>
+              </ion-item>
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="cursos">
+            <th mat-header-cell *matHeaderCellDef> <ion-label color="dark">Cursos</ion-label> </th>
+            <td mat-cell *matCellDef="let element"> 
+            
+              <ion-item class="ion-no-padding" color="none"  lines="none">
+                <ion-input  value="{{element.cursos}}"> </ion-input>
+              </ion-item>
+              
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="observaciones">
+            <th mat-header-cell *matHeaderCellDef> <ion-label color="dark">Observaciones</ion-label> </th>
+            <td mat-cell *matCellDef="let element"> 
+            
+              <ion-button fill="clear" slot="icon-only" ><ion-icon name="add-circle-outline"></ion-icon></ion-button>
+              
+            </td>
+          </ng-container>
+    
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+      </div>
+  </ion-card>
+
+
+</ion-content>

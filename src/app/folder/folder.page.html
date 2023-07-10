@@ -1,21 +1,49 @@
-<ion-header [translucent]="true">
+<ion-header [translucent]="false">
   <ion-toolbar>
     <ion-buttons slot="start">
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
     <ion-title>{{ folder }}</ion-title>
+    
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
+<ion-content [fullscreen]="true" mode="ios">
   <ion-header collapse="condense">
     <ion-toolbar>
       <ion-title size="large">{{ folder }}</ion-title>
+      
     </ion-toolbar>
   </ion-header>
 
-  <div id="container">
-    <strong class="capitalize">{{ folder }}</strong>
-    <p>Explore <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p>
-  </div>
+  <!-- <div *ngIf="folder==='Publicadores'">
+    
+
+    
+
+
+    <ion-card  *ngFor="let number of [1,2,3,4]">
+      <ion-card-header>
+        <ion-card-title>Grupo {{number}}</ion-card-title>
+        <ion-card-subtitle>Lista de publicadores</ion-card-subtitle>
+      </ion-card-header>
+    
+      <ion-card-content>
+        <ion-list *ngFor="let number of [1,2,3,4]">
+          <ion-item>
+            <ion-avatar slot="start">
+              <img alt="Silhouette of a person's head" src="https://ionicframework.com/docs/img/demos/avatar.svg" />
+            </ion-avatar>
+            <ion-label>Publicador {{number}}</ion-label>
+            <ion-button fill="clear"> <ion-icon slot="icon-only" color="dark" name="ellipsis-horizontal"></ion-icon></ion-button>
+          </ion-item>
+          
+        </ion-list>
+
+        <ion-button fill="clear"> <ion-icon slot="icon-only" name="add-circle-outline"></ion-icon> </ion-button>
+
+      </ion-card-content>
+    </ion-card>
+  </div> -->
+  
 </ion-content>

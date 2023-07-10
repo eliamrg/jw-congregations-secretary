@@ -6,13 +6,14 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   public appPages = [
-    { title: 'Inbox', url: '/folder/inbox', icon: 'mail' },
-    { title: 'Outbox', url: '/folder/outbox', icon: 'paper-plane' },
-    { title: 'Favorites', url: '/folder/favorites', icon: 'heart' },
-    { title: 'Archived', url: '/folder/archived', icon: 'archive' },
-    { title: 'Trash', url: '/folder/trash', icon: 'trash' },
-    { title: 'Spam', url: '/folder/spam', icon: 'warning' },
+    //{ title: 'Estadísitcas', url: '/folder/Estadisticas', icon: 'bar-chart' },
+    { title: 'Informes de Predicación', url: '/agregar-informe', icon: 'newspaper' },
+    //{ title: 'Precursores Regulares', url: '/folder/Regulares', icon: 'person-add' },
+    //{ title: 'Precursores Auxiliares', url: '/folder/Auxiliares', icon: 'person' },
+    { title: 'Asistencia a Reuniones', url: '/agregar-asistencia', icon: 'people' },
+    { title: 'Publicadores', url: '/publicadores', icon: 'man' },
+    { title: 'tarjeta', url: '/tarjeta-publicador', icon: 'star' },
   ];
-  public labels = ['Family', 'Friends', 'Notes', 'Work', 'Travel', 'Reminders'];
+  public reportes = ['Precursores Regulares', 'Precursores Auxiliares', 'Publicadores', 'Asistencia'];
   constructor() {}
 }
