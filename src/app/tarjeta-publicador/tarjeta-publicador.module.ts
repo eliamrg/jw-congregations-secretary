@@ -9,13 +9,15 @@ import { TarjetaPublicadorPageRoutingModule } from './tarjeta-publicador-routing
 import { TarjetaPublicadorPage } from './tarjeta-publicador.page';
 import { MatTableModule } from '@angular/material/table';
 
+
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
     TarjetaPublicadorPageRoutingModule,
-    MatTableModule
+    MatTableModule,
+    
   ],
   declarations: [TarjetaPublicadorPage]
 })

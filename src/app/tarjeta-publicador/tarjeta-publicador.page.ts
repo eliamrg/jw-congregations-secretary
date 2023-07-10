@@ -1,4 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit , ViewChild, ElementRef } from '@angular/core';
+import jsPDF from 'jspdf';
+import pdfMake from 'pdfmake/build/pdfmake';
+import pdfFonts from 'pdfmake/build/vfs_fonts';
+pdfMake.vfs = pdfFonts.pdfMake.vfs;
+import htmlToPdfmake from 'html-to-pdfmake';
+
 
 export interface PeriodicElement {
   mes: string;
@@ -42,6 +48,24 @@ export class TarjetaPublicadorPage implements OnInit {
   displayedColumns: string[] = [ 'mes','publicaciones', 'horas', 'videos','revisitas','cursos','observaciones'];
   dataSource = ELEMENT_DATA;
   constructor() { }
+
+
+
+  title = 'htmltopdf';
+  
+  @ViewChild('pdfTable') pdfTable: ElementRef;
+  
+  public downloadAsPDF() {
+    const doc = new jsPDF();
+   
+    const pdfTable = this.pdfTable.nativeElement;
+   
+    var html = htmlToPdfmake(pdfTable.innerHTML);
+     
+    const documentDefinition = { content: html };
+    pdfMake.createPdf(documentDefinition).open(); 
+     
+  }
 
   ngOnInit() {
   }
