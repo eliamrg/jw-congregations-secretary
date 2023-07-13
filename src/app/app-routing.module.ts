@@ -4,7 +4,7 @@ import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 const routes: Routes = [
   {
     path: '',
-    redirectTo: '/publicadores',
+    redirectTo: '/informe',
     pathMatch: 'full'
   },
   {
@@ -16,17 +16,22 @@ const routes: Routes = [
     loadChildren: () => import('./publicadores/publicadores.module').then( m => m.PublicadoresPageModule)
   },
   {
-    path: 'agregar-asistencia',
+    path: 'asistencia',
     loadChildren: () => import('./agregar-asistencia/agregar-asistencia.module').then( m => m.AgregarAsistenciaPageModule)
   },
   {
-    path: 'agregar-informe',
+    path: 'informe',
     loadChildren: () => import('./agregar-informe/agregar-informe.module').then( m => m.AgregarInformePageModule)
   },
   {
-    path: 'tarjeta-publicador',
+    path: 'publicador/:id',
     loadChildren: () => import('./tarjeta-publicador/tarjeta-publicador.module').then( m => m.TarjetaPublicadorPageModule)
+  },
+  {
+    path: 'login',
+    loadChildren: () => import('./login/login.module').then( m => m.LoginPageModule)
   }
+  
 ];
 
 @NgModule({

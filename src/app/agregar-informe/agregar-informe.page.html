@@ -1,10 +1,14 @@
 <ion-header [translucent]="false" mode="ios">
   <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+      
+    </ion-buttons>
     <ion-title>Informes de Predicación</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true" mode="ios">
+<ion-content [fullscreen]="false" mode="ios">
   <ion-header collapse="condense">
     <ion-toolbar>
       <ion-title  size="large">Informes de Predicación</ion-title>
@@ -105,57 +109,66 @@
         </ng-container>
       
         <!-- Name Column -->
-        <ng-container matColumnDef="name">
-          <th mat-header-cell *matHeaderCellDef> <ion-label color="dark">Nombre</ion-label> </th>
+        <ng-container matColumnDef="nombre">
+          <th mat-header-cell *matHeaderCellDef> <ion-label style="font-weight: bold;" color="dark">Nombre</ion-label> </th>
           <td mat-cell *matCellDef="let element"> 
-            <ion-item color="none"  lines="none">
-              <ion-input  value="{{element.name}}"> </ion-input>
+            <ion-item class="ion-no-padding" color="none"  lines="none">
+              <p  style="font-size: small; font-weight: bold;" >{{element.nombre}} </p>
             </ion-item>
           </td>
         </ng-container>
       
         <!-- Weight Column -->
-        <ng-container matColumnDef="weight">
-          <th mat-header-cell *matHeaderCellDef> <ion-label color="dark">Horas</ion-label> </th>
+        <ng-container matColumnDef="horas">
+          <th mat-header-cell *matHeaderCellDef> <ion-label style="font-weight: bold;" color="dark">Horas</ion-label> </th>
           <td mat-cell *matCellDef="let element"> 
             <ion-item color="none"  lines="none">
-              <ion-input  value="{{element.weight}}"> </ion-input>
+              <ion-input  value="{{element.horas}}"> </ion-input>
+            </ion-item>   
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="publicaciones">
+          <th mat-header-cell *matHeaderCellDef> <ion-label style="font-weight: bold;" color="dark">Publicaciones</ion-label> </th>
+          <td mat-cell *matCellDef="let element"> 
+            <ion-item color="none"  lines="none">
+              <ion-input  value="{{element.publicaciones}}"> </ion-input>
             </ion-item>   
           </td>
         </ng-container>
       
         <!-- Symbol Column -->
-        <ng-container matColumnDef="symbol">
-          <th mat-header-cell *matHeaderCellDef> <ion-label color="dark">Videos</ion-label> </th>
+        <ng-container matColumnDef="videos">
+          <th mat-header-cell *matHeaderCellDef> <ion-label style="font-weight: bold;" color="dark">Videos</ion-label> </th>
           <td mat-cell *matCellDef="let element"> 
           
             <ion-item  color="none"  lines="none">
-              <ion-input  value="{{element.symbol}}"> </ion-input>
+              <ion-input  value="{{element.videos}}"> </ion-input>
             </ion-item>
           </td>
         </ng-container>
       
-        <ng-container matColumnDef="x">
-          <th mat-header-cell *matHeaderCellDef> <ion-label color="dark">Revisitas</ion-label> </th>
+        <ng-container matColumnDef="revisitas">
+          <th mat-header-cell *matHeaderCellDef> <ion-label style="font-weight: bold;" color="dark">Revisitas</ion-label> </th>
           <td mat-cell *matCellDef="let element"> 
            
             <ion-item color="none"  lines="none" >
-              <ion-input  value="{{element.x}}"> </ion-input>
+              <ion-input  value="{{element.revisitas}}"> </ion-input>
             </ion-item>
           </td>
         </ng-container>
-        <ng-container matColumnDef="y">
-          <th mat-header-cell *matHeaderCellDef> <ion-label color="dark">Cursos</ion-label> </th>
+        <ng-container matColumnDef="cursos">
+          <th mat-header-cell *matHeaderCellDef> <ion-label style="font-weight: bold;" color="dark">Cursos</ion-label> </th>
           <td mat-cell *matCellDef="let element"> 
           
             <ion-item color="none"  lines="none">
-              <ion-input  value="{{element.y}}"> </ion-input>
+              <ion-input  value="{{element.cursos}}"> </ion-input>
             </ion-item>
             
           </td>
         </ng-container>
-        <ng-container matColumnDef="comments">
-          <th mat-header-cell *matHeaderCellDef> <ion-label color="dark">Comentario</ion-label> </th>
+        <ng-container matColumnDef="observaciones">
+          <th mat-header-cell *matHeaderCellDef> <ion-label style="font-weight: bold;" color="dark">Observaciones</ion-label> </th>
           <td mat-cell *matCellDef="let element"> 
           
             <ion-button fill="clear" slot="icon-only" ><ion-icon name="add-circle-outline"></ion-icon></ion-button>

@@ -7,12 +7,12 @@ import { Component } from '@angular/core';
 export class AppComponent {
   public appPages = [
     //{ title: 'Estadísitcas', url: '/folder/Estadisticas', icon: 'bar-chart' },
-    { title: 'Informes de Predicación', url: '/agregar-informe', icon: 'newspaper' },
+    { title: 'Informes de Predicación', url: '/informe', icon: 'newspaper' },
     //{ title: 'Precursores Regulares', url: '/folder/Regulares', icon: 'person-add' },
     //{ title: 'Precursores Auxiliares', url: '/folder/Auxiliares', icon: 'person' },
-    { title: 'Asistencia a Reuniones', url: '/agregar-asistencia', icon: 'people' },
+    { title: 'Asistencia a Reuniones', url: '/asistencia', icon: 'people' },
     { title: 'Publicadores', url: '/publicadores', icon: 'man' },
-    { title: 'tarjeta', url: '/tarjeta-publicador', icon: 'star' },
+    // { title: 'tarjeta', url: '/publicador', icon: 'star' },
   ];
   public reportes = ['Precursores Regulares', 'Precursores Auxiliares', 'Publicadores', 'Asistencia'];
   constructor() {}

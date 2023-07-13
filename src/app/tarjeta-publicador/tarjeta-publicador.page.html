@@ -1,10 +1,15 @@
+
 <ion-header [translucent]="false" mode="ios">
   <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button routerLink="/publicadores"> <ion-icon name="chevron-back-outline"></ion-icon> Regresar</ion-button>
+      <!-- <ion-menu-button></ion-menu-button> -->
+    </ion-buttons>
     <ion-title>Tarjeta de Publicador</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true" mode="ios">
+<ion-content [fullscreen]="false" mode="ios">
   <ion-header collapse="condense">
     <ion-toolbar>
       <ion-title size="large">Tarjeta de Publicador</ion-title>
@@ -14,8 +19,8 @@
 
   <ion-card>
     <ion-card-header>
-      <ion-card-title>Santiago Eliam Ramírez García</ion-card-title>
-      <ion-card-subtitle>Publicado Bautizado</ion-card-subtitle>
+      <ion-card-title>Santiago Eliam Ramírez García {{id}}</ion-card-title>
+      <ion-card-subtitle>Publicador Bautizado</ion-card-subtitle>
     </ion-card-header>
   
     <ion-card-content>
@@ -68,17 +73,17 @@
         
           <!-- Position Column -->
           <ng-container matColumnDef="mes">
-            <th mat-header-cell *matHeaderCellDef> <ion-label color="dark">Mes</ion-label> </th>
+            <th mat-header-cell *matHeaderCellDef> <ion-label style="font-weight:bold ;" color="dark">Mes</ion-label> </th>
             <td mat-cell *matCellDef="let element"> 
               <ion-item class="ion-no-padding" color="none"  lines="none">
-                <p style="font-size: small;" >{{element.mes}} </p>
+                <p style="font-size: small; font-weight: bold;" >{{element.mes}} </p>
               </ion-item>
             </td>
           </ng-container>
           
           <!-- Name Column -->
           <ng-container matColumnDef="publicaciones">
-            <th mat-header-cell *matHeaderCellDef> <ion-label color="dark">Publicaciones</ion-label> </th>
+            <th mat-header-cell *matHeaderCellDef> <ion-label style="font-weight:bold ;" color="dark">Publicaciones</ion-label> </th>
             <td mat-cell *matCellDef="let element"> 
               <ion-item class="ion-no-padding" color="none"  lines="none">
                 <ion-input  value="{{element.publicaciones}}"> </ion-input>
@@ -88,7 +93,7 @@
         
           <!-- Weight Column -->
           <ng-container matColumnDef="horas">
-            <th mat-header-cell *matHeaderCellDef> <ion-label color="dark">Horas</ion-label> </th>
+            <th mat-header-cell *matHeaderCellDef> <ion-label style="font-weight:bold ;" color="dark">Horas</ion-label> </th>
             <td mat-cell *matCellDef="let element"> 
               <ion-item class="ion-no-padding" color="none"  lines="none">
                 <ion-input  value="{{element.horas}}"> </ion-input>
@@ -98,7 +103,7 @@
         
           <!-- Symbol Column -->
           <ng-container matColumnDef="videos">
-            <th mat-header-cell *matHeaderCellDef> <ion-label color="dark">Videos</ion-label> </th>
+            <th mat-header-cell *matHeaderCellDef> <ion-label style="font-weight:bold ;" color="dark">Videos</ion-label> </th>
             <td mat-cell *matCellDef="let element"> 
             
               <ion-item class="ion-no-padding"  color="none"  lines="none">
@@ -108,7 +113,7 @@
           </ng-container>
         
           <ng-container matColumnDef="revisitas">
-            <th mat-header-cell *matHeaderCellDef> <ion-label color="dark">Revisitas</ion-label> </th>
+            <th mat-header-cell *matHeaderCellDef> <ion-label style="font-weight:bold ;" color="dark">Revisitas</ion-label> </th>
             <td mat-cell *matCellDef="let element"> 
              
               <ion-item class="ion-no-padding" color="none"  lines="none" >
@@ -117,7 +122,7 @@
             </td>
           </ng-container>
           <ng-container matColumnDef="cursos">
-            <th mat-header-cell *matHeaderCellDef> <ion-label color="dark">Cursos</ion-label> </th>
+            <th mat-header-cell *matHeaderCellDef> <ion-label style="font-weight:bold ;" color="dark">Cursos</ion-label> </th>
             <td mat-cell *matCellDef="let element"> 
             
               <ion-item class="ion-no-padding" color="none"  lines="none">
@@ -127,7 +132,7 @@
             </td>
           </ng-container>
           <ng-container matColumnDef="observaciones">
-            <th mat-header-cell *matHeaderCellDef> <ion-label color="dark">Observaciones</ion-label> </th>
+            <th mat-header-cell *matHeaderCellDef> <ion-label style="font-weight:bold ;" color="dark">Observaciones</ion-label> </th>
             <td mat-cell *matCellDef="let element"> 
             
               <ion-button fill="clear" slot="icon-only" ><ion-icon name="add-circle-outline"></ion-icon></ion-button>
@@ -141,5 +146,173 @@
       </div>
   </ion-card>
 
+  <!-- <ion-button (click)="print()">PRINT</ion-button> -->
+
 
 </ion-content>
+
+
+
+
+<!-- PRINTABLE AREA -->
+
+<!-- <div *ngif="isPrinting"></div>
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <title>title</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap" rel="stylesheet">
+    <style type="text/css">
+        body {
+            font-family: "Roboto", sans-serif;
+        }
+        .parent {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: repeat(4, 1fr);
+            grid-column-gap: 0px;
+            grid-row-gap: 0px;
+        }
+        .div1 { grid-area: 1 / 1 / 2 / 2; }
+        .div2 { grid-area: 2 / 1 / 3 / 2; }
+        .div3 { grid-area: 1 / 2 / 2 / 3; }
+        .div4 { grid-area: 2 / 2 / 3 / 3; }
+        .div5 { grid-area: 1 / 3 / 2 / 4; }
+        .div6 { grid-area: 2 / 3 / 3 / 4; }
+        .div7 { grid-area: 3 / 1 / 4 / 2; }
+        .div8 { grid-area: 4 / 1 / 5 / 2; }
+        .div9 { grid-area: 3 / 2 / 4 / 3; }
+        .div10 { grid-area: 4 / 2 / 5 / 3; }
+        .div11 { grid-area: 3 / 3 / 4 / 4; }
+        .div12 { grid-area: 4 / 3 / 5 / 4; }
+
+        .PrintableTable{
+            width: 100%;
+        }
+        th,td{
+
+            border: 1px solid #ddd;
+  padding: 8px;
+        }
+        
+    </style>
+</head>
+<body>
+    
+    <div>
+        <h1>Santiago Eliam Ramírez García</h1>
+        <h3>Publicado Bautizado<h3>
+    </div>
+
+    <p size="4" style="font-weight:bold;">Dirección: <span style="font-weight:normal;">Donato Elizondo 307, Col. Las Encinas, Gral. Escobedo, Nuevo León</span> </p>
+    <div class="parent">
+        <div class="div1"><h4>Teléfono:</h4></div>
+        <div class="div2"> 8189010673</div>
+        <div class="div3"><h4>Teléfono Móvil: </h4></div>
+        <div class="div4">8112726371</div>
+        <div class="div5"><h4>Fecha de Nacimiento:</h4></div>
+        <div class="div6">
+            04/10/2001 
+            <br>
+            <span style="font-size: xx-small;">Formato: dd/mm/aaaa </span>
+        </div>
+        <div class="div7"><h4>Fecha de Bautismo:</h4> </div>
+        <div class="div8">
+        
+            27/10/2018
+            <br>
+            <span style="font-size: xx-small;">Formato: dd/mm/aaaa </span>
+        </div>
+        <div class="div9"><h4>Ungido / Otras ovejas:</h4> </div>
+        <div class="div10">Otras ovejas </div>
+        <div class="div11"><h4>Nombramiento : </h4></div>
+        <div class="div12">- </div>
+    </div>
+    
+
+        <div class="table-responsive" >
+
+        <table mat-table style="background-color: transparent;" [dataSource]="dataSource" class="mat-elevation-z8">
+    
+            
+        
+        
+            <ng-container matColumnDef="mes">
+            <th mat-header-cell *matHeaderCellDef> <ion-label color="dark">Mes</ion-label> </th>
+            <td mat-cell *matCellDef="let element"> 
+                <ion-item class="ion-no-padding" color="none"  lines="none">
+                <p style="font-size: small;" >{{element.mes}} </p>
+                </ion-item>
+            </td>
+            </ng-container>
+            
+           
+            <ng-container matColumnDef="publicaciones">
+            <th mat-header-cell *matHeaderCellDef> <ion-label color="dark">Publicaciones</ion-label> </th>
+            <td mat-cell *matCellDef="let element"> 
+                <ion-item class="ion-no-padding" color="none"  lines="none">
+                <ion-input  value="{{element.publicaciones}}"> </ion-input>
+                </ion-item>
+            </td>
+            </ng-container>
+        
+          
+            <ng-container matColumnDef="horas">
+            <th mat-header-cell *matHeaderCellDef> <ion-label color="dark">Horas</ion-label> </th>
+            <td mat-cell *matCellDef="let element"> 
+                <ion-item class="ion-no-padding" color="none"  lines="none">
+                <ion-input  value="{{element.horas}}"> </ion-input>
+                </ion-item>   
+            </td>
+            </ng-container>
+        
+        
+            <ng-container matColumnDef="videos">
+            <th mat-header-cell *matHeaderCellDef> <ion-label color="dark">Videos</ion-label> </th>
+            <td mat-cell *matCellDef="let element"> 
+            
+                <ion-item class="ion-no-padding"  color="none"  lines="none">
+                <ion-input  value="{{element.videos}}"> </ion-input>
+                </ion-item>
+            </td>
+            </ng-container>
+        
+            <ng-container matColumnDef="revisitas">
+            <th mat-header-cell *matHeaderCellDef> <ion-label color="dark">Revisitas</ion-label> </th>
+            <td mat-cell *matCellDef="let element"> 
+                
+                <ion-item class="ion-no-padding" color="none"  lines="none" >
+                <ion-input  value="{{element.revisitas}}"> </ion-input>
+                </ion-item>
+            </td>
+            </ng-container>
+            <ng-container matColumnDef="cursos">
+            <th mat-header-cell *matHeaderCellDef> <ion-label color="dark">Cursos</ion-label> </th>
+            <td mat-cell *matCellDef="let element"> 
+            
+                <ion-item class="ion-no-padding" color="none"  lines="none">
+                <ion-input  value="{{element.cursos}}"> </ion-input>
+                </ion-item>
+                
+            </td>
+            </ng-container>
+            <ng-container matColumnDef="observaciones">
+            <th mat-header-cell *matHeaderCellDef> <ion-label color="dark">Observaciones</ion-label> </th>
+            <td mat-cell *matCellDef="let element"> 
+            
+                <ion-button fill="clear" slot="icon-only" ><ion-icon name="add-circle-outline"></ion-icon></ion-button>
+                
+            </td>
+            </ng-container>
+    
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+        </div>
+      
+</body>
+</html> -->
+

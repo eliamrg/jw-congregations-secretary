@@ -4,26 +4,28 @@ import { OverlayEventDetail } from '@ionic/core/components';
 
 
 export interface PeriodicElement {
-  name: string;
+  nombre: string;
   position: number;
-  weight: number;
-  symbol: string;
-  x:string;
-  y:string;
+  horas: number;
+  publicaciones:number
+  videos: number;
+  revisitas:number;
+  cursos:number;
+  observacion:string;
 }
 
 
 const ELEMENT_DATA: PeriodicElement[] = [
-  {position: 1, name: 'Hydrogen', weight: 1.0079, symbol: 'H',x:"x",y:"y"},
-  {position: 2, name: 'Helium', weight: 4.0026, symbol: 'He',x:"x",y:"y"},
-  {position: 3, name: 'Lithium', weight: 6.941, symbol: 'Li',x:"x",y:"y"},
-  {position: 4, name: 'Beryllium', weight: 9.0122, symbol: 'Be',x:"x",y:"y"},
-  {position: 5, name: 'Boron', weight: 10.811, symbol: 'B',x:"x",y:"y"},
-  {position: 6, name: 'Carbon', weight: 12.0107, symbol: 'C',x:"x",y:"y"},
-  {position: 7, name: 'Nitrogen', weight: 14.0067, symbol: 'N',x:"x",y:"y"},
-  {position: 8, name: 'Oxygen', weight: 15.9994, symbol: 'O',x:"x",y:"y"},
-  {position: 9, name: 'Fluorine', weight: 18.9984, symbol: 'F',x:"x",y:"y"},
-  {position: 10, name: 'Neon', weight: 20.1797, symbol: 'Ne',x:"x",y:"y"},
+  {position: 1, nombre: 'Santiago Eliam Ramirez Garcia', horas: 10, publicaciones: 10,videos: 10, revisitas: 10, cursos: 10,observacion:""},
+  {position: 2, nombre: 'Eliezer Cruz Del Angel', horas: 10, publicaciones: 10,videos: 10, revisitas: 10, cursos: 10, observacion:""},
+  {position: 3, nombre: 'Rolando Ramirez Hernandez', horas: 10, publicaciones: 10,videos: 10, revisitas: 10, cursos: 10, observacion:""},
+  {position: 4, nombre: 'Angel Antonio Garza', horas: 10, publicaciones: 10,videos: 10, revisitas: 10, cursos: 10, observacion:""},
+  {position: 5, nombre: 'Eber Daniel Carrizales Jacobo', horas: 10, publicaciones: 10,videos: 10, revisitas: 10, cursos: 10, observacion:""},
+  {position: 6, nombre: 'Jaziel Cisneros Gallegos', horas: 10, publicaciones: 10,videos: 10, revisitas: 10, cursos: 10, observacion:""},
+  {position: 7, nombre: 'Jesus Beningno Vera', horas: 10, publicaciones: 10,videos: 10, revisitas: 10, cursos: 10, observacion:""},
+  {position: 8, nombre: 'Miguel Nuñez Soriano', horas: 10, publicaciones: 10,videos: 10, revisitas: 10, cursos: 10, observacion:""},
+  {position: 9, nombre: 'Brayan Gutierrez Covarrubias', horas: 10, publicaciones: 10,videos: 10, revisitas: 10, cursos: 10, observacion:""},
+  {position: 10, nombre: 'Gumercindo Nuñez ApellidoM', horas: 10, publicaciones: 10,videos: 10, revisitas: 10, cursos: 10, observacion:""},
 ];
 
 
@@ -44,7 +46,10 @@ export class AgregarInformePage implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    this.wheelDate=new Date().toISOString();
+    var today=new Date();
+    var currentMonth=today.getMonth();
+    today.setMonth(today.getMonth()-1);
+    this.wheelDate=today.toISOString();
     this.showdate();
   }
 
@@ -98,7 +103,7 @@ export class AgregarInformePage implements OnInit {
 
 
   //TABLE
-  displayedColumns: string[] = [ 'name', 'weight', 'symbol',"x","y","comments"];
+  displayedColumns: string[] = [ 'nombre', 'horas', 'publicaciones',"videos","revisitas","cursos","observaciones"];
   dataSource = ELEMENT_DATA;
 
 
@@ -135,13 +140,13 @@ export class AgregarInformePage implements OnInit {
   modal!: IonModal;
 
   message = 'This modal example uses triggers to automatically open a modal when the button is clicked.';
-  name: string | undefined;
+  nombre: string | undefined;
   cancel() {
     this.modal.dismiss(null, 'cancel');
   }
 
   confirm() {
-    this.modal.dismiss(this.name, 'confirm');
+    this.modal.dismiss(this.nombre, 'confirm');
   }
 
   onWillDismiss(event: Event) {

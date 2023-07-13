@@ -7,7 +7,7 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true" mode="ios">
+<ion-content [fullscreen]="false" mode="ios">
   
   <!-- HEADER -->
   <ion-header collapse="condense">
@@ -56,7 +56,7 @@
             <ng-template>
               <ion-content>
                 <ion-list>
-                  <ion-item [button]="true" [detail]="false">Ver Tarjeta</ion-item>
+                  <ion-item [button]="true" [detail]="false" routerLink="/publicador/{{Publicador.id}}">Ver Tarjeta</ion-item>
                   <ion-item [button]="true" [detail]="false">Editar Informacion</ion-item>
                   <ion-item [button]="true" [detail]="false">Cambiar de Grupo</ion-item>
                   <ion-item [button]="true" [detail]="false">
