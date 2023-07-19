@@ -11,8 +11,9 @@ export class AppComponent {
     //{ title: 'Precursores Regulares', url: '/folder/Regulares', icon: 'person-add' },
     //{ title: 'Precursores Auxiliares', url: '/folder/Auxiliares', icon: 'person' },
     { title: 'Asistencia a Reuniones', url: '/asistencia', icon: 'people' },
-    { title: 'Publicadores', url: '/publicadores', icon: 'man' },
-    // { title: 'tarjeta', url: '/publicador', icon: 'star' },
+    { title: 'Publicadores', url: '/publicadores', icon: 'briefcase' },
+    { title: 'Administrar Usuarios', url: '/usuarios', icon: 'person-circle' },
+    
   ];
   public reportes = ['Precursores Regulares', 'Precursores Auxiliares', 'Publicadores', 'Asistencia'];
   constructor() {}

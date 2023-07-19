@@ -30,6 +30,14 @@ const routes: Routes = [
   {
     path: 'login',
     loadChildren: () => import('./login/login.module').then( m => m.LoginPageModule)
+  },
+  {
+    path: 'usuarios',
+    loadChildren: () => import('./usuarios/usuarios.module').then( m => m.UsuariosPageModule)
+  },
+  {
+    path: 'audio-video',
+    loadChildren: () => import('./audio-video/audio-video.module').then( m => m.AudioVideoPageModule)
   }
   
 ];

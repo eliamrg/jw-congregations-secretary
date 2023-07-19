@@ -1,0 +1,96 @@
+<ion-header [translucent]="false" mode="ios">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Administración de Usuarios</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="false" mode="ios">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Administración de Usuarios</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+
+  <ion-card>
+    <ion-card-header>
+      <ion-card-subtitle color="primary">Usuarios Admitidos</ion-card-subtitle>
+    </ion-card-header>
+   <!-- USUARIOS -->
+    <ion-card-content  *ngFor="let number of [0,1,2,3,4]">
+
+
+      
+      <ion-card-header>
+        <ion-row>
+          <ion-col size="10">
+            <ion-card-title>Jesus Benigno Vera</ion-card-title>
+            <ion-card-subtitle>jesusVera@gmail.com</ion-card-subtitle>
+          </ion-col>
+          <ion-col><ion-button id="present-alert{{number}}" fill="clear" color="danger"><ion-icon  name="trash"></ion-icon></ion-button></ion-col>
+          <ion-alert
+          class="custom-alert"
+            trigger="present-alert{{number}}"
+            header="¿Desea elimiar este usuario?"
+            [buttons]="alertButtons"
+            (didDismiss)="setResult($event)"
+          ></ion-alert>
+        </ion-row>
+        
+        
+      </ion-card-header>
+      <ion-grid>
+        
+        <ion-row>
+          <ion-col><ion-checkbox labelPlacement="end">Administrador (Secretario)</ion-checkbox></ion-col>
+          <ion-col><ion-checkbox labelPlacement="end">Superintendente de Grupo</ion-checkbox></ion-col>
+          <ion-col><ion-checkbox labelPlacement="end">Lectura de Reportes</ion-checkbox></ion-col>
+          <ion-col><ion-checkbox labelPlacement="end">Creación de Roles</ion-checkbox></ion-col>
+         
+        </ion-row>
+
+        <ion-row>
+          
+          <ion-col ><ion-button >Guardar Permisos</ion-button></ion-col>
+          
+
+        </ion-row>
+
+        
+      </ion-grid>
+    </ion-card-content>
+    
+  </ion-card>
+
+
+  <ion-card>
+    <ion-card-header>
+      
+      <ion-card-subtitle color="danger">Usuarios No Admitidos</ion-card-subtitle>
+    </ion-card-header>
+  
+    <ion-card-content *ngFor="let number of [0,1,2,3,4]">
+      
+      <ion-grid>
+        
+        <ion-row>
+          <ion-col siz>
+            
+              <ion-card-title>Publicador que no deberia entrar</ion-card-title>
+              <ion-card-subtitle>publicadorMetiche@gmail.com</ion-card-subtitle>
+            
+          </ion-col>
+          <ion-col ><ion-button expand="block">Admitir</ion-button></ion-col>
+          <ion-col ><ion-button color="danger" expand="block">Eliminar</ion-button></ion-col>
+          
+        </ion-row>
+      </ion-grid>
+    </ion-card-content>
+  </ion-card>
+
+</ion-content>
+
+

@@ -54,6 +54,8 @@ export class PublicadoresPage implements OnInit {
     {"id":12},
   ]
 
+
+  bautizado=false;
   constructor() { }
 
   ngOnInit() {
