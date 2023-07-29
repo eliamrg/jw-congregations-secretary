@@ -9,4 +9,5 @@ export class publicador {
     esperanza: string | undefined;
     nombramiento: string | undefined;
     grupo!: string;
+    acomodador!: boolean;
 }

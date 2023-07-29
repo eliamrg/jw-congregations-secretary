@@ -15,6 +15,18 @@ export class AppComponent {
     { title: 'Administrar Usuarios', url: '/usuarios', icon: 'person-circle' },
     
   ];
+
+
+  public appReports = [
+    //{ title: 'Estadísitcas', url: '/folder/Estadisticas', icon: 'bar-chart' },
+    { title: 'Precursores Regulares', url: '/reporte-regular', icon: 'star' },
+    //{ title: 'Precursores Regulares', url: '/folder/Regulares', icon: 'person-add' },
+    //{ title: 'Precursores Auxiliares', url: '/folder/Auxiliares', icon: 'person' },
+    { title: 'Precursores Auxiliares', url: '/reporte-auxiliar', icon: 'person-add' },
+    { title: 'Publicadores', url: '/reporte-publicador', icon: 'person' },
+    { title: 'Asistencia', url: 'reporte-asistencia', icon: 'people' },
+    
+  ];
   public reportes = ['Precursores Regulares', 'Precursores Auxiliares', 'Publicadores', 'Asistencia'];
   constructor() {}
 }

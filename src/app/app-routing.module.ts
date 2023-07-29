@@ -13,31 +13,47 @@ const routes: Routes = [
   },
   {
     path: 'publicadores',
-    loadChildren: () => import('./publicadores/publicadores.module').then( m => m.PublicadoresPageModule)
+    loadChildren: () => import('./pages/publicadores/publicadores.module').then( m => m.PublicadoresPageModule)
   },
   {
     path: 'asistencia',
-    loadChildren: () => import('./agregar-asistencia/agregar-asistencia.module').then( m => m.AgregarAsistenciaPageModule)
+    loadChildren: () => import('./pages/agregar-asistencia/agregar-asistencia.module').then( m => m.AgregarAsistenciaPageModule)
   },
   {
     path: 'informe',
-    loadChildren: () => import('./agregar-informe/agregar-informe.module').then( m => m.AgregarInformePageModule)
+    loadChildren: () => import('./pages/agregar-informe/agregar-informe.module').then( m => m.AgregarInformePageModule)
   },
   {
     path: 'publicador/:id',
-    loadChildren: () => import('./tarjeta-publicador/tarjeta-publicador.module').then( m => m.TarjetaPublicadorPageModule)
+    loadChildren: () => import('./pages/tarjeta-publicador/tarjeta-publicador.module').then( m => m.TarjetaPublicadorPageModule)
   },
   {
     path: 'login',
-    loadChildren: () => import('./login/login.module').then( m => m.LoginPageModule)
+    loadChildren: () => import('./pages/login/login.module').then( m => m.LoginPageModule)
   },
   {
     path: 'usuarios',
-    loadChildren: () => import('./usuarios/usuarios.module').then( m => m.UsuariosPageModule)
+    loadChildren: () => import('./pages/usuarios/usuarios.module').then( m => m.UsuariosPageModule)
   },
   {
     path: 'audio-video',
-    loadChildren: () => import('./audio-video/audio-video.module').then( m => m.AudioVideoPageModule)
+    loadChildren: () => import('./pages/audio-video/audio-video.module').then( m => m.AudioVideoPageModule)
+  },
+  {
+    path: 'reporte-regular',
+    loadChildren: () => import('./Reportes/reporte-regular/reporte-regular.module').then( m => m.ReporteRegularPageModule)
+  },
+  {
+    path: 'reporte-auxiliar',
+    loadChildren: () => import('./Reportes/reporte-auxiliar/reporte-auxiliar.module').then( m => m.ReporteAuxiliarPageModule)
+  },
+  {
+    path: 'reporte-publicador',
+    loadChildren: () => import('./Reportes/reporte-publicador/reporte-publicador.module').then( m => m.ReportePublicadorPageModule)
+  },
+  {
+    path: 'reporte-asistencia',
+    loadChildren: () => import('./Reportes/reporte-asistencia/reporte-asistencia.module').then( m => m.ReporteAsistenciaPageModule)
   }
   
 ];
