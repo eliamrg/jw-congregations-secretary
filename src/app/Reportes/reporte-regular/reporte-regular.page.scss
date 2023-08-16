@@ -1,0 +1,51 @@
+hr.solid {
+    border-top: 3px solid #bbb;
+  }
+  @media print {
+    .hidePrint {
+        display: none;
+    }
+}
+
+#printOnly {
+  display : none;
+}
+
+@media print {
+   #printOnly {
+      display : block;
+   }
+}
+
+
+.myDivToPrint{
+    font-family: Arial, Helvetica, sans-serif;
+
+
+    @page :first { // set the margins for the first page in print mode
+        margin: 100px;
+      }
+  
+      @page { // set the margins for all following pages (tables) in print mode
+      size:  auto; 
+      margin-top: 10px;
+      margin-bottom: 10px;
+      }
+
+      table {
+        color: red;
+        font-family: arial, sans-serif;
+        border-collapse: collapse;
+        width: 100%;
+      }
+      
+      td, th {
+        border: 1px solid #dddddd;
+        text-align: left;
+        padding: 8px;
+      }
+      
+      tr:nth-child(even) {
+        background-color: #dddddd;
+      }
+}

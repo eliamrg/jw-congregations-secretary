@@ -1,31 +1,23 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { IonModal } from '@ionic/angular';
 import { OverlayEventDetail } from '@ionic/core/components';
+import { informe } from 'src/app/Classes/informe';
 
 
-export interface PeriodicElement {
-  nombre: string;
-  position: number;
-  horas: number;
-  publicaciones:number
-  videos: number;
-  revisitas:number;
-  cursos:number;
-  observacion:string;
-}
 
 
-const ELEMENT_DATA: PeriodicElement[] = [
-  {position: 1, nombre: 'Santiago Eliam Ramirez Garcia', horas: 10, publicaciones: 10,videos: 10, revisitas: 10, cursos: 10,observacion:""},
-  {position: 2, nombre: 'Eliezer Cruz Del Angel', horas: 10, publicaciones: 10,videos: 10, revisitas: 10, cursos: 10, observacion:""},
-  {position: 3, nombre: 'Rolando Ramirez Hernandez', horas: 10, publicaciones: 10,videos: 10, revisitas: 10, cursos: 10, observacion:""},
-  {position: 4, nombre: 'Angel Antonio Garza', horas: 10, publicaciones: 10,videos: 10, revisitas: 10, cursos: 10, observacion:""},
-  {position: 5, nombre: 'Eber Daniel Carrizales Jacobo', horas: 10, publicaciones: 10,videos: 10, revisitas: 10, cursos: 10, observacion:""},
-  {position: 6, nombre: 'Jaziel Cisneros Gallegos', horas: 10, publicaciones: 10,videos: 10, revisitas: 10, cursos: 10, observacion:""},
-  {position: 7, nombre: 'Jesus Beningno Vera', horas: 10, publicaciones: 10,videos: 10, revisitas: 10, cursos: 10, observacion:""},
-  {position: 8, nombre: 'Miguel Nuñez Soriano', horas: 10, publicaciones: 10,videos: 10, revisitas: 10, cursos: 10, observacion:""},
-  {position: 9, nombre: 'Brayan Gutierrez Covarrubias', horas: 10, publicaciones: 10,videos: 10, revisitas: 10, cursos: 10, observacion:""},
-  {position: 10, nombre: 'Gumercindo Nuñez ApellidoM', horas: 10, publicaciones: 10,videos: 10, revisitas: 10, cursos: 10, observacion:""},
+
+const ELEMENT_DATA: informe[] = [
+  {position: 1, nombre: 'Santiago Eliam Ramirez Garcia', horas: null, publicaciones: null,videos: null, revisitas: null, cursos: null,observacion:"", grupo:0},
+  {position: 2, nombre: 'Eliezer Cruz Del Angel', horas: null, publicaciones: null,videos: null, revisitas: null, cursos: null, observacion:"", grupo:0},
+  {position: 3, nombre: 'Rolando Ramirez Hernandez', horas: null, publicaciones: null,videos: null, revisitas: null, cursos: null, observacion:"", grupo:0},
+  {position: 4, nombre: 'Angel Antonio Garza', horas: null, publicaciones: null,videos: null, revisitas: null, cursos: null, observacion:"", grupo:0},
+  {position: 5, nombre: 'Eber Daniel Carrizales Jacobo', horas: null, publicaciones: null,videos: null, revisitas: null, cursos: null, observacion:"", grupo:0},
+  {position: 6, nombre: 'Jaziel Cisneros Gallegos', horas: null, publicaciones: null,videos: null, revisitas: null, cursos: null, observacion:"", grupo:0},
+  {position: 7, nombre: 'Jesus Beningno Vera', horas: null, publicaciones: null,videos: null, revisitas: null, cursos: null, observacion:"", grupo:0},
+  {position: 8, nombre: 'Miguel Nuñez Soriano', horas: null, publicaciones: null,videos: null, revisitas: null, cursos: null, observacion:"", grupo:0},
+  {position: 9, nombre: 'Brayan Gutierrez Covarrubias', horas: null, publicaciones: null,videos: null, revisitas: null, cursos: null, observacion:"", grupo:0},
+  {position: 10, nombre: 'Gumercindo Nuñez ApellidoM', horas: null, publicaciones: null,videos: null, revisitas: null, cursos: null, observacion:"", grupo:0},
 ];
 
 

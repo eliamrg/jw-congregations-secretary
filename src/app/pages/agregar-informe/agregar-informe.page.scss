@@ -7,6 +7,10 @@ ion-list{
     width: 100%;
     overflow-x: auto;
   }
+.greyedOut{
+  color: lightcoral;
+  font-weight: bolder;
+}
   
   mat-table {
    width: 1200px;
@@ -34,5 +38,6 @@ ion-list{
   }
 
   ion-input{
-    min-width: 50px;
+    min-width: 70px;
+    
   }

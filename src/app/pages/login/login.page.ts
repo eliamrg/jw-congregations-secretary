@@ -9,7 +9,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./login.page.scss'],
 })
 export class LoginPage implements OnInit {
-
+ constructor( private router:Router){}
   
 
  
@@ -34,7 +34,7 @@ export class LoginPage implements OnInit {
     //   this.router.navigate(['/dashboard']);
     // })
     // .catch(error=>console.log(error));
-  
+    this.router.navigate(['/informe']);
   }
 
   loginGoogle(){

@@ -1,0 +1,28 @@
+
+<div class="table-responsive">
+  <table >
+
+    <tr>
+      <th>Nombre</th>
+      <th>Horas</th>
+      <th>Publicaciones</th>
+      <th>Videos</th>
+      <th>Revisitas</th>
+      <th>Cursos</th>
+      <th>Observaciones</th>
+    
+    </tr>
+    <tr *ngFor="let informe of TablaInfo">
+      <td>{{informe.nombre}}</td>
+      <td>{{informe.horas}}</td>
+      <td>{{informe.publicaciones}}</td>
+      <td>{{informe.videos}}</td>
+      <td>{{informe.revisitas}}</td>
+      <td>{{informe.cursos}}</td>
+      <td>{{informe.observacion}}</td>
+      
+    </tr>
+    
+  </table>
+</div>
+
