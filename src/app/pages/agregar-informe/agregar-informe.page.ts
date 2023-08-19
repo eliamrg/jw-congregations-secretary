@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { IonModal } from '@ionic/angular';
 import { OverlayEventDetail } from '@ionic/core/components';
 import { informe } from 'src/app/Classes/informe';
+import { FirestoreService } from 'src/app/services/Firestore/firestore.service';
 
 
 
@@ -35,9 +36,23 @@ const ELEMENT_DATA: informe[] = [
 
 export class AgregarInformePage implements OnInit {
 
-  constructor() { }
+  constructor(private firestore: FirestoreService) { }
+
+  
+
+
+  async LoadPublicadores(){
+    this.firestore.prueba();
+    // let snapshot= await this.firestore.getPublicadores().then(x=>{
+      
+      
+    // });
+    
+    // console.log(snapshot.)
+  }
 
   ngOnInit() {
+    this.LoadPublicadores();
     var today=new Date();
     var currentMonth=today.getMonth();
     today.setMonth(today.getMonth()-1);

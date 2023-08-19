@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { informe } from 'src/app/Classes/informe';
+import { FirestoreService } from 'src/app/services/Firestore/firestore.service';
 
  
 
@@ -28,6 +29,12 @@ export class TablaInformeComponent  implements OnInit {
 
   constructor() { }
 
-  ngOnInit() {}
+  ngOnInit() {
 
+    
+    
+  }
+
+
+  
 }

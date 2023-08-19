@@ -12,23 +12,69 @@
   <form novalidate (ngSubmit)="login()" [formGroup]="formLogin" mode="ios">
     <ion-item color="transparent">
       <ion-label  position="stacked">Correo Electrónico:</ion-label>
-      <ion-input type="email" placeholder="ejemplo@gmail.com" formControlName="email"></ion-input>
+      <ion-input aria-label="Email" type="email" placeholder="ejemplo@correo.com" formControlName="email"></ion-input>
     </ion-item>
     <ion-item color="transparent">
       <ion-label position="stacked">Contraseña:</ion-label>
-      <ion-input type="password" placeholder="Tu Contraseña" formControlName="password"></ion-input>
+      <ion-input aria-label="Contraseña" type="password" placeholder="Tu Contraseña" formControlName="password"></ion-input>
     </ion-item>
-    <a routerLink="" class="forgot-password-link">Olvidaste tu contraseña?</a>
+    <ion-label routerLink="#" class="forgot-password-link">Olvidaste tu contraseña?</ion-label>
 
-    <ion-button type="submit" routerLink="/agregar-informe">Ingresar</ion-button>
+    <ion-button type="submit" >Ingresar</ion-button>
     <br>
     <hr class="solid">
-    <ion-button class="gradient" (click)="loginGoogle()">
+
+
+    <!-- CUENTA DE GOOGLE -->
+    <!-- <ion-button color="tertiary" (click)="loginGoogle()">
       Usar cuenta de Google 
       <ion-icon slot="end" name="logo-google"></ion-icon>
       
-    </ion-button>
+    </ion-button> -->
     
   </form>
-  <p class="footer-text">No tengo cuenta, <a routerLink="/register">Crear una</a></p>
+  <p class="footer-text">No tengo cuenta, <ion-label (click)="setOpen(true)" color="primary" style="font-weight: bold; cursor: pointer;" >Crear una</ion-label></p>
+
+
+
+
+  <ion-modal [isOpen]="isModalOpen">
+    <ng-template>
+      <ion-header>
+        <ion-toolbar>
+          <ion-title>Creación de Cuenta</ion-title>
+          <ion-buttons slot="end">
+            <ion-button color="danger" (click)="setOpen(false)">Cancelar</ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content class="ion-no-padding">
+        <form style="margin-top: 0;" novalidate (ngSubmit)="register()" [formGroup]="formRegister"  mode="ios">
+    
+          <ion-item color="transparent">
+            <ion-label  position="stacked">Nombre:</ion-label>
+            <ion-input aria-label="Nombre" [value]="name" (input)="setName($event)" type="text" placeholder="Nombre Completo" ></ion-input>
+          </ion-item>
+          
+          <ion-item color="transparent">
+            <ion-label  position="stacked">Correo Electrónico:</ion-label>
+            <ion-input aria-label="Correo" (input)="setEmail($event)" [value]="email" type="email" placeholder="ejemplo@correo.com" formControlName="email"></ion-input>
+          </ion-item>
+          <ion-item color="transparent">
+            <ion-label position="stacked">Contraseña:</ion-label>
+            <ion-input aria-label="Contraseña" type="password" (input)="setPassword1($event)" placeholder="Your Password" formControlName="password"></ion-input>
+          </ion-item>
+          <ion-item color="transparent">
+            <ion-input aria-label="Contraseña" (input)="setPassword2($event)"  type="password" placeholder="Confirm your Password" formControlName="password"></ion-input>
+          </ion-item>
+          
+          <ion-button type="submit">Crear Cuenta</ion-button>
+          <ion-label style="font-size: small; text-align: center; color: gray;">Al registrarse deberá esperar a recibir acceso del Secretario de Congregación. </ion-label>
+        </form>
+        
+      </ion-content>
+    </ng-template>
+  </ion-modal>
+
+
 </ion-content>

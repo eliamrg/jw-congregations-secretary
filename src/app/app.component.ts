@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { AuthService } from './services/Auth/auth.service';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
@@ -28,5 +30,17 @@ export class AppComponent {
     
   ];
   public reportes = ['Precursores Regulares', 'Precursores Auxiliares', 'Publicadores', 'Asistencia'];
-  constructor() {}
+  constructor(private Auth: AuthService, private router: Router) {}
+
+  logOut(){
+
+    this.Auth.logout()
+    .then(response=>{
+      console.log(response);
+      this.router.navigate(['/login']).then(() => {
+        window.location.reload();
+        });
+    })
+    .catch(error=>console.log(error) )
+  }
 }

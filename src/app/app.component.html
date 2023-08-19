@@ -31,7 +31,7 @@
           </ion-item> -->
         </ion-list> 
         
-        <ion-button fill="clear" style="padding-top: 6px;" expand="block" color="danger"> <ion-icon  slot="start" name="exit-outline"></ion-icon> Cerrar Sesión</ion-button>
+        <ion-button (click)="logOut()" fill="clear" style="padding-top: 6px;" expand="block" color="danger"> <ion-icon  slot="start" name="exit-outline"></ion-icon> Cerrar Sesión</ion-button>
       </ion-content>
     </ion-menu>
     <ion-router-outlet id="main-content"></ion-router-outlet>
