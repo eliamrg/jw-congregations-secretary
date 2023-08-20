@@ -48,7 +48,7 @@
           </ion-buttons>
         </ion-toolbar>
       </ion-header>
-      <ion-content class="ion-no-padding">
+      <ion-content class="ion-padding">
         <form style="margin-top: 0;" novalidate (ngSubmit)="register()" [formGroup]="formRegister"  mode="ios">
     
           <ion-item color="transparent">
@@ -62,10 +62,10 @@
           </ion-item>
           <ion-item color="transparent">
             <ion-label position="stacked">Contraseña:</ion-label>
-            <ion-input aria-label="Contraseña" type="password" (input)="setPassword1($event)" placeholder="Your Password" formControlName="password"></ion-input>
+            <ion-input aria-label="Contraseña" type="password" (input)="setPassword1($event)" placeholder="Tu Contraseña" formControlName="password"></ion-input>
           </ion-item>
           <ion-item color="transparent">
-            <ion-input aria-label="Contraseña" (input)="setPassword2($event)"  type="password" placeholder="Confirm your Password" formControlName="password"></ion-input>
+            <ion-input aria-label="Contraseña" (input)="setPassword2($event)"  type="password" placeholder="Confirmar Contraseña" formControlName="password"></ion-input>
           </ion-item>
           
           <ion-button type="submit">Crear Cuenta</ion-button>

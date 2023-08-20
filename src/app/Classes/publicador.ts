@@ -1,5 +1,5 @@
 export class publicador {
-    
+    id!: string;
     nombre!: string;
     direccion: string | undefined;
     telefono: string | undefined;
@@ -9,7 +9,7 @@ export class publicador {
     bautismo: Date | undefined;
     esperanza: string | undefined;
     nombramiento: string | undefined;
-    grupo!: string;
+    grupo: number | undefined;
     acomodador!: boolean;
     sonido!: boolean;
 }

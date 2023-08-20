@@ -34,7 +34,8 @@
           <ion-alert
           class="custom-alert"
             trigger="present-alert{{number}}"
-            header="¿Desea elimiar este usuario?"
+            header="¿Desea eliminar este usuario?"
+            message="Esta acción no se puede deshacer"
             [buttons]="alertButtons"
             (didDismiss)="setResult($event)"
           ></ion-alert>
@@ -44,17 +45,50 @@
       </ion-card-header>
       <ion-grid>
         
+        <ion-row><ion-label class="ion-padding" style="font-size: large; font-weight: bold;">Permisos:</ion-label></ion-row>
         <ion-row>
+          
           <ion-col><ion-checkbox labelPlacement="end">Administrador (Secretario)</ion-checkbox></ion-col>
-          <ion-col><ion-checkbox labelPlacement="end">Superintendente de Grupo</ion-checkbox></ion-col>
           <ion-col><ion-checkbox labelPlacement="end">Lectura de Reportes</ion-checkbox></ion-col>
+          <!-- <ion-col ><ion-button expand="block" >Guardar <ion-icon slot="start" name="save-outline"></ion-icon> </ion-button></ion-col> -->
           <!-- <ion-col><ion-checkbox labelPlacement="end">Creación de Roles</ion-checkbox></ion-col> -->
+         
+        </ion-row>
+
+
+        
+        <ion-row class="ion-padding">
+          <ion-label  style="font-size: large; font-weight: bold;">Encargado de Grupo:</ion-label>
+          <ion-select   interface="popover"
+                  placeholder="Seleccionar" value="no" okText="Aceptar" cancelText="Cancelar">
+                  <ion-select-option value="no">No Asignado</ion-select-option>
+                  <ion-select-option value="1">Grupo 1</ion-select-option>
+                  <ion-select-option value="2">Grupo 2</ion-select-option>
+                  <ion-select-option value="3">Grupo 3</ion-select-option>
+                  
+                  <ion-select-option value="1">Grupo 1</ion-select-option>
+                  <ion-select-option value="2">Grupo 2</ion-select-option>
+                  <ion-select-option value="3">Grupo 3</ion-select-option>
+                 
+                  <ion-select-option value="1">Grupo 1</ion-select-option>
+                  <ion-select-option value="2">Grupo 2</ion-select-option>
+                  <ion-select-option value="3">Grupo 3</ion-select-option>
+                  
+                  <ion-select-option value="1">Grupo 1</ion-select-option>
+                  <ion-select-option value="2">Grupo 2</ion-select-option>
+                  <ion-select-option value="3">Grupo 3</ion-select-option>
+                  
+                  <ion-select-option value="1">Grupo 1</ion-select-option>
+                  <ion-select-option value="2">Grupo 2</ion-select-option>
+                  <ion-select-option value="3">Grupo 3</ion-select-option>
+                  
+                </ion-select>
          
         </ion-row>
 
         <ion-row>
           
-          <ion-col ><ion-button >Guardar Permisos</ion-button></ion-col>
+          <ion-col ><ion-button >Guardar </ion-button></ion-col>
           
 
         </ion-row>
@@ -77,14 +111,17 @@
       <ion-grid>
         
         <ion-row>
-          <ion-col siz>
+          <ion-col size="9">
             
               <ion-card-title>Publicador que no deberia entrar</ion-card-title>
               <ion-card-subtitle>publicadorMetiche@gmail.com</ion-card-subtitle>
             
           </ion-col>
-          <ion-col ><ion-button expand="block">Admitir</ion-button></ion-col>
-          <ion-col ><ion-button color="danger" expand="block">Eliminar</ion-button></ion-col>
+          <ion-col >
+            <ion-button expand="block" >Admitir</ion-button>
+            <ion-button expand="block" color="danger" >Eliminar</ion-button>
+          </ion-col>
+          <!-- <ion-col ><ion-button color="danger" >Eliminar</ion-button></ion-col> -->
           
         </ion-row>
       </ion-grid>

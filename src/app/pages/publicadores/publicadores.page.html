@@ -4,6 +4,14 @@
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
     <ion-title>Publicadores</ion-title>
+
+    <ion-buttons slot="end">
+      <ion-button  (click)="presentAlert()" style="font-weight: bold;" >
+        <!-- <ion-icon slot="end" name="add-circle-outline"></ion-icon> -->
+        Nuevo Grupo
+      </ion-button>
+    </ion-buttons>
+    
   </ion-toolbar>
 </ion-header>
 
@@ -20,25 +28,182 @@
     <ion-item>
       <ion-select aria-label="Grupos de Predicación" interface="popover" value="Todos">
         <ion-select-option value="Todos">Todos los Grupos</ion-select-option>
-        <ion-select-option *ngFor="let number of [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]" value={{number}}  >Grupo {{number}}</ion-select-option>
+        <!-- <ion-select-option *ngFor="let number of [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]" value={{number}}  >Grupo {{number}}</ion-select-option> -->
+        <div *ngFor="let grupo of PublicadoresPorGrupo; let i = index">
+          <ion-select-option id="Filtro + {{i}}"  value="{{i}}"  *ngIf="i!=0"> Grupo {{i}}</ion-select-option>
+        </div>
         
       </ion-select>
     </ion-item>
   </ion-list>
+  
 
-  <ion-searchbar placeholder="Buscar"></ion-searchbar>
+  <!-- <ion-searchbar placeholder="Buscar"></ion-searchbar> -->
 
 
 <!-- GRUPOS -->
-  <ion-card  *ngFor=" let grupo of Grupos">
-    <ion-card-header>
-      <ion-card-title>Grupo {{grupo.id}}</ion-card-title>
-      <ion-card-subtitle>Encargado: Jesus Benigno Vera</ion-card-subtitle>
-    </ion-card-header>
+<div *ngFor="let grupo of PublicadoresPorGrupo; let i = index">
   
+  <ion-card  *ngIf="i!=0">
+    
+    <ion-card-header>
+      
+      <ion-card-title>Grupo {{i}}</ion-card-title>
+      <ion-card-subtitle>Encargado: {{grupo.Encargado}} </ion-card-subtitle>
+       
+      
+    </ion-card-header>
     <ion-card-content>
 
       <!-- PUBLICADORES -->
+
+      <ion-list  *ngFor=" let Publicador of grupo.Publicadores ">
+        <ion-item color="none" lines="none"  >
+          <ion-avatar slot="start">
+            <img alt="Silhouette of a person's head" src="https://ionicframework.com/docs/img/demos/avatar.svg" />
+          </ion-avatar>
+          
+          <ion-label style="font-size: large; "> 
+            {{Publicador.Nombre}}
+            <p style="font-size: small; font-weight: lighter;">{{Publicador.Nombramiento}}</p>
+          </ion-label>
+          
+          
+          <ion-button  (click)="presentPopover($event,Publicador.id)"  fill="clear"> <ion-icon slot="icon-only" color="dark" name="ellipsis-horizontal"></ion-icon></ion-button>
+          
+          
+        </ion-item>
+        
+      </ion-list>
+
+      <!-- AGREGAR PUBLICADOR boton -->
+      
+
+      <ion-button slot="icon-only" fill="clear" (click)="setOpen(true,i)"><ion-icon size="medium" name="add-circle-outline"></ion-icon></ion-button>
+  
+    </ion-card-content>
+  </ion-card>
+</div>
+
+
+<!-- POPOVER .--------------------------------------------------------------------------------------------------------------------------------- -->
+<ion-popover #popover [isOpen]="isPopoverOpen" (didDismiss)="isPopoverOpen=false" [dismissOnSelect]="true" >
+  <ng-template>
+    <ion-content>
+      <ion-list>
+        <ion-item [button]="true" [detail]="false" routerLink="/publicador/{{popoverPublicadorId}}">Ver Tarjeta</ion-item>
+        <ion-item [button]="true" [detail]="false">Editar Informacion</ion-item>
+        <ion-item [button]="true" [detail]="false">Cambiar de Grupo</ion-item>
+        <ion-item [button]="true" [detail]="false">
+          <ion-label color="danger">
+            Eliminar
+          </ion-label>
+        </ion-item>
+      </ion-list>
+    </ion-content>
+  </ng-template>
+</ion-popover>
+
+<!-- MODAL AGREGAR----------------------------------------------------------------------------------------------------------------------------------------------------------------- -->
+<ion-modal [isOpen]="isModalOpen"  (willDismiss)="onWillDismiss($event)">
+  <ng-template>
+    <ion-header>
+      <ion-toolbar>
+        <ion-title>Agregar Publicador</ion-title>
+        <ion-buttons slot="end">
+          <ion-button color="danger" (click)="setOpen(false,0)">Cancelar</ion-button>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-header>
+    <ion-content mode="ios" class="ion-padding">
+
+      <H4>Grupo</H4>
+      <ion-list>
+        <ion-item>
+          <ion-select aria-label="Grupos de Predicación" value="{{grupoAgregarPublicador}}"  interface="popover" value="Todos">
+            
+            <div *ngFor="let grupo of PublicadoresPorGrupo; let i = index">
+              <ion-select-option id="Filtro + {{i}}"  value="{{i}}"  *ngIf="i!=0"> Grupo {{i}}</ion-select-option>
+            </div>
+            
+          </ion-select>
+        </ion-item>
+      </ion-list>
+
+      <H4>Información Personal</H4>
+      <ion-list>
+        <ion-item>
+          <ion-input label="Nombre" labelPlacement="stacked" placeholder="Ingresar Nombre"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-input label="Dirección" labelPlacement="stacked" placeholder="Ingresar Dirección"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-input label="Teléfono" labelPlacement="stacked" placeholder="Ingresar Teléfono"></ion-input>
+        </ion-item>
+        
+        <ion-item >
+          <ion-input label="Teléfono Móvil" labelPlacement="stacked" placeholder="Ingresar Móvil"></ion-input>
+        </ion-item>
+
+        <ion-item >
+          <ion-input label="Fecha de Nacimiento" labelPlacement="stacked" placeholder="Ingresar Nacimiento"></ion-input>
+        </ion-item>
+
+      </ion-list>
+
+      
+      
+      <div style="padding-left: 10px; padding-top: 10px;">
+        <ion-checkbox [(ngModel)]="bautizado" labelPlacement="end">Bautizado</ion-checkbox>
+        <ion-item *ngIf="bautizado" >
+          <ion-input label="Fecha de Bautismo" labelPlacement="stacked" placeholder="Ingresar"></ion-input>
+        </ion-item>
+        
+      </div>
+      <H4>Esperanza</H4>
+
+      
+      <div style="padding-left: 10px;">
+        <ion-radio-group [allowEmptySelection]="false" value="Otras Ovejas">
+          <ion-radio labelPlacement="end" value="Otras Ovejas">Otras Ovejas</ion-radio><br />
+          <ion-radio labelPlacement="end" value="Ungido">Ungido</ion-radio><br />
+          
+          
+        </ion-radio-group>
+        
+      </div>
+
+      <H4>Nombramiento</H4>
+      <ion-radio-group [allowEmptySelection]="false" value="N">
+        <ion-radio labelPlacement="end" value="N">Ninguno</ion-radio><br />
+        <ion-radio labelPlacement="end" value="A">Anciano de Congregación</ion-radio><br />
+        <ion-radio labelPlacement="end" value="SM">Siervo Ministerial</ion-radio><br />
+        <ion-radio labelPlacement="end" value="PR">Precursor Regular</ion-radio><br />
+        
+      </ion-radio-group>
+      <H4>Discapacidades</H4>
+      <div style="padding-left: 10px;">
+        <ion-checkbox labelPlacement="end">Sordo</ion-checkbox>
+        <br>
+        <ion-checkbox labelPlacement="end">Ciego</ion-checkbox>
+        <br>
+        <ion-checkbox labelPlacement="end">Mudo</ion-checkbox>
+        <br>
+        <ion-checkbox labelPlacement="end">Otra</ion-checkbox>
+      </div>
+
+      
+
+      <ion-button  expand="block">Guardar</ion-button>
+
+    </ion-content>
+  </ng-template>
+</ion-modal>
+  
+    <!-- <ion-card-content>
+
+      
 
       <ion-list  *ngFor=" let Publicador of grupo.Publicadores ">
         <ion-item color="none" lines="none"  >
@@ -73,7 +238,7 @@
         
       </ion-list>
 
-      <!-- AGREGAR PUBLICADOR -->
+      
       <ion-button  fill="clear" id="open-modal-grupo.{{grupo.id}}"> <ion-icon slot="icon-only" name="add-circle-outline"></ion-icon> </ion-button>
 
       <ion-modal #modal trigger="open-modal-grupo.{{grupo.id}}" mode="ios">
@@ -98,7 +263,7 @@
               <ion-item>
                 <ion-input label="Teléfono" labelPlacement="stacked" placeholder="Ingresar Teléfono"></ion-input>
               </ion-item>
-              <!-- style="padding-bottom: 100px;" -->
+              
               <ion-item >
                 <ion-input label="Teléfono Móvil" labelPlacement="stacked" placeholder="Ingresar Móvil"></ion-input>
               </ion-item>
@@ -168,6 +333,6 @@
       </ion-modal>
 
     </ion-card-content>
-  </ion-card>
+  </ion-card> -->
 
 </ion-content>

@@ -42,12 +42,19 @@ export class AgregarInformePage implements OnInit {
 
 
   async LoadPublicadores(){
-    this.firestore.prueba();
+
+    this.firestore.getPublicadoresPorGrupo();
+    // this.firestore.prueba();
     // let snapshot= await this.firestore.getPublicadores().then(x=>{
       
       
     // });
     
+    // let query= await this.firestore.getPublicadores().then(x=>{
+      
+    //   console.log(x.)
+      
+    //   });
     // console.log(snapshot.)
   }
 

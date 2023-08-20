@@ -7,6 +7,9 @@
     </ion-buttons>
 
     <ion-title>Precursores Regulares</ion-title>
+    <ion-buttons slot="end">
+      <button  printSectionId="print-section" ngxPrint><ion-icon color="primary" size="large" name="print-outline"> </ion-icon> </button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
@@ -41,9 +44,9 @@
 </ion-modal>
 
 
-<ion-fab slot="fixed" vertical="top" horizontal="end"  mode="ios">
+<!-- <ion-fab slot="fixed" vertical="top" horizontal="end"  mode="ios">
   <button style="background-color: transparent;" printSectionId="print-section" ngxPrint><ion-icon size="large" name="print-outline"> </ion-icon> </button>
-</ion-fab>
+</ion-fab> -->
 
 
 <ion-content  [fullscreen]="false" mode="ios">

@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { AlertController } from '@ionic/angular';
+import { FirestoreService } from 'src/app/services/Firestore/firestore.service';
 
 @Component({
   selector: 'app-publicadores',
@@ -6,6 +8,38 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./publicadores.page.scss'],
 })
 export class PublicadoresPage implements OnInit {
+
+
+  PublicadoresPorGrupo:any;
+  constructor(private firestore: FirestoreService,private alertController: AlertController) { }
+
+  async ngOnInit() {
+    await this.firestore.getPublicadoresPorGrupo().then(X=>{
+      this.PublicadoresPorGrupo=X;
+    });
+    console.log(this.PublicadoresPorGrupo)
+    this.randomNumber= Math.floor(Math.random() * 999999);
+  }
+
+  // async LoadPublicadores(){
+
+    
+
+  //   this.firestore.getPublicadoresPorGrupo();
+  //   // this.firestore.prueba();
+  //   // let snapshot= await this.firestore.getPublicadores().then(x=>{
+      
+      
+  //   // });
+    
+  //   // let query= await this.firestore.getPublicadores().then(x=>{
+      
+  //   //   console.log(x.)
+      
+  //   //   });
+  //   // console.log(snapshot.)
+  // }
+
   randomNumber!: number;
   Grupos=[
     {"id":1,
@@ -56,18 +90,55 @@ export class PublicadoresPage implements OnInit {
 
 
   bautizado=false;
-  constructor() { }
-
-  ngOnInit() {
-    this.randomNumber= Math.floor(Math.random() * 999999);
-  }
-
-
+  
+//MODAL------------------------------------------------------------------------------------------------------------------
+  grupoAgregarPublicador=0;
+  canDismiss=false;
 
   isModalOpen = false;
 
-  setOpen(isOpen: boolean) {
+  setOpen(isOpen: boolean,grupo:number) {
+    // if(isOpen==true)
+    //   this.canDismiss=true;
+    this.grupoAgregarPublicador=grupo;
     this.isModalOpen = isOpen;
   }
 
+  
+  onWillDismiss(event: Event) {
+   
+    this.isModalOpen=false;
+  }
+
+
+  //POPOVER------------------------------------------------------------------------------
+@ViewChild('popover') popover: any;
+isPopoverOpen=false;
+
+popoverPublicadorId=0;;
+
+  presentPopover(e:Event,publicdorId:number){
+    this.popover.event=e;
+    this.isPopoverOpen=true;
+    this.popoverPublicadorId=publicdorId
+  }
+
+
+   alertInputs = [
+    {
+      placeholder: 'Encargado (Etiqueta Temporal)',
+    }]
+  //ALERT---------------------------------------------------------------------------------
+  async presentAlert() {
+    const alert = await this.alertController.create({
+      subHeader: '¿Seguro que desea crear un Nuevo Grupo?',
+      header: 'Nuevo Grupo: '+Object.keys(this.PublicadoresPorGrupo).length,
+      
+      buttons: ['OK','Cancel'],
+      
+    });
+
+    await alert.present();
+  }
+  
 }

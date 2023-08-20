@@ -1,7 +1,4 @@
 import { Injectable } from '@angular/core';
-//import {  orderBy,collection, query, where, getDocs,setDoc, onSnapshot, doc, DocumentData, Firestore, limit, Timestamp } from '@firebase/firestore';
-//import { FirebaseApp, doc } from 'firebase/app';
-//import {Firestore, doc, setDoc, getDoc,query,onSnapshot,orderBy,collection} from 'firebase/firestore'
 import { Firestore, collection, addDoc, setDoc, doc, getDoc, query, where, getDocs, onSnapshot, orderBy } from '@angular/fire/firestore';
 import { publicador } from 'src/app/Classes/publicador';
 import { from } from 'rxjs';
@@ -15,44 +12,97 @@ export class FirestoreService {
 
   async CrearPublicador(pub: publicador){
     
+    let now=new Date();
+
     
-    await setDoc(doc(this.firestore, "Publicadores", pub.nombre), {
-    nombre: pub.nombre,
-    direccion: pub.direccion,
-    telefono: pub.telefono,
-    celular: pub.celular,
-    nacimiento: pub.nacimiento,
-    bautizado:pub.bautizado,
-    bautismo: pub.bautismo,
-    esperanza:pub.esperanza,
-    nombramiento: pub.nombramiento,
-    grupo: pub.grupo,
-    acomodador:false,
-    sonido: false,
+    const CustomId=pub.nombre.split(' ')[0]+'-'+pub.nombre.split(' ').pop() +'-'+now.toLocaleDateString().replace('/', '')+'-'+ this.getRandomNumber(0,999999);
+    
+    await setDoc(doc(this.firestore, "Publicadores", CustomId), {
+      id:CustomId,
+      nombre: pub.nombre,
+      direccion: pub.direccion,
+      telefono: pub.telefono,
+      celular: pub.celular,
+      nacimiento: pub.nacimiento,
+      bautizado:pub.bautizado,
+      bautismo: pub.bautismo,
+      esperanza:pub.esperanza,
+      nombramiento: pub.nombramiento,
+      grupo: pub.grupo,
+      acomodador:false,
+      sonido: false,
     },{merge:true}).then(()=>console.log("Post Created"));
   }
 
 
-  async getPublicadores(){
-    console.log("hola");
-    const q = query(collection(this.firestore, "Publicadores"),orderBy("nombre","asc"));
-    return onSnapshot(q, (querySnapshot) => {
-      querySnapshot.forEach((doc) => {
-        console.log(doc.id, " x=> ", doc.data());
-      });   
-    });
-  }
+  async getGrupos(){
 
+    let Grupos:any=[{'Encargado':'No Asignado','Publicadores':[]}];
+    //let grupo0: any[] =['0':{'Encargado':'No Asignado'}]
 
-  async prueba(){
-    const q = query(collection(this.firestore, "Publicadores"));
+    const q = query(collection(this.firestore, "Grupos"));
   
     const querySnapshot = await getDocs(q);
     querySnapshot.forEach((doc) => {
-      // doc.data() is never undefined for query doc snapshots
-      console.log(doc.id, " => ", doc.data());
+      
+      let data=doc.data();
+
+      let temp:any={
+        
+        'Encargado':data['Encargado'],
+        'email':data['email'],
+        'idEncargado':data['idEncargado'],
+        'Publicadores':[]
+      }
+      
+      Grupos.push(temp);
+      //console.log(doc.id, " => ", doc.data());
     });
+
+    //console.log(Grupos);
+    return Grupos;
   }
+
+  async getPublicadoresPorGrupo(){
+    
+    
+    let gruposConPublicadores:any= await this.getGrupos();
+    let pubs:any=[];
+    const q = query(collection(this.firestore, "Publicadores"),orderBy("Nombre","asc"));
+  
+    //console.log(grupos[1])
+    const querySnapshot = await getDocs(q);
+    querySnapshot.forEach((doc) => {
+
+       
+      
+      gruposConPublicadores[doc.data()["Grupo"]]["Publicadores"].push(doc.data())
+      
+    });
+
+    //console.log(gruposConPublicadores)
+    return gruposConPublicadores;
+    
+    
+  }
+  getRandomNumber(min:number, max:number) {
+    const floatRandom = Math.random()
+    const difference = max - min
+    // random between 0 and the difference
+    const random = Math.round(difference * floatRandom)
+    const randomWithinRange = random + min
+    return randomWithinRange
+    }
+
+  // async prueba(){
+  //   const q = query(collection(this.firestore, "Publicadores"));
+  
+  //   const querySnapshot = await getDocs(q);
+  //   querySnapshot.forEach((doc) => {
+  //     // doc.data() is never undefined for query doc snapshots
+  //     console.log(doc.id, " => ", doc.data());
+  //   });
+  // }
 }
 
 

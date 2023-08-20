@@ -39,4 +39,14 @@ export class UsuariosPage implements OnInit {
     this.roleMessage = `Dismissed with role: ${ev.detail.role}`;
   }
 
+
+
+  // admin.auth().deleteUser(uid)
+  // .then(function() {
+  //   console.log("Successfully deleted user");
+  // })
+  // .catch(function(error) {
+  //   console.log("Error deleting user:", error);
+  // });
+
 }

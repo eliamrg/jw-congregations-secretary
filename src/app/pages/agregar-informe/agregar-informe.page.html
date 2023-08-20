@@ -23,7 +23,9 @@
     <ion-item>
       <ion-select aria-label="Grupos de Predicación" interface="popover" value="Todos">
         <ion-select-option value="Todos">Todos los Grupos</ion-select-option>
-        <ion-select-option *ngFor="let number of [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]" value={{number}}  >Grupo {{number}}</ion-select-option>
+        <!-- <ion-select-option *ngFor="let number of [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]" value={{number}}  >Grupo {{number}}</ion-select-option> -->
+
+        
         
       </ion-select>
     </ion-item>
@@ -74,11 +76,13 @@
     </ion-card-header>
 
 
-    <!-- <ion-label style="padding-left: 15px;">Usar TAB para desplazarse entre celdas </ion-label> -->
+    <div style="padding-left: 15px;"><ion-label  style="font-size: small;">En dispositivos móviles considerar rotación de pantalla</ion-label> </div>
+    
+    
 
     <div id="TABLAS " *ngFor=" let grupo of Grupos" style="padding-top: 15px;">
       <ion-item-divider>
-        <ion-label> Grupo {{grupo.id}} </ion-label>
+        <ion-label> Grupo {{grupo.id}} <span style="font-size: small; color: Red;">Cambios sin guardar</span></ion-label>
       </ion-item-divider>
 
       <div class="table-responsive" >
@@ -167,7 +171,8 @@
               
 
               <ion-item class="ion-no-padding">
-                <ion-select  placeholder="Seleccionar" value="publicador">
+                <ion-select  
+                  placeholder="Seleccionar" value="publicador" okText="Aceptar" cancelText="Cancelar">
                   <ion-select-option value="publicador">Publicador</ion-select-option>
                   <ion-select-option value="auxiliar">Precursor Auxiliar</ion-select-option>
                   <ion-select-option value="regular">Precursor Regular</ion-select-option>
