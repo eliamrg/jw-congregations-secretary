@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Firestore, collection, addDoc, setDoc, doc, getDoc, query, where, getDocs, onSnapshot, orderBy } from '@angular/fire/firestore';
+import { Firestore, collection, deleteDoc, setDoc, doc, getDoc, query, where, getDocs, onSnapshot, orderBy } from '@angular/fire/firestore';
 import { publicador } from 'src/app/Classes/publicador';
 import { from } from 'rxjs';
 
@@ -10,15 +10,12 @@ export class FirestoreService {
 
   constructor(public firestore:Firestore) { }
 
-  async CrearPublicador(pub: publicador){
-    
-    let now=new Date();
+  //PUBLICADORES--------------------------------------------------------------------------------------------------
 
-    
-    const CustomId=pub.nombre.split(' ')[0]+'-'+pub.nombre.split(' ').pop() +'-'+now.toLocaleDateString().replace('/', '')+'-'+ this.getRandomNumber(0,999999);
-    
-    await setDoc(doc(this.firestore, "Publicadores", CustomId), {
-      id:CustomId,
+  async CrearPublicador(pub: publicador){ //AL CREAR PASAR EL ID
+  
+    await setDoc(doc(this.firestore, "Publicadores", pub.id), {
+      id:pub.id,
       nombre: pub.nombre,
       direccion: pub.direccion,
       telefono: pub.telefono,
@@ -31,7 +28,76 @@ export class FirestoreService {
       grupo: pub.grupo,
       acomodador:false,
       sonido: false,
+      discapacidades:pub.discapacidades
     },{merge:true}).then(()=>console.log("Post Created"));
+  }
+
+  async getPublicador(id:string){
+    const docRef = doc(this.firestore, "Publicadores", id);
+    const docSnap = await getDoc(docRef);
+
+    if (docSnap.exists()) {
+      return docSnap.data();
+    } else {
+      // docSnap.data() will be undefined in this case
+      return false
+}
+  }
+
+  async getPublicadoresPorGrupo(){
+    
+    let gruposConPublicadores:any= await this.getGrupos();
+    let pubs:any=[];
+    const q = query(collection(this.firestore, "Publicadores"),orderBy("nombre","asc"));
+  
+    //console.log(grupos[1])
+    const querySnapshot = await getDocs(q);
+    querySnapshot.forEach((doc) => {
+      gruposConPublicadores[doc.data()["grupo"]]["Publicadores"].push(doc.data())
+    });
+    //console.log(gruposConPublicadores)
+    return gruposConPublicadores;
+    
+  }
+
+  async BorrarPublicador(id:string){
+    await deleteDoc(doc(this.firestore, "Publicadores", id));
+  }
+
+  mapPublicador(pub:publicador){
+    let temp={
+      id:  pub.id,
+      nombre : pub.nombre,
+      direccion:pub.direccion,
+      telefono:pub.telefono,
+      celular:pub.celular,
+      nacimiento: pub.nacimiento,
+      bautizado:pub.bautizado,
+      bautismo:pub.bautismo,
+      esperanza:pub.esperanza,
+      nombramiento:pub.nombramiento,
+      grupo:pub.grupo,
+      acomodador:pub.acomodador,
+      sonido:pub.sonido,
+      discapacidades:pub.discapacidades,
+      sexo:pub.sexo
+    }
+    return temp;
+  }
+
+
+  //GRUPOS---------------------------------------------------------------------------------------------------------
+
+
+  
+  async CrearGrupo(id:any){
+    await setDoc(doc(this.firestore, "Grupos", id), {
+      id:id,
+      Encargado: "No Asignado",
+      IdEncargado: 0,
+      Publicadores:[{}]
+      
+    },{merge:true});
   }
 
 
@@ -41,7 +107,7 @@ export class FirestoreService {
     //let grupo0: any[] =['0':{'Encargado':'No Asignado'}]
 
     const q = query(collection(this.firestore, "Grupos"));
-  
+
     const querySnapshot = await getDocs(q);
     querySnapshot.forEach((doc) => {
       
@@ -52,7 +118,8 @@ export class FirestoreService {
         'Encargado':data['Encargado'],
         'email':data['email'],
         'idEncargado':data['idEncargado'],
-        'Publicadores':[]
+        'Publicadores':[],
+        'visible':true,
       }
       
       Grupos.push(temp);
@@ -63,28 +130,12 @@ export class FirestoreService {
     return Grupos;
   }
 
-  async getPublicadoresPorGrupo(){
-    
-    
-    let gruposConPublicadores:any= await this.getGrupos();
-    let pubs:any=[];
-    const q = query(collection(this.firestore, "Publicadores"),orderBy("Nombre","asc"));
-  
-    //console.log(grupos[1])
-    const querySnapshot = await getDocs(q);
-    querySnapshot.forEach((doc) => {
-
-       
-      
-      gruposConPublicadores[doc.data()["Grupo"]]["Publicadores"].push(doc.data())
-      
-    });
-
-    //console.log(gruposConPublicadores)
-    return gruposConPublicadores;
-    
-    
+  async BorrarGrupo(id:string){
+    await deleteDoc(doc(this.firestore, "Grupos", id));
   }
+  
+
+
   getRandomNumber(min:number, max:number) {
     const floatRandom = Math.random()
     const difference = max - min

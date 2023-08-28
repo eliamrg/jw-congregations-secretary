@@ -19,15 +19,15 @@
 
   <ion-card>
     <ion-card-header>
-      <ion-card-title>Santiago Eliam Ramírez García {{id}}</ion-card-title>
-      <ion-card-subtitle>Publicador Bautizado</ion-card-subtitle>
+      <ion-card-title >{{Publicador.nombre}}</ion-card-title>
+      <ion-card-subtitle>Publicador <span *ngIf="!Publicador.bautizado"> no </span> Bautizado</ion-card-subtitle>
     </ion-card-header>
   
     <ion-card-content>
       <ion-grid>
         <ion-row>
           <ion-col size="4" style="font-weight:bold;">Dirección:</ion-col>
-          <ion-col>Donato Elizondo 307, Col. Las Encinas, Gral. Escobedo, Nuevo León</ion-col>
+          <ion-col>{{Publicador.direccion}}</ion-col>
           
         </ion-row>
         <ion-row style="font-weight:bold;">
@@ -36,10 +36,10 @@
           <ion-col size="4" >Fecha de Nacimiento :</ion-col>
         </ion-row>
         <ion-row>
-          <ion-col size="4" >8189010673</ion-col>
-          <ion-col size="4" >8112726371</ion-col>
+          <ion-col size="4" >{{Publicador.telefono}}</ion-col>
+          <ion-col size="4" > {{Publicador.celular}} </ion-col>
           <ion-col size="4" style="padding-bottom: 0%;">
-            04/10/2001
+            {{Publicador.nacimiento | date: 'dd-MM-yyyy'}} 
             <br>
             <p style="font-size: xx-small;" >Formato: dd/mm/aaaa</p>
           </ion-col>
@@ -52,12 +52,13 @@
         </ion-row>
         <ion-row>
           <ion-col size="4" style="padding-bottom: 0%;">
-            27/10/2018
+            <ion-label *ngIf="Publicador.bautizado"> {{Publicador.bautismo| date: 'dd-MM-yyyy'}} </ion-label>
+            <ion-label *ngIf="!Publicador.bautizado"> No Bautizado </ion-label>
             <br>
             <p style="font-size: xx-small;" >Formato: dd/mm/aaaa</p>
           </ion-col>
-          <ion-col size="4" >Otras ovejas</ion-col>
-          <ion-col size="4" style="padding-left: 15px;">-</ion-col>
+          <ion-col size="4" >{{Publicador.esperanza}}</ion-col>
+          <ion-col size="4">{{Publicador.nombramiento}}</ion-col>
         </ion-row>
         
       </ion-grid>

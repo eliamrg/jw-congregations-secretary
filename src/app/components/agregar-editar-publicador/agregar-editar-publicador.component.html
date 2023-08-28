@@ -1,0 +1,84 @@
+<!-- <ion-content mode="ios" class="ion-padding">
+
+  <H4>Grupo</H4>
+  <ion-list>
+    <ion-item>
+      <ion-select aria-label="Grupos de Predicación" value="{{grupoAgregarPublicador}}"  interface="popover" value="Todos">
+        
+        <div *ngFor="let grupo of PublicadoresPorGrupo; let i = index">
+          <ion-select-option id="Filtro + {{i}}"  value="{{i}}"  *ngIf="i!=0"> Grupo {{i}}</ion-select-option>
+        </div>
+        
+      </ion-select>
+    </ion-item>
+  </ion-list>
+
+  <H4>Información Personal</H4>
+  <ion-list>
+    <ion-item>
+      <ion-input [(ngModel)]="PublicadorAgregar.nombre" label="Nombre" labelPlacement="stacked" placeholder="Ingresar Nombre"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-input [(ngModel)]="PublicadorAgregar.direccion" label="Dirección" labelPlacement="stacked" placeholder="Ingresar Dirección"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-input [(ngModel)]="PublicadorAgregar.telefono" label="Teléfono" labelPlacement="stacked" placeholder="Ingresar Teléfono"></ion-input>
+    </ion-item>
+    
+    <ion-item >
+      <ion-input [(ngModel)]="PublicadorAgregar.celular" label="Teléfono Móvil" labelPlacement="stacked" placeholder="Ingresar Móvil"></ion-input>
+    </ion-item>
+
+    <ion-item>
+
+    </ion-item>
+    <ion-item >
+      <ion-datetime  [(ngModel)]="nacimiento" locale="es-ES">
+        
+      </ion-datetime>
+    </ion-item>
+
+  </ion-list>
+
+  
+  
+  <div style="padding-left: 10px; padding-top: 10px;">
+    <ion-checkbox [(ngModel)]="PublicadorAgregar.bautizado" labelPlacement="end">Bautizado</ion-checkbox>
+    <ion-item *ngIf="PublicadorAgregar.bautizado" >
+      
+      
+      <ion-datetime [(ngModel)]="bautismo" locale="es-ES">
+        
+      </ion-datetime>
+    </ion-item>
+    
+  </div>
+  <H4>Esperanza</H4>
+
+  
+  <div style="padding-left: 10px;">
+    <ion-radio-group [allowEmptySelection]="false" [(ngModel)]="PublicadorAgregar.esperanza">
+      <ion-radio labelPlacement="end" value="Otras Ovejas">Otras Ovejas</ion-radio><br />
+      <ion-radio labelPlacement="end" value="Ungido">Ungido</ion-radio><br />
+      
+      
+    </ion-radio-group>
+    
+  </div>
+
+  <H4>Nombramiento</H4>
+  <ion-radio-group [allowEmptySelection]="false" [(ngModel)]="PublicadorAgregar.nombramiento">
+    <ion-radio labelPlacement="end" value="Publicador">Ninguno</ion-radio><br />
+    <ion-radio labelPlacement="end" value="Anciano">Anciano de Congregación</ion-radio><br />
+    <ion-radio labelPlacement="end" value="Siervo Ministerial">Siervo Ministerial</ion-radio><br />
+    <ion-radio labelPlacement="end" value="Precursor Regular">Precursor Regular</ion-radio><br />
+  </ion-radio-group>
+  <H4>Discapacidades</H4>
+  <ion-input [(ngModel)]="PublicadorAgregar.discapacidades" label="Discapacidades" labelPlacement="stacked" placeholder="Ingresar Discapacidades"></ion-input>
+
+  
+  
+
+  <ion-button (click)="CrearPublicador()"  expand="block">Guardar</ion-button>
+
+</ion-content> -->

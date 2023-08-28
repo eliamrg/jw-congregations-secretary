@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { AlertController } from '@ionic/angular';
+import { publicador } from 'src/app/Classes/publicador';
 import { FirestoreService } from 'src/app/services/Firestore/firestore.service';
 
 @Component({
@@ -9,87 +9,87 @@ import { FirestoreService } from 'src/app/services/Firestore/firestore.service';
 })
 export class PublicadoresPage implements OnInit {
 
-
+  PublicadorAgregar:publicador=new publicador(this.firestore.getRandomNumber(0,9999).toString(),"");
+  GrupoConsecutivo:any;
   PublicadoresPorGrupo:any;
-  constructor(private firestore: FirestoreService,private alertController: AlertController) { }
+  bautizado=false;
+
+  isEditing=false;
+  isAlertEliminarGrupoOpen=false;
+  isAlertEliminarPublicadorOpen=false;
+  isAlertEliminarGrupoValidacionOpen=false;
+  publicadorEditar=new publicador(this.firestore.getRandomNumber(0,9999).toString(),"");
+  indexPubEditando=0;
+  
+  mostrarValidacion=false;
+  mostrarNacimientoDTP=false;
+  mostrarBautismoDTP=false;
+  
+  bautismo:any;
+  nacimiento:any;
+
+
+
+  constructor(private firestore: FirestoreService) { }
 
   async ngOnInit() {
-    await this.firestore.getPublicadoresPorGrupo().then(X=>{
-      this.PublicadoresPorGrupo=X;
+    
+    this.bautismo=new Date().toISOString();
+    this.nacimiento=new Date().toISOString();
+    
+    await this.firestore.getPublicadoresPorGrupo().then(PUBS=>{
+      this.PublicadoresPorGrupo=PUBS;
     });
+    
     console.log(this.PublicadoresPorGrupo)
-    this.randomNumber= Math.floor(Math.random() * 999999);
+    this.GrupoConsecutivo=Object.keys(this.PublicadoresPorGrupo).length;
   }
 
-  // async LoadPublicadores(){
 
+  //CREAR PUBLICADOR---------------------------------------------------------------------------------------------
+  CrearPublicador(){
+    //CREACION DE ID
+    if(this.PublicadorAgregar.nombre!=""){
+      let today : string=new Date().toLocaleDateString().split('/').join('');
+      let CustomId=this.PublicadorAgregar.nombre.split(' ')[0]+'-'+this.PublicadorAgregar.nombre.split(' ').pop() +'-'+today+'-'+ this.firestore.getRandomNumber(0,999999);
+      this.PublicadorAgregar.id=CustomId;
+      this.guardarPublicador();
+    }
+  }
+
+  EditarPublicador(){
+    if(this.PublicadorAgregar.nombre!=""){
+      this.PublicadoresPorGrupo[this.publicadorEditar.grupo!]["Publicadores"].splice(this.indexPubEditando, 1);
+      this.guardarPublicador();
+    }
+  }
+
+   guardarPublicador(){
     
+     try{
+        this.PublicadorAgregar.grupo=this.grupoAgregarPublicador;
 
-  //   this.firestore.getPublicadoresPorGrupo();
-  //   // this.firestore.prueba();
-  //   // let snapshot= await this.firestore.getPublicadores().then(x=>{
-      
-      
-  //   // });
-    
-  //   // let query= await this.firestore.getPublicadores().then(x=>{
-      
-  //   //   console.log(x.)
-      
-  //   //   });
-  //   // console.log(snapshot.)
-  // }
+        this.PublicadorAgregar.nacimiento=this.nacimiento;
+        this.PublicadorAgregar.bautismo=this.bautismo;
+        console.log(this.PublicadorAgregar)
+        this.firestore.CrearPublicador(this.PublicadorAgregar).then(()=>{
+        this.mostrarValidacion=false;
+        this.isModalOpen=false;
+        this.PublicadoresPorGrupo[this.PublicadorAgregar.grupo!]["Publicadores"].push(this.firestore.mapPublicador(this.PublicadorAgregar))
+        //console.log(this.PublicadoresPorGrupo);
+        this.PublicadorAgregar=new publicador(this.firestore.getRandomNumber(0,9999).toString(),"");
+        this.publicadorEditar=new publicador(this.firestore.getRandomNumber(0,9999).toString(),"");
+        this.isEditing=false;
+      });
+     } 
+     catch (er:any){
+      console.log(er);
+     }
+  }
 
-  randomNumber!: number;
-  Grupos=[
-    {"id":1,
-      "Publicadores":[
-        {"id":"p1",
-          "privilegio": "Anciano"
-        },
-        {"id":"p2",
-        "privilegio": "Siervo Ministerial"
-        },
-        
-        {"id":"p3",
-        "privilegio": "Precursor Regular"
-        },
-        {"id":"p4",
-        "privilegio": "Publicador"
-        },
-      ]
-    },
-    {"id":2,
-    "Publicadores":[
-      {"id":"p5",
-      "privilegio": "Anciano"
-    },
-      {"id":"p6"},
-      {"id":"p7"}
-    ]
-    },
-    {"id":3,
-    "Publicadores":[
-      {"id":"p7",
-      "privilegio": "Anciano"
-    },
-      {"id":"p8"},
-      {"id":"p9"}
-    ]
-    },
-    {"id":4},
-    {"id":5},
-    {"id":6},
-    {"id":7},
-    {"id":8},
-    {"id":9},
-    {"id":10},
-    {"id":11},
-    {"id":12},
-  ]
+  
 
-
-  bautizado=false;
+  
   
 //MODAL------------------------------------------------------------------------------------------------------------------
   grupoAgregarPublicador=0;
@@ -104,6 +104,39 @@ export class PublicadoresPage implements OnInit {
     this.isModalOpen = isOpen;
   }
 
+  PresentEditarPublicador(){
+    
+    this.isModalOpen = true;
+    this.isEditing=true;
+    this.PublicadorAgregar=this.publicadorEditar;
+    this.nacimiento=this.PublicadorAgregar.nacimiento;
+    this.grupoAgregarPublicador=this.PublicadorAgregar.grupo!;
+  }
+
+  handlePublicadorGrupoChange(e:any) {
+    this.grupoAgregarPublicador=e.detail.value;
+  }
+
+  handlerVerGrupoChange(e:any) {
+    let seleccion=e.detail.value;
+
+    if(seleccion=='Todos'){
+      this.PublicadoresPorGrupo.forEach((element: any,index:number) => {
+        // console.log(index,element);
+        this.PublicadoresPorGrupo[index].visible=true;
+      });
+    }
+    else{
+      this.PublicadoresPorGrupo.forEach((element: any,index:number) => {
+        // console.log(index,element);
+        this.PublicadoresPorGrupo[e.detail.value].visible=true;
+        if(e.detail.value!=element.grupo){
+          this.PublicadoresPorGrupo[index].visible=false;
+
+        }
+      });
+    }
+  }
   
   onWillDismiss(event: Event) {
    
@@ -115,30 +148,137 @@ export class PublicadoresPage implements OnInit {
 @ViewChild('popover') popover: any;
 isPopoverOpen=false;
 
-popoverPublicadorId=0;;
+popoverPublicadorId:any;
 
-  presentPopover(e:Event,publicdorId:number){
+  presentPopover(e:Event,Pub:publicador,indexPub:number){
     this.popover.event=e;
     this.isPopoverOpen=true;
-    this.popoverPublicadorId=publicdorId
+    this.popoverPublicadorId=Pub.id;
+    this.publicadorEditar=Pub;
+    this.indexPubEditando=indexPub;
+    //console.log(Pub)
   }
 
-
-   alertInputs = [
-    {
-      placeholder: 'Encargado (Etiqueta Temporal)',
-    }]
+  
+   
   //ALERT---------------------------------------------------------------------------------
-  async presentAlert() {
-    const alert = await this.alertController.create({
-      subHeader: '¿Seguro que desea crear un Nuevo Grupo?',
-      header: 'Nuevo Grupo: '+Object.keys(this.PublicadoresPorGrupo).length,
-      
-      buttons: ['OK','Cancel'],
-      
-    });
+  
+  
+  public alertButtons = [
+    
+    {
+      text: 'Cancelar',
+      role: 'cancel',
+      handler: () => {
+        console.log('cancel');
+      },
+    },
+    {
+      text: 'Aceptar',
+      role: 'confirm',
+      handler: () => {
+        //console.log('Creando grupo'+ Object.keys(this.PublicadoresPorGrupo).length);
+        this.firestore.CrearGrupo(this.GrupoConsecutivo.toString()).then(()=>{
+          let temp={
+            id:this.GrupoConsecutivo,
+            Encargado: "No Asignado",
+            IdEncargado: 0,
+            Publicadores:[]
+          }
+          this.GrupoConsecutivo=this.GrupoConsecutivo+1;
+          this.PublicadoresPorGrupo.push(temp)
+          console.log(this.PublicadoresPorGrupo)
+        });
+      },
+    },
+  ];
 
-    await alert.present();
+
+  public alertButtonsEliminarPublicador = [
+    
+    {
+      text: 'Cancelar',
+      role: 'cancel',
+      handler: () => {
+        this.alertEliminarPublicadorShow(false)
+      },
+    },
+    {
+      text: 'Aceptar',
+      role: 'confirm',
+      handler: () => {
+        this.PublicadoresPorGrupo[this.publicadorEditar.grupo!]["Publicadores"].splice(this.indexPubEditando, 1);
+        this.firestore.BorrarPublicador(this.publicadorEditar.id)
+      },
+    },
+  ];
+  
+  alertEliminarPublicadorShow(show:boolean){
+
+    this.isAlertEliminarPublicadorOpen=show;
   }
+
+
+
+  public alertButtonsEliminarGrupo = [
+    
+    {
+      text: 'Cancelar',
+      role: 'cancel',
+      handler: () => {
+        this.alertEliminarGrupoShow(false)
+      },
+    },
+    {
+      text: 'Aceptar',
+      role: 'confirm',
+      handler: () => {
+        // 
+        if(this.PublicadoresPorGrupo[this.GrupoConsecutivo-1]["Publicadores"].length>0){
+
+          this.alertEliminarGrupoValidacionShow(true);
+        }
+        else{
+          this.firestore.BorrarGrupo((this.GrupoConsecutivo-1).toString()).then(()=>{
+            this.PublicadoresPorGrupo.pop();
+            this.GrupoConsecutivo=this.GrupoConsecutivo-1;
+            window.location.reload();
+          });
+          
+        }
+        
+      },
+    },
+  ];
+  
+  alertEliminarGrupoShow(show:boolean){
+
+    this.isAlertEliminarGrupoOpen=show;
+  }
+
+
+  public alertButtonsEliminarGrupoValidacion = [
+    {
+      text: 'Aceptar',
+      role: 'confirm',
+      handler: () => {
+        
+      },
+    },
+  ];
+  
+  alertEliminarGrupoValidacionShow(show:boolean){
+
+    this.isAlertEliminarGrupoValidacionOpen=show;
+  }
+
+  // DATE PICKERS-----------------------------------------------------------------------------------
+  MostrarFechaNac(vista:boolean){
+    this.mostrarNacimientoDTP=vista;
+  }
+  MostrarFechaBau(vista:boolean){
+    this.mostrarBautismoDTP=vista;
+  }
+
   
 }
