@@ -186,8 +186,9 @@ popoverPublicadorId:any;
             Publicadores:[]
           }
           this.GrupoConsecutivo=this.GrupoConsecutivo+1;
-          this.PublicadoresPorGrupo.push(temp)
-          console.log(this.PublicadoresPorGrupo)
+          this.PublicadoresPorGrupo.push(temp);
+          console.log(this.PublicadoresPorGrupo);
+          window.location.reload();
         });
       },
     },
@@ -242,7 +243,7 @@ popoverPublicadorId:any;
           this.firestore.BorrarGrupo((this.GrupoConsecutivo-1).toString()).then(()=>{
             this.PublicadoresPorGrupo.pop();
             this.GrupoConsecutivo=this.GrupoConsecutivo-1;
-            window.location.reload();
+            //window.location.reload();
           });
           
         }
