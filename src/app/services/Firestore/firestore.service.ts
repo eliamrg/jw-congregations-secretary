@@ -28,7 +28,10 @@ export class FirestoreService {
       grupo: pub.grupo,
       acomodador:false,
       sonido: false,
-      discapacidades:pub.discapacidades
+      discapacidades:pub.discapacidades,
+      sexo:pub.sexo,
+      uid:pub.uid,
+      isUser:pub.isUser
     },{merge:true}).then(()=>console.log("Post Created"));
   }
 
@@ -80,7 +83,9 @@ export class FirestoreService {
       acomodador:pub.acomodador,
       sonido:pub.sonido,
       discapacidades:pub.discapacidades,
-      sexo:pub.sexo
+      sexo:pub.sexo,
+      uid:pub.uid,
+      isUser:pub.isUser
     }
     return temp;
   }

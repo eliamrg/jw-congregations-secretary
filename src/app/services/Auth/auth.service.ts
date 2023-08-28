@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Auth, getAuth } from '@angular/fire/auth';
 import { createUserWithEmailAndPassword, GoogleAuthProvider, signInWithEmailAndPassword, signInWithPopup, signOut } from '@angular/fire/auth';
-import { Firestore, setDoc, doc, getDoc } from '@angular/fire/firestore';
+import { Firestore, setDoc, doc, getDoc, query, collection, getDocs, where } from '@angular/fire/firestore';
 import { Router } from '@angular/router';
 
 @Injectable({
@@ -36,7 +36,7 @@ export class AuthService {
       async ()=>{
         if(await this.getFirestoreUser(this.getUserId())==false){
           
-          this.SetFirestoreUser(this.getUserId(),this.getUserName(), this.getUserEmail(),"Google").then(()=>"Registrado");
+          this.SetFirestoreUser(this.getUserId(),this.getUserName(), this.getUserEmail(),"Google",0,false,false).then(()=>"Registrado");
         }
       }
     );
@@ -44,19 +44,22 @@ export class AuthService {
 
 
   //SET FIRESTORE USER-----------------------------------------------------------------
-  async SetFirestoreUser(id:any,name: any, email:any, loginProvider:any){
+  async SetFirestoreUser(id:any,name: any, email:any, loginProvider:any,grupo:number,admin:boolean,admited:boolean){
   
     await setDoc(doc(this.firestore, "Users", id), {
       
       displayName: name,
       email: email,
-      grupo: 0,
-      admited:false,
-      administrador:false,
-      loginProvider:loginProvider
+      grupo: grupo,
+      admited:admited,
+      administrador:admin,
+      loginProvider:loginProvider,
+      uid:id
     });
     
   }
+
+  
 
 
   //GET FIRESTORE USER-------------------------------------------------------
@@ -109,6 +112,33 @@ export class AuthService {
     }
   }
 
+  //CHECK IF THERES ADMINS
+
+  async existeAdministrador(){
+    const q = query(collection(this.firestore,"Users"), where("capital", "==", true));
+    const querySnapshot = await getDocs(q);
+    let existe:boolean=false;
+    querySnapshot.forEach((doc) => {
+      existe=true;
+    });
+    return existe;
+  }
+
+
+
+  async getUsers(){
+
+    let Users:any=[];
+    const q = query(collection(this.firestore, "Users"));
+    const querySnapshot = await getDocs(q);
+    querySnapshot.forEach((doc) => {
+      let data=doc.data();
+      Users.push(data);
+      //console.log(doc.id, " => ", doc.data());
+    });
+    return Users;
+  }
+
 
   //GET USER ID-------------------------------------------------------------------
   getUserId(){
@@ -136,6 +166,9 @@ export class AuthService {
       return null;
     }
   }
+
+
+
 
 
   //GET USER NAME-----------------------------------------------------------------

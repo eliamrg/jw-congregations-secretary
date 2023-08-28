@@ -57,12 +57,12 @@
       <!-- PUBLICADORES -->
 
       <ion-list  *ngFor=" let Publicador of grupo.Publicadores; let indexPub = index">
-        <ion-item color="none" lines="none"  >
-          <ion-avatar slot="start">
+        <ion-item style="cursor:pointer;"  color="none" lines="none"  >
+          <ion-avatar routerLink="/publicador/{{Publicador.id}}" slot="start">
             <img alt="Silhouette of a person's head" src="https://ionicframework.com/docs/img/demos/avatar.svg" />
           </ion-avatar>
           
-          <ion-label style="font-size: large; "> 
+          <ion-label routerLink="/publicador/{{Publicador.id}}" style="font-size: large; cursor:pointer; "> 
             {{Publicador.nombre}}
             <p style="font-size: small; font-weight: lighter;">{{Publicador.nombramiento}}</p>
           </ion-label>
@@ -83,9 +83,10 @@
     
       
     </ion-card-content>
+    <ion-button *ngIf="i==GrupoConsecutivo-1 && i!=1"  (click)="alertEliminarGrupoShow(true)" fill="clear" color="danger" style="font-weight: bold;">Eliminar Grupo {{GrupoConsecutivo-1}}</ion-button>
+
   </ion-card>
 </div>
-<ion-button  (click)="alertEliminarGrupoShow(true)" fill="clear" color="danger" style="font-weight: bold;">Eliminar Grupo {{GrupoConsecutivo-1}}</ion-button>
 
 
 <!-- POPOVER .--------------------------------------------------------------------------------------------------------------------------------- -->
@@ -93,7 +94,7 @@
   <ng-template>
     <ion-content>
       <ion-list>
-        <ion-item [button]="true" [detail]="false" routerLink="/publicador/{{publicadorEditar.id}}">Ver Tarjeta</ion-item>
+        <!-- <ion-item [button]="true" [detail]="false" routerLink="/publicador/{{publicadorEditar.id}}">Ver Tarjeta</ion-item> -->
         <ion-item (click)="PresentEditarPublicador()" [button]="true" [detail]="false">Editar Publicador</ion-item>
         <!-- <ion-item [button]="true" [detail]="false">Cambiar de Grupo</ion-item> -->
         <ion-item  (click)="alertEliminarPublicadorShow(true)" [button]="true" [detail]="false">
@@ -165,14 +166,24 @@
             
           </ion-datetime>
         </ion-item>
+        
 
       </ion-list>
+      <div style="padding-left: 10px; padding-top: 10px;"><ion-label >Sexo</ion-label></div>
+      
+      <div style="padding-left: 10px;">
+        
+        <ion-radio-group [allowEmptySelection]="false" [(ngModel)]="PublicadorAgregar.sexo">
+          <ion-radio labelPlacement="end" value="H">Hombre</ion-radio><br />
+          <ion-radio labelPlacement="end" value="M">Mujer</ion-radio><br />
+        </ion-radio-group>
+      </div>
+       
 
-      
-      
+      <H4>Bautismo</H4>
       <div style="padding-left: 10px; padding-top: 10px;">
 
-        <H4>Bautismo</H4><!--*************************************************************************************************************-->
+        <!--*************************************************************************************************************-->
         <ion-checkbox [(ngModel)]="PublicadorAgregar.bautizado" labelPlacement="end">Es Bautizado</ion-checkbox>
         
 
@@ -196,8 +207,6 @@
         <ion-radio-group [allowEmptySelection]="false" [(ngModel)]="PublicadorAgregar.esperanza">
           <ion-radio labelPlacement="end" value="OtrasOvejas">Otras Ovejas</ion-radio><br />
           <ion-radio labelPlacement="end" value="Ungido">Ungido</ion-radio><br />
-          
-          
         </ion-radio-group>
         
       </div>
@@ -249,7 +258,7 @@
 <ion-alert 
     [isOpen]="isAlertEliminarGrupoValidacionOpen"
     header="No es posible eliminar al grupo {{GrupoConsecutivo-1}}?"
-    subHeader="Debe primero asignar a los usuarios a otro grupo"
+    subHeader="Debe primero asignar a los publicadores a otro grupo"
     [buttons]="alertButtonsEliminarGrupoValidacion"
     (didDismiss)="alertEliminarGrupoValidacionShow(false)"
     >

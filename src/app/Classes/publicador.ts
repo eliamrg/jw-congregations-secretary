@@ -14,6 +14,8 @@ export class publicador {
     sonido!: boolean;
     discapacidades:string | undefined;
     sexo:string|undefined;
+    uid:string |undefined;
+    isUser!:boolean;
     
     constructor(id: string,nombre: string) {
         let date: Date = new Date();  ;
@@ -31,7 +33,9 @@ export class publicador {
         this.acomodador=false;
         this.sonido=false;
         this.discapacidades="";
-        this.sexo='H'
+        this.sexo='H';
+        this.uid='';
+        this.isUser=false;
     }
 
     

@@ -80,12 +80,16 @@ export class LoginPage implements OnInit {
     else{
 
       this.showLoading();
+
+      //REGISTRO DE USUARIO EN FIREBASE AUTH
       this.Auth.register(this.formRegister.value)
       .then(response=>{
         console.log(response);
 
         let auth :any;
         auth= getAuth();
+
+        //ESTABLECIMIENTO DE NOMBRE
         updateProfile(auth.currentUser, {
           displayName:this.name
           
@@ -96,10 +100,13 @@ export class LoginPage implements OnInit {
           this.id=this.Auth.getUserId()!;
 
           //console.log(this.name, this.id,this.email,)
-          this.Auth.SetFirestoreUser(this.id,this.name,this.email,"Email").then(()=>{
+
+          //CREACION DE USUARIO EN FIRESTORE
+          this.Auth.SetFirestoreUser(this.id,this.name,this.email,"Email",0,false,false).then(()=>{
             //console.log('id:'+ this.id,this.name)
             this.setOpen(false);
-          this.router.navigate(['/informe']).then(() => {
+
+            this.router.navigate(['/informe']).then(() => {
             // window.location.reload();
             });
           });

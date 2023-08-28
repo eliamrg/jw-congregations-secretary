@@ -129,12 +129,9 @@ export class PublicadoresPage implements OnInit {
     else{
       this.PublicadoresPorGrupo.forEach((element: any,index:number) => {
         // console.log(index,element);
-        this.PublicadoresPorGrupo[e.detail.value].visible=true;
-        if(e.detail.value!=element.grupo){
-          this.PublicadoresPorGrupo[index].visible=false;
-
-        }
+        this.PublicadoresPorGrupo[index].visible=false;
       });
+      this.PublicadoresPorGrupo[seleccion].visible=true;
     }
   }
   
@@ -182,13 +179,14 @@ popoverPublicadorId:any;
           let temp={
             id:this.GrupoConsecutivo,
             Encargado: "No Asignado",
-            IdEncargado: 0,
-            Publicadores:[]
+            idEncargado: 0,
+            Publicadores:[],
+            visible:true
           }
           this.GrupoConsecutivo=this.GrupoConsecutivo+1;
           this.PublicadoresPorGrupo.push(temp);
           console.log(this.PublicadoresPorGrupo);
-          window.location.reload();
+          //window.location.reload();
         });
       },
     },
