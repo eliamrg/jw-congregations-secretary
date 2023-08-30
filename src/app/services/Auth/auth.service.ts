@@ -141,7 +141,7 @@ export class AuthService {
 
 
   //GET USER ID-------------------------------------------------------------------
-  getUserId(){
+  async getUserId(){
     const auth = getAuth();
     const user = auth.currentUser;
     if (user !== null) {
@@ -149,7 +149,7 @@ export class AuthService {
       return uid;
     }
     else{
-      return null;
+      return false;
     }
   }
 
@@ -166,6 +166,22 @@ export class AuthService {
       return null;
     }
   }
+
+
+  //OLVIDASTE CONTRASEÑA
+//   import { getAuth, sendPasswordResetEmail } from "firebase/auth";
+
+// const auth = getAuth();
+// sendPasswordResetEmail(auth, email)
+//   .then(() => {
+//     // Password reset email sent!
+//     // ..
+//   })
+//   .catch((error) => {
+//     const errorCode = error.code;
+//     const errorMessage = error.message;
+//     // ..
+//   });
 
 
 
@@ -211,6 +227,15 @@ class user {
 }
 
 
+//DELETE USER FIREBASE ADMIN SDK
+// getAuth()
+//   .deleteUser(uid)
+//   .then(() => {
+//     console.log('Successfully deleted user');
+//   })
+//   .catch((error) => {
+//     console.log('Error deleting user:', error);
+//   });
 
 
 

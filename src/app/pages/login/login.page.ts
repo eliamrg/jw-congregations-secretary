@@ -23,7 +23,7 @@ export class LoginPage implements OnInit {
   email!: string;
   Password1!: string;
   Password2!: string;
-  id!:string;
+  id!:any;
   formLogin!: FormGroup;
   formRegister!: FormGroup;
   
@@ -94,10 +94,10 @@ export class LoginPage implements OnInit {
           displayName:this.name
           
         })
-        .then(() => {
+        .then(async () => {
           
           
-          this.id=this.Auth.getUserId()!;
+          this.id= await this.Auth.getUserId()!;
 
           //console.log(this.name, this.id,this.email,)
 

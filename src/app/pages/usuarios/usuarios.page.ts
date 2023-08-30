@@ -10,10 +10,18 @@ import { FirestoreService } from 'src/app/services/Firestore/firestore.service';
 export class UsuariosPage implements OnInit {
   
   isAlertEliminarUserOpen: boolean=false;
+  isAlertAdmitirUserOpen: boolean=false;
   isAlertNoExisteAdmin: boolean=false;
+  isAlertValidacionEliminar: boolean=false;
+  AlertMsg="Debe haber algun otro administrador";
   
   Users:any;
+  UserEliminar:any; //Para almacenar los datos del user a Eliminar
   Grupos:any;
+  UidAdmision:any; //Para saber cual user se admitira/eliminara
+  indexAdmision:any; //Para hacer cambios localmente al array
+  indexEliminar:any; //Para hacer cambios localmente al array
+
 
   constructor(private auth: AuthService, private firestore:FirestoreService) { }
   ngOnInit() {
@@ -26,48 +34,21 @@ export class UsuariosPage implements OnInit {
     })
   }
 
-
   handlerMessage = '';
   roleMessage = '';
-
-  public alertButtons = [
-    {
-      text: 'Cancelar',
-      role: 'cancel',
-      
-      handler: () => {
-        this.handlerMessage = 'Alert canceled';
-      },
-    },
-    {
-      text: 'Eliminar',
-      role: 'confirm',
-      cssClass: 'alert-button-cancel',
-      handler: () => {
-        this.handlerMessage = 'Alert confirmed';
-      },
-    },
-  ];
 
   setResult(ev:any) {
     this.roleMessage = `Dismissed with role: ${ev.detail.role}`;
   }
 
-
-
-  // admin.auth().deleteUser(uid)
-  // .then(function() {
-  //   console.log("Successfully deleted user");
-  // })
-  // .catch(function(error) {
-  //   console.log("Error deleting user:", error);
-  // });
-
-
   //ALERTS-------------------------------------------------------------
-  alertEliminarUserShow(show:boolean, uid:any){
+
+  //ELIMINAR USER
+  alertEliminarUserShow(show:boolean, user:any,index:any){
 
     this.isAlertEliminarUserOpen=show;
+    this.indexEliminar=index;
+    this.UserEliminar=user;
   }
 
 
@@ -76,19 +57,90 @@ export class UsuariosPage implements OnInit {
       text: 'Cancelar',
       role: 'cancel',
       handler: () => {
-        this.alertEliminarUserShow(false,0)
+        this.isAlertEliminarUserOpen=false;
       },
     },
     {
       text: 'Aceptar',
       role: 'confirm',
-      handler: () => {
+      handler: async () => {
+
+        let uid:any;
+        let tempUsr=this.Users[this.indexEliminar];
+        let existeUnAdmin=false;
+        //console.log("index Eliminar:", this.indexEliminar)
+
+        await this.auth.getUserId().then(async (CurrentUid:any)=>{
+
+          uid=CurrentUid;
+          this.AlertMsg="Debe haber algun otro administrador";
+
+          this.Users.forEach((userDoc:any) => {
+
+            //console.log(userDoc.uid)
+            if (userDoc.administrador && uid!=this.UserEliminar.uid && userDoc.admited===true && userDoc.uid!=this.UserEliminar.uid){
+                existeUnAdmin=true;
+            }
+    
+            if (uid==this.UserEliminar.uid){
+              this.AlertMsg="Estas intentando Eliminar tu propio Usuario, si deseas hacer esto pide a otro administrador que lo haga"
+            }
+          });
+
+          if(existeUnAdmin){
+
+            console.log("Existe admin")
+            await this.auth.SetFirestoreUser(tempUsr.uid,tempUsr.displayName, tempUsr.email, tempUsr.loginProvider,tempUsr.grupo,tempUsr.administrador,false).then(()=>{
+              this.Users[this.indexEliminar].admited=false;
+            });
+            
+          }
+          else{
+            this.alertValidacionEliminarShow(true)
+          }
+          
+        })
+        this.isAlertEliminarUserOpen=false
+        this.indexEliminar=0;
+      
         
       },
     },
   ];
 
+  //ADMITIR USER
+  alertAdmitirUserShow(show:boolean, uid:any,index:any){
 
+    this.isAlertAdmitirUserOpen=show;
+    this.indexAdmision=index;
+  }
+
+
+  public alertButtonsAdmitirUser = [
+    {
+      text: 'Cancelar',
+      role: 'cancel',
+      handler: () => {
+        this.isAlertAdmitirUserOpen=false;
+      },
+    },
+    {
+      text: 'Aceptar',
+      role: 'confirm',
+      handler: async () => {
+        let tempUsr=this.Users[this.indexAdmision];
+        //console.log(tempUsr)
+        await this.auth.SetFirestoreUser(tempUsr.uid,tempUsr.displayName, tempUsr.email, tempUsr.loginProvider,tempUsr.grupo,tempUsr.administrador,true).then(()=>{
+          this.Users[this.indexAdmision].admited=true;
+        });
+        this.isAlertAdmitirUserOpen=false;
+        this.indexAdmision=0;
+        
+      },
+    },
+  ];
+
+//NO EXISTE ADMIN (Cuando se retiran privilegios del mismo user o no hay mas admins)
   alertNoExisteAdminShow(show:boolean){
 
     this.isAlertNoExisteAdmin=show;
@@ -107,60 +159,87 @@ export class UsuariosPage implements OnInit {
     
   ];
 
-  //POPOVER GRUPO----------------------------------------------------------------------------------------------
-  handlerGrupoEncargadoChange(e:any, user:any) {
-    let seleccion=e.detail.value;
-    //console.log(e.detail.value)
+//VALIDACION ELIMINAR (Cuando es el mismo user o solo hay un user)
 
-    console.log(this.Users);
-    this.auth.SetFirestoreUser(user.uid,user.displayName, user.email, user.loginProvider,seleccion,user.admin,user.admited);
+  alertValidacionEliminarShow(show:boolean){
+
+    this.isAlertValidacionEliminar=show;
   }
 
 
-  handelrCheckboxAdminChange(e:any,user:any,index:number){
+  public alertButtonsValidacionEliminar = [
+    {
+      text: 'Aceptar',
+      role: 'confirm',
+      handler: () => {
+        this.alertValidacionEliminarShow(false)
+        
+      },
+    },
+    
+  ];
+
+  //POPOVER GRUPO----------------------------------------------------------------------------------------------
+  handlerGrupoEncargadoChange(e:any, user:any) {
+    let Grupo=e.detail.value;
+    //console.log(e.detail.value)
+
+    console.log(this.Users);
+    this.auth.SetFirestoreUser(user.uid,user.displayName, user.email, user.loginProvider,Grupo,user.administrador,user.admited);
+  }
 
 
+  async handelrCheckboxAdminChange(e:any,user:any,index:number){
+
+    this.AlertMsg="Debe haber algun otro administrador";
     let permiso:boolean=e.currentTarget.checked;
     let existeUnAdmin=false;
+    let uid:any="";
+    
 
+    
+    await this.auth.getUserId().then((CurrentUid:any)=>{
 
-    if (!user.administrador){
+      uid=CurrentUid;
+    })
+
+    if(permiso){
+      //console.log("Se le da permisos");
+      this.auth.SetFirestoreUser(user.uid,user.displayName, user.email, user.loginProvider,user.grupo,true,user.admited).then(()=>{
+        //e.currentTarget.checked=true;
+        this.Users[index].administrador=true;
+      });
+      
+    }
+    else{
+      //SI EXISTE UN ADMIN DIFERENTE AL USUARIO
       this.Users.forEach((userDoc:any) => {
 
-        //SI EXISTE UN ADMIN DIFERENTE AL QUE SE LE ESTAN QUITANDO PRIVILEGIOS
-        if (userDoc.administrador && user.uid!=userDoc.uid){
-          existeUnAdmin=true;
+        //console.log(userDoc.uid)
+        if (userDoc.administrador && uid!=user.uid){
+            existeUnAdmin=true;
         }
-        
+
+        if (uid==user.uid){
+          this.AlertMsg="No es posible retirar permisos propios, si deseas hacer esto pide a otro administrador que lo haga"
+        }
       });
-      if (existeUnAdmin){
-        console.log("EXISTE OTRO ADMIN Y SE HACE CAMBIO");
-        this.auth.SetFirestoreUser(user.uid,user.displayName, user.email, user.loginProvider,user.grupo,permiso,user.admited);
+
+      if(existeUnAdmin){
+        //console.log("EXISTE OTRO ADMIN Y SE HACE CAMBIO");
+        
+        this.auth.SetFirestoreUser(user.uid,user.displayName, user.email, user.loginProvider,user.grupo,false,user.admited).then(()=>{
+          this.Users[index].administrador=false;
+        });
       }
       else{
-        console.log("No existe otro admin, no hay cambios");
+        //console.log("No existe otro admin, no hay cambios");
         
         e.currentTarget.checked=true;
+        this.Users[index].administrador=true;
         this.alertNoExisteAdminShow(true);
       }
     }
-    else{
-      console.log("Se le da permisos");
-      this.auth.SetFirestoreUser(user.uid,user.displayName, user.email, user.loginProvider,user.grupo,permiso,user.admited);
-    }
-    // this.auth.existeAdministrador().then(existe=>{
-    //   if(e.currentTarget.checked==true){
-    //     this.auth.SetFirestoreUser(user.uid,user.displayName, user.email, user.loginProvider,user.grupo,e.currentTarget.checked,user.admited);
-    //   }
-    //   else if(existe){
-    //     this.auth.SetFirestoreUser(user.uid,user.displayName, user.email, user.loginProvider,user.grupo,e.currentTarget.checked,user.admited);
-    //   }
-    //   else{
-
-    //     this.alertNoExisteAdminShow(true);
-    //   }
-    // })
-    
   }
   
 

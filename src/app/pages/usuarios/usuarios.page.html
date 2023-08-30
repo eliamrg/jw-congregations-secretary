@@ -20,92 +20,70 @@
       <ion-card-subtitle color="primary">Usuarios Admitidos</ion-card-subtitle>
     </ion-card-header>
    <!-- USUARIOS -->
-    <ion-card-content  *ngFor="let user of Users; let UserIndex = index">
-
-
-      
-      <ion-card-header>
-        <ion-row>
-          <ion-col size="10">
-            <ion-card-title>{{user.displayName}}</ion-card-title>
-            <ion-card-subtitle>{{user.email}}</ion-card-subtitle>
-          </ion-col>
-          <ion-col size="1"><ion-button  (click)="alertEliminarUserShow(true,user.uid)"  fill="clear" color="danger"><ion-icon  name="trash"></ion-icon></ion-button></ion-col>
-        </ion-row>
-      </ion-card-header>
-
-      <ion-grid>  
-        <ion-row><ion-label class="ion-padding" style="font-size: large; font-weight: bold;">Permisos:</ion-label></ion-row>
-        <ion-row>
-          
-          <ion-col><ion-checkbox (ionChange)="handelrCheckboxAdminChange($event,user,UserIndex)" [(ngModel)]="user.administrador" labelPlacement="end">Administrador (Secretario)</ion-checkbox></ion-col>
-          <!-- <ion-col><ion-checkbox labelPlacement="end">Lectura de Reportes</ion-checkbox></ion-col> -->
-          <!-- <ion-col ><ion-button expand="block" >Guardar <ion-icon slot="start" name="save-outline"></ion-icon> </ion-button></ion-col> -->
-          <!-- <ion-col><ion-checkbox labelPlacement="end">Creación de Roles</ion-checkbox></ion-col> -->
-        </ion-row>
-
-        <ion-row class="ion-padding">
-          <ion-label  style="font-size: large; font-weight: bold;">Encargado de Grupo:</ion-label>
-          <ion-select   interface="popover"placeholder="Seleccionar" value="no" okText="Aceptar" cancelText="Cancelar" value="{{user.grupo}}" (ionChange)="handlerGrupoEncargadoChange($event,user)">
-            <ion-select-option value="0">No Asignado</ion-select-option>
-            <div *ngFor="let grupo of Grupos; let i = index">
-              <ion-select-option value="{{i}}"  *ngIf="i!=0"> Grupo {{i}}</ion-select-option>
-            </div>
-          </ion-select>
-        </ion-row>
-        <!-- <ion-row> 
-          <ion-label  style="font-size: large; font-weight: bold;">Permisos de Edicion de Grupos:</ion-label>
-          <ion-list>
-            <ion-item>
-              <ion-select aria-label="Fruit" placeholder="Seleccionar Grupos" [multiple]="true">
-                <ion-select-option value="apples">Apples</ion-select-option>
-                <ion-select-option value="oranges">Oranges</ion-select-option>
-                <ion-select-option value="bananas">Bananas</ion-select-option>
-              </ion-select>
-            </ion-item>
-          </ion-list>
-        </ion-row> -->
-
-        <ion-row>
-          
-          <!-- <ion-col ><ion-button >Guardar </ion-button></ion-col>
-           -->
-
-        </ion-row>
-
-        
-      </ion-grid>
-    </ion-card-content>
+   <div *ngFor="let user of Users; let UserIndex = index">
+    <div *ngIf="user.admited">
+      <ion-card-content  >
+        <ion-card-header>
+          <ion-row>
+            <ion-col size="10">
+              <ion-card-title>{{user.displayName}}</ion-card-title>
+              <ion-card-subtitle>{{user.email}}</ion-card-subtitle>
+            </ion-col>
+            <ion-col size="1"><ion-button  (click)="alertEliminarUserShow(true,user,UserIndex)"  fill="clear" color="danger"><ion-icon  name="trash"></ion-icon></ion-button></ion-col>
+          </ion-row>
+        </ion-card-header>
+  
+        <ion-grid>  
+          <ion-row><ion-label class="ion-padding" style="font-size: large; font-weight: bold;">Permisos:</ion-label></ion-row>
+          <ion-row>
+            
+            <ion-col><ion-checkbox (ionChange)="handelrCheckboxAdminChange($event,user,UserIndex)" [(ngModel)]="user.administrador" labelPlacement="end">Administrador (Secretario)</ion-checkbox></ion-col>
+            <!-- <ion-col><ion-checkbox labelPlacement="end">Lectura de Reportes</ion-checkbox></ion-col> -->
+            <!-- <ion-col ><ion-button expand="block" >Guardar <ion-icon slot="start" name="save-outline"></ion-icon> </ion-button></ion-col> -->
+            <!-- <ion-col><ion-checkbox labelPlacement="end">Creación de Roles</ion-checkbox></ion-col> -->
+          </ion-row>
+  
+          <ion-row class="ion-padding">
+            <ion-label  style="font-size: large; font-weight: bold;">Encargado de Grupo:</ion-label>
+            <ion-select   interface="popover"placeholder="Seleccionar" value="no" okText="Aceptar" cancelText="Cancelar" value="{{user.grupo}}" (ionChange)="handlerGrupoEncargadoChange($event,user)">
+              <ion-select-option value="0">No Asignado</ion-select-option>
+              <div *ngFor="let grupo of Grupos; let i = index">
+                <ion-select-option value="{{i}}"  *ngIf="i!=0"> Grupo {{i}}</ion-select-option>
+              </div>
+            </ion-select>
+          </ion-row>
+        </ion-grid>
+      </ion-card-content>
+    </div>
+   </div>
     
+      
   </ion-card>
-
 
   <ion-card>
     <ion-card-header>
-      
       <ion-card-subtitle color="danger">Usuarios No Admitidos</ion-card-subtitle>
     </ion-card-header>
   
-    <ion-card-content *ngFor="let number of [0,1,2,3,4]">
-      
-      <ion-grid>
-        
-        <ion-row>
-          <ion-col size="9">
-            
-              <ion-card-title>Publicador que no deberia entrar</ion-card-title>
-              <ion-card-subtitle>publicadorMetiche@gmail.com</ion-card-subtitle>
-            
-          </ion-col>
-          <ion-col >
-            <ion-button expand="block" >Admitir</ion-button>
-            <ion-button expand="block" color="danger" >Eliminar</ion-button>
-          </ion-col>
-          <!-- <ion-col ><ion-button color="danger" >Eliminar</ion-button></ion-col> -->
-          
-        </ion-row>
-      </ion-grid>
-    </ion-card-content>
+    <div *ngFor="let user of Users; let UserIndex = index">
+      <div *ngIf="!user.admited" >
+        <ion-card-content>
+          <ion-grid>
+            <ion-row>
+              <ion-col size="9">
+                  <ion-card-title>{{user.displayName}}</ion-card-title>
+                  <ion-card-subtitle>{{user.email}}</ion-card-subtitle>
+              </ion-col>
+              <ion-col >
+                <ion-button expand="block" (click)="alertAdmitirUserShow(true,user.uid,UserIndex)" >Admitir</ion-button>
+              </ion-col>
+              <!-- <ion-col ><ion-button color="danger" >Eliminar</ion-button></ion-col> -->
+            </ion-row>
+          </ion-grid>
+        </ion-card-content>
+      </div>
+    </div>
+    
   </ion-card>
 
 
@@ -116,16 +94,35 @@
   <ion-alert 
     [isOpen]="isAlertEliminarUserOpen"
     header="¿Desea Eliminar a este usuario?"
-    subHeader="Esta acción no se puede deshacer"
+    subHeader="Para reactivarlo vaya a la sección Usuarios no Admitidos"
     [buttons]="alertButtonsEliminarUser"
-    (didDismiss)="alertEliminarUserShow(false,0)"
+    (didDismiss)="alertEliminarUserShow(false,0,0)"
+    >
+  </ion-alert>
+
+  <ion-alert 
+    [isOpen]="isAlertAdmitirUserOpen"
+    header="¿Desea Admitir a este usuario?"
+    subHeader="Al hacerlo el usuario podrá entrar a el sistema"
+    [buttons]="alertButtonsAdmitirUser"
+    (didDismiss)="alertEliminarUserShow(false,0,0)"
+    >
+  </ion-alert>
+
+
+  <ion-alert 
+    [isOpen]="isAlertValidacionEliminar"
+    header="No es posible Eliminar al usuario"
+    subHeader="{{AlertMsg}}"
+    [buttons]="alertButtonsValidacionEliminar"
+    (didDismiss)="alertValidacionEliminarShow(false)"
     >
   </ion-alert>
 
   <ion-alert 
     [isOpen]="isAlertNoExisteAdmin"
-    header="No se pueden retirar los privilegios de administrador"
-    subHeader="Primiero debe haber algun otro administrador"
+    header="No es posible retirar los privilegios de administrador"
+    subHeader="{{AlertMsg}}"
     [buttons]="alertButtonsNoExisteAdmin"
     (didDismiss)="alertNoExisteAdminShow(false)"
     >
