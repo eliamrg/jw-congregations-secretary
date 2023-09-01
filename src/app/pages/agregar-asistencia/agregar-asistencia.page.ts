@@ -1,6 +1,7 @@
 import { Component, OnInit,  ViewChild } from '@angular/core';
 import { IonModal } from '@ionic/angular';
 import { OverlayEventDetail } from '@ionic/core/components';
+import { AuthService } from 'src/app/services/Auth/auth.service';
 
 
 @Component({
@@ -11,19 +12,19 @@ import { OverlayEventDetail } from '@ionic/core/components';
 export class AgregarAsistenciaPage implements OnInit {
 
   weeks: { start: number; end: number; }[] | undefined;
-  constructor() { }
+  constructor(private auth:AuthService) { }
   wheelDate:any;
   stringDate:any;
-  
 
-  ngOnInit() {
+  async ngOnInit() {
 
     this.wheelDate=new Date().toISOString();
     this.showdate();
     //this.weeks=this.getWeeksInMonth(2023,6);
+    // this.auth.getUserObservable("1FiAbMWfjYbq9EyY4lURxJRuGAA3").then(x=>{
+    //   console.log(x)
+    // });
     
-
-
   }
 
 

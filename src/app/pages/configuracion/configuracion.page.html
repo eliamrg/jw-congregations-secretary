@@ -1,0 +1,116 @@
+<ion-header [translucent]="false" mode="ios">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    
+    <ion-title>Configuración</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="false" mode="ios">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Configuración</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <ion-card>
+    
+    <ion-card-header>
+      <ion-card-title>Mi Perfil</ion-card-title>
+      <ion-card-subtitle>{{email}}</ion-card-subtitle>
+      
+    </ion-card-header>
+  
+    <ion-card-content>
+      
+      <ion-item>
+        <ion-input label="Nombre Completo (Editable):" labelPlacement="stacked" placeholder="Ingresa tu Nombre" [(ngModel)]="displayName"></ion-input>
+      </ion-item>
+
+      <ion-grid>
+        <ion-row class="ion-align-items-center">
+          <ion-col class="ion-text-center">
+            <ion-button id="open-loading" fill="clear" (click)="cambiarDisplayName()">Guardar Nombre de Usuario</ion-button>
+            <ion-loading trigger="open-loading" message="Guardando..." duration="1000"></ion-loading>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+      
+      
+      <ion-grid>
+        <ion-row class="ion-align-items-center">
+          <ion-col class="ion-text-center">
+            <ion-button style="font-weight: bold;" fill="clear" (click)="CambiarPassword()" >
+              Cambiar Contraseña
+              <ion-icon slot="start" name="lock-closed-outline"></ion-icon>
+            </ion-button>
+          </ion-col>
+        </ion-row>
+        <ion-row *ngIf="isMensajeContrasenaOpen==true" class="ion-align-items-center">
+          <ion-col class="ion-text-center">
+            <ion-label> Se ha enviado un enlace a tu correo para el cambio de Contraseña. Verificar que no se haya ido a las carpetas de SPAM o correo no deseado</ion-label>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-card-content>
+  </ion-card>
+
+
+  <ion-card >
+    <ion-card-header>
+      
+      <ion-card-subtitle>Al crear un perfil:</ion-card-subtitle>
+      <ion-card-title>Uso y Licencia</ion-card-title>
+      
+    </ion-card-header>
+  
+    
+    
+    <ion-card-content >
+      <ion-list >
+        <ion-item  class="item-text-wrap">
+          <ion-icon name="alert-circle-outline" slot="start"></ion-icon>
+          <p style="text-align: justify; font-size: large;">
+            Comprendo que esta aplicación no forma parte de las aplicaciones oficiales provistas por el Cuerpo Gobernante.
+          </p>
+        </ion-item>
+        <ion-item  class="item-text-wrap">
+          <ion-icon name="alert-circle-outline" slot="start"></ion-icon>
+          <p style="text-align: justify;  font-size: large;">
+            Entiendo que al acceder podré consultar información sobre los publicadores de la Congregación,
+            la cuál debe ser manejada con total confidencialidad. A su vez esta misma no deberá ser 
+            compartida de ninguna forma, ya sea de manera física o dígital sin autorización. 
+          </p>
+        </ion-item>
+        <ion-item  style="--padding-top: 6px;" class="item-text-wrap">
+          <ion-icon name="alert-circle-outline" slot="start"></ion-icon>
+          <p style="text-align: justify;  font-size: large;">
+            Sostengo que haré un uso correcto y responsable de la aplicación.
+          </p>
+        </ion-item>
+
+        <ion-item  style="--padding-top: 6px;" class="item-text-wrap">
+          <ion-icon name="alert-circle-outline" slot="start"></ion-icon>
+          <p style="text-align: justify;  font-size: large;">
+            Reconozco que cualquier uso indebido o incumplimento a las normas de uso 
+            tendrá como consecuencia la suspensión de mi cuenta.
+          </p>
+        </ion-item>
+        
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-grid>
+    <ion-row class="ion-align-items-center">
+      <ion-col class="ion-text-center">
+        <ion-button color="danger" fill="clear" style="font-weight: bold;" (click)="logOut()" >
+          Cerrar Sesión
+          <ion-icon slot="start" name="log-out-outline"></ion-icon>
+        </ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

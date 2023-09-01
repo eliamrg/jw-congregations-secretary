@@ -7,11 +7,11 @@ import { ActivatedRoute } from '@angular/router';
   styleUrls: ['./folder.page.scss'],
 })
 export class FolderPage implements OnInit {
-  public folder!: string;
+  public permisionMissing!: string;
   private activatedRoute = inject(ActivatedRoute);
   constructor() {}
 
   ngOnInit() {
-    this.folder = this.activatedRoute.snapshot.paramMap.get('id') as string;
+    this.permisionMissing = this.activatedRoute.snapshot.paramMap.get('id') as string;
   }
 }

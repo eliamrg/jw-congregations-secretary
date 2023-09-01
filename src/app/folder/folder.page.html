@@ -3,7 +3,7 @@
     <ion-buttons slot="start">
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
-    <ion-title>{{ folder }}</ion-title>
+    <ion-title>Acceso Denegado</ion-title>
     
   </ion-toolbar>
 </ion-header>
@@ -11,39 +11,20 @@
 <ion-content [fullscreen]="true" mode="ios">
   <ion-header collapse="condense">
     <ion-toolbar>
-      <ion-title size="large">{{ folder }}</ion-title>
-      
+      <ion-title size="large">Acceso Denegado</ion-title>
     </ion-toolbar>
   </ion-header>
 
-  <!-- <div *ngIf="folder==='Publicadores'">
-    
-
-    
-
-
-    <ion-card  *ngFor="let number of [1,2,3,4]">
-      <ion-card-header>
-        <ion-card-title>Grupo {{number}}</ion-card-title>
-        <ion-card-subtitle>Lista de publicadores</ion-card-subtitle>
-      </ion-card-header>
-    
-      <ion-card-content>
-        <ion-list *ngFor="let number of [1,2,3,4]">
-          <ion-item>
-            <ion-avatar slot="start">
-              <img alt="Silhouette of a person's head" src="https://ionicframework.com/docs/img/demos/avatar.svg" />
-            </ion-avatar>
-            <ion-label>Publicador {{number}}</ion-label>
-            <ion-button fill="clear"> <ion-icon slot="icon-only" color="dark" name="ellipsis-horizontal"></ion-icon></ion-button>
-          </ion-item>
-          
-        </ion-list>
-
-        <ion-button fill="clear"> <ion-icon slot="icon-only" name="add-circle-outline"></ion-icon> </ion-button>
-
-      </ion-card-content>
-    </ion-card>
-  </div> -->
+  <ion-card color="warning">
+    <ion-card-header>
+      <ion-card-title *ngIf="permisionMissing=='Admin'">No Cuentas con permisos de Administrador</ion-card-title>
+      <ion-card-title *ngIf="permisionMissing=='Admited'">Aún no cuentas con permisos de Admisión</ion-card-title>
+      <ion-card-subtitle>Permisos Faltantes</ion-card-subtitle>
+    </ion-card-header>
   
+    <ion-card-content>
+      Si deseas acceder solicita permisos al Administrador del Sistema. (Secretario)
+    </ion-card-content>
+  </ion-card>
+
 </ion-content>

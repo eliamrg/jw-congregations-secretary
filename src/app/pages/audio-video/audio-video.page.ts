@@ -12,7 +12,7 @@ export class AudioVideoPage implements OnInit {
 
   print=false;
   encargados=[
-    "Gamaliel Orozco",
+    // "Gamaliel Orozco",
     "Antonio Garza",
     "Santiago Ramirez",
     "Jaziel Cisneros",
@@ -132,9 +132,10 @@ export class AudioVideoPage implements OnInit {
 
     window.print();
     this.print==false;
+  }
 
-
-    
+  Print(){
+    window.print();
   }
 
   //DATE MODAL

@@ -10,6 +10,7 @@ import { OverlayEventDetail } from '@ionic/core/components';
 })
 export class ReporteRegularPage implements OnInit {
 
+  isModalDatePickerOpen=false;
   Grupos=[
     {"id":1},
     {"id":2},
@@ -27,10 +28,11 @@ export class ReporteRegularPage implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    var today=new Date();
-    var currentMonth=today.getMonth();
-    today.setMonth(today.getMonth()-1);
-    this.wheelDate=today.toISOString();
+    this.wheelDate=new Date().toISOString();
+    //var today=new Date();
+    // var currentMonth=today.getMonth();
+    //  today.setMonth(today.getMonth()+1);
+    //  this.wheelDate=today.toISOString();
     this.showdate();
   }
 
@@ -39,47 +41,55 @@ export class ReporteRegularPage implements OnInit {
   stringDate:any;
   wheelDate:any;
   showdate(){
-    let date=new Date(this.wheelDate);
-    let month=date.getMonth() +1;
+    console.log(this.wheelDate)
+    
+    let date=new Date(this.wheelDate );
+    console.log(date);
+    let month=date.getMonth() ;
+    console.log(month)
     let year=date.getFullYear();
-    let stringMonth=this.getMonthName(month);
+    console.log(year)
+    date.setMonth(date.getMonth());
+    let stringMonth= date.toLocaleString('es-MX', {
+      month: 'long',
+    });
+
+    console.log(stringMonth)
     
     this.stringDate=(stringMonth + " " + year);
-    //this.weeks=this.getWeeksInMonth(year,month-1 );
-    //var date=this.wheelDate.getDate();
+    
     
     
   }
 
-  getMonthName(monthNumber:number) {
-    const date = new Date();
-    date.setMonth(monthNumber - 1);
+  // getMonthName(monthNumber:number) {
+  //   const date = new Date();
+  //   date.setMonth(monthNumber+1);
   
-    return date.toLocaleString('es-MX', { month: 'long' });
-  }
+  //   return date.toLocaleString('es-MX', { month: 'long' });
+  // }
 
 
 
 
   //MODAL DATE
-  @ViewChild(IonModal)
-  modal!: IonModal;
+  // @ViewChild(IonModal)
+  // modal!: IonModal;
 
-  message = 'This modal example uses triggers to automatically open a modal when the button is clicked.';
-  nombre: string | undefined;
-  cancel() {
-    this.modal.dismiss(null, 'cancel');
-  }
+  // message = 'This modal example uses triggers to automatically open a modal when the button is clicked.';
+  // nombre: string | undefined;
+  // cancel() {
+  //   this.modal.dismiss(null, 'cancel');
+  // }
 
-  confirm() {
-    this.modal.dismiss(this.nombre, 'confirm');
-  }
+  // confirm() {
+  //   this.modal.dismiss(this.nombre, 'confirm');
+  // }
 
-  onWillDismiss(event: Event) {
-    const ev = event as CustomEvent<OverlayEventDetail<string>>;
-    if (ev.detail.role === 'confirm') {
-      this.message = `Hello, ${ev.detail.data}!`;
-    }
+  
+
+  setDatePickerOpen(open:boolean){
+    this.isModalDatePickerOpen=open;
   }
 
 

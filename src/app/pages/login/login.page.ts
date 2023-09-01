@@ -102,11 +102,11 @@ export class LoginPage implements OnInit {
           //console.log(this.name, this.id,this.email,)
 
           //CREACION DE USUARIO EN FIRESTORE
-          this.Auth.SetFirestoreUser(this.id,this.name,this.email,"Email",0,false,false).then(()=>{
+          this.Auth.SetFirestoreUser(this.id,this.name,this.email,"Email",0,false,false,[]).then(()=>{
             //console.log('id:'+ this.id,this.name)
             this.setOpen(false);
 
-            this.router.navigate(['/informe']).then(() => {
+            this.router.navigate(['/configuracion']).then(() => {
             // window.location.reload();
             });
           });

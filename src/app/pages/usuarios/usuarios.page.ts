@@ -27,7 +27,7 @@ export class UsuariosPage implements OnInit {
   ngOnInit() {
     this.auth.getUsers().then(users=>{
       this.Users=users;
-      console.log(this.Users);
+      //console.log(this.Users);
     })
     this.firestore.getGrupos().then(grupos=>{
       this.Grupos=grupos;
@@ -90,7 +90,7 @@ export class UsuariosPage implements OnInit {
           if(existeUnAdmin){
 
             console.log("Existe admin")
-            await this.auth.SetFirestoreUser(tempUsr.uid,tempUsr.displayName, tempUsr.email, tempUsr.loginProvider,tempUsr.grupo,tempUsr.administrador,false).then(()=>{
+            await this.auth.SetFirestoreUser(tempUsr.uid,tempUsr.displayName, tempUsr.email, tempUsr.loginProvider,tempUsr.grupo,tempUsr.administrador,false,tempUsr.grupos).then(()=>{
               this.Users[this.indexEliminar].admited=false;
             });
             
@@ -130,7 +130,7 @@ export class UsuariosPage implements OnInit {
       handler: async () => {
         let tempUsr=this.Users[this.indexAdmision];
         //console.log(tempUsr)
-        await this.auth.SetFirestoreUser(tempUsr.uid,tempUsr.displayName, tempUsr.email, tempUsr.loginProvider,tempUsr.grupo,tempUsr.administrador,true).then(()=>{
+        await this.auth.SetFirestoreUser(tempUsr.uid,tempUsr.displayName, tempUsr.email, tempUsr.loginProvider,tempUsr.grupo,tempUsr.administrador,true,tempUsr.grupos).then(()=>{
           this.Users[this.indexAdmision].admited=true;
         });
         this.isAlertAdmitirUserOpen=false;
@@ -185,7 +185,7 @@ export class UsuariosPage implements OnInit {
     //console.log(e.detail.value)
 
     console.log(this.Users);
-    this.auth.SetFirestoreUser(user.uid,user.displayName, user.email, user.loginProvider,Grupo,user.administrador,user.admited);
+    this.auth.SetFirestoreUser(user.uid,user.displayName, user.email, user.loginProvider,Grupo,user.administrador,user.admited,user.grupos);
   }
 
 
@@ -205,7 +205,7 @@ export class UsuariosPage implements OnInit {
 
     if(permiso){
       //console.log("Se le da permisos");
-      this.auth.SetFirestoreUser(user.uid,user.displayName, user.email, user.loginProvider,user.grupo,true,user.admited).then(()=>{
+      this.auth.SetFirestoreUser(user.uid,user.displayName, user.email, user.loginProvider,user.grupo,true,user.admited, user.grupos).then(()=>{
         //e.currentTarget.checked=true;
         this.Users[index].administrador=true;
       });
@@ -228,7 +228,7 @@ export class UsuariosPage implements OnInit {
       if(existeUnAdmin){
         //console.log("EXISTE OTRO ADMIN Y SE HACE CAMBIO");
         
-        this.auth.SetFirestoreUser(user.uid,user.displayName, user.email, user.loginProvider,user.grupo,false,user.admited).then(()=>{
+        this.auth.SetFirestoreUser(user.uid,user.displayName, user.email, user.loginProvider,user.grupo,false,user.admited,user.grupos).then(()=>{
           this.Users[index].administrador=false;
         });
       }
@@ -242,5 +242,4 @@ export class UsuariosPage implements OnInit {
     }
   }
   
-
 }

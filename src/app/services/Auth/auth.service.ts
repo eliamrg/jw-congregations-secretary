@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { Auth, getAuth } from '@angular/fire/auth';
+import { Auth, getAuth, sendPasswordResetEmail, updateProfile } from '@angular/fire/auth';
 import { createUserWithEmailAndPassword, GoogleAuthProvider, signInWithEmailAndPassword, signInWithPopup, signOut } from '@angular/fire/auth';
-import { Firestore, setDoc, doc, getDoc, query, collection, getDocs, where } from '@angular/fire/firestore';
+import { Firestore, setDoc, doc, getDoc, query, collection, getDocs, where, onSnapshot } from '@angular/fire/firestore';
 import { Router } from '@angular/router';
 
 @Injectable({
@@ -36,7 +36,7 @@ export class AuthService {
       async ()=>{
         if(await this.getFirestoreUser(this.getUserId())==false){
           
-          this.SetFirestoreUser(this.getUserId(),this.getUserName(), this.getUserEmail(),"Google",0,false,false).then(()=>"Registrado");
+          this.SetFirestoreUser(this.getUserId(),this.getUserName(), this.getUserEmail(),"Google",0,false,false,[]).then(()=>"Registrado");
         }
       }
     );
@@ -44,7 +44,7 @@ export class AuthService {
 
 
   //SET FIRESTORE USER-----------------------------------------------------------------
-  async SetFirestoreUser(id:any,name: any, email:any, loginProvider:any,grupo:number,admin:boolean,admited:boolean){
+  async SetFirestoreUser(id:any,name: any, email:any, loginProvider:any,grupo:number,admin:boolean,admited:boolean,grupos:any){
   
     await setDoc(doc(this.firestore, "Users", id), {
       
@@ -54,9 +54,16 @@ export class AuthService {
       admited:admited,
       administrador:admin,
       loginProvider:loginProvider,
-      uid:id
-    });
-    
+      uid:id,
+      grupos:grupos
+    },{merge:true});
+  }
+
+  //INITIALICE CONECTION XD, SI NO HAGO UNA CONSULTA ANTES DE OBTENER INFO DEL USUARIO NO JALAN LOS GUARDS
+  //POR ESO ESA CONSULTA RANDOM
+  async initialize(){
+    const docRef = doc(this.firestore, "Publicadores", "1");
+    await getDoc(docRef);
   }
 
   
@@ -65,21 +72,24 @@ export class AuthService {
   //GET FIRESTORE USER-------------------------------------------------------
 
   async getFirestoreUser(id:any){
+    
 
     const userConverter = {
-        toFirestore: (user: { displayName: any; email: any; grupo:any;admited:boolean; administrador:boolean; loginProvider:any }) => {
+        toFirestore: (user: { displayName: any; email: any; grupo:any;admited:boolean; administrador:boolean; loginProvider:any; uid:any; grupos:any }) => {
             return {
               displayName: user.displayName,
               email: user.email,
               grupo: user.grupo,
               admited: user.admited,
               administrador: user.administrador,
-              loginProvider:user.loginProvider
+              loginProvider:user.loginProvider,
+              uid:user.uid,
+              grupos:user.grupos
             };
         },
         fromFirestore: (snapshot:any, options:any) => {
             const data = snapshot.data(options);
-            return new user(data.email,data.displayName, data.grupo,data.admited, data.administrador,data.loginProvider);
+            return new user(data.email,data.displayName, data.grupo,data.admited, data.administrador,data.loginProvider,data.uid,data.Grupos);
         }
     };
 
@@ -99,12 +109,14 @@ export class AuthService {
   }
 
 
+
   //GET USER BY ID------------------------------------------------------------------
   async getUserById(id:any){
     const docRef = doc(this.firestore, "Users", id);
     const docSnap = await getDoc(docRef);
 
     if (docSnap.exists()) {
+      console.log(docSnap.data())
       return docSnap.data();
     } else {
       // doc.data() will be undefined in this case
@@ -155,7 +167,7 @@ export class AuthService {
 
 
   //GET USER EMAIL-------------------------------------------------------------------
-  getUserEmail(){
+  async getUserEmail(){
     const auth = getAuth();
     const user = auth.currentUser;
     if (user !== null) {
@@ -163,12 +175,30 @@ export class AuthService {
       return user.email;
     }
     else{
-      return null;
+      return false;
     }
   }
 
+  
+
+
 
   //OLVIDASTE CONTRASEÑA
+
+  cambioContrasena(email:any){
+    const auth = getAuth();
+    sendPasswordResetEmail(auth, email)
+      .then(() => {
+        // Password reset email sent!
+        // ..
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        // ..
+      });
+
+  }
 //   import { getAuth, sendPasswordResetEmail } from "firebase/auth";
 
 // const auth = getAuth();
@@ -184,21 +214,58 @@ export class AuthService {
 //   });
 
 
-
+//EMAIL PASSWORD CHANGE----------------------------------------------------------------------
+async changePassword(email:any){
+  const auth = getAuth();
+  sendPasswordResetEmail(auth, email)
+    .then(() => {
+      // Password reset email sent!
+      // ..
+    })
+    .catch((error) => {
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      console.log(errorCode,errorMessage)
+    });
+}
 
 
   //GET USER NAME-----------------------------------------------------------------
-  getUserName(){
-    const auth = getAuth();
+  async getUserName(){
+    const auth =  getAuth();
     const user = auth.currentUser;
     if (user !== null) {
-      const name = user.displayName;
-      return name;
+      return user.displayName;
     }
     else{
-      return null;
+      return false;
     }
   }
+
+  //CNAGE USER DISPLAY NAME
+  async changeDisplayName(name:any){
+    let uid:any;
+    let user:any
+    await this.getUserId().then(async uidDoc=>{
+      uid=uidDoc;        
+    })
+
+    await this.getUserById(uid).then(us=>{
+
+      user=us;
+    })
+
+    const auth = getAuth();
+    updateProfile(auth.currentUser!, {
+      displayName: name
+    }).then(() => {
+      this.SetFirestoreUser(user.uid,name, user.email, user.loginProvider,user.grupo,user.administrador,user.admited,user.grupos)
+
+    }).catch((error) => {
+      console.log(error)
+    });
+  }
+  
 
 
 }
@@ -209,16 +276,18 @@ class user {
   grupo: any;
   admited:boolean;
   administrador:boolean;
-  loginProvider:any
-  constructor (displayName: any, email: any, grupo: any, admited:boolean, administrador:boolean,loginProvider:any) {
-     
+  loginProvider:any;
+  uid:any;
+  grupos:any;
+  constructor (displayName: any, email: any, grupo: any, admited:boolean, administrador:boolean,loginProvider:any, uid:any, grupos:any) {
     this.displayName = displayName;
     this.email = email;
     this.grupo = grupo;
     this.admited=admited;
     this.administrador=administrador;
     this.loginProvider=loginProvider
-    
+    this.uid=uid;
+    this.grupos=grupos;
   }
 
   toString() {

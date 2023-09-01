@@ -44,7 +44,7 @@ export class FirestoreService {
     } else {
       // docSnap.data() will be undefined in this case
       return false
-}
+    }
   }
 
   async getPublicadoresPorGrupo(){

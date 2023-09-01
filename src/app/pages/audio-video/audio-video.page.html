@@ -1,16 +1,19 @@
 <ion-header [translucent]="false" mode="ios">
+  
   <ion-toolbar>
+    <ion-buttons class="hidewhenprinting" slot="start">
+      <ion-button id="open-modal"> <ion-icon name="calendar-outline"></ion-icon> </ion-button>
+    </ion-buttons>
     <ion-title>Departamento de Audio/Video</ion-title>
   </ion-toolbar>
+  
 </ion-header>
 
 <ion-content [fullscreen]="false" mode="ios">
   <ion-header collapse="condense">
     <ion-toolbar>
       <ion-title size="large">Departamento de Audio/Video</ion-title>
-      <ion-buttons class="hidewhenprinting" slot="end">
-        <ion-button id="open-modal"> <ion-icon name="calendar-outline"></ion-icon> </ion-button>
-      </ion-buttons>
+     
     </ion-toolbar>
   </ion-header>
 
