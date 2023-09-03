@@ -18,8 +18,10 @@ export class PublicadoresPage implements OnInit {
   isAlertEliminarGrupoOpen=false;
   isAlertEliminarPublicadorOpen=false;
   isAlertEliminarGrupoValidacionOpen=false;
+  isAlertEncargadoOpen=false;
   publicadorEditar=new publicador(this.firestore.getRandomNumber(0,9999).toString(),"");
   indexPubEditando=0;
+  grupoEditando=0;
   
   mostrarValidacion=false;
   mostrarNacimientoDTP=false;
@@ -148,11 +150,13 @@ isPopoverOpen=false;
 popoverPublicadorId:any;
 
   presentPopover(e:Event,Pub:publicador,indexPub:number){
+    //console.log(this.publicadorEditar)
     this.popover.event=e;
     this.isPopoverOpen=true;
     this.popoverPublicadorId=Pub.id;
     this.publicadorEditar=Pub;
     this.indexPubEditando=indexPub;
+    console.log(this.publicadorEditar)
     //console.log(Pub)
   }
 
@@ -218,7 +222,7 @@ popoverPublicadorId:any;
   }
 
 
-
+ //ELIMINAR GRUPO------------------
   public alertButtonsEliminarGrupo = [
     
     {
@@ -255,7 +259,7 @@ popoverPublicadorId:any;
     this.isAlertEliminarGrupoOpen=show;
   }
 
-
+///ELIMINAR GRUPO VALIDACION-------------------------------------------
   public alertButtonsEliminarGrupoValidacion = [
     {
       text: 'Aceptar',
@@ -269,6 +273,29 @@ popoverPublicadorId:any;
   alertEliminarGrupoValidacionShow(show:boolean){
 
     this.isAlertEliminarGrupoValidacionOpen=show;
+  }
+
+
+
+  //CAMBIO DE ENCARGADO----------------------------------------------------------------------------------
+
+  public alertButtonsEncargado = [
+    {
+      text: 'Aceptar',
+      role: 'confirm',
+      handler: () => {
+        //console.log(this.publicadorEditar.grupo,this.publicadorEditar.nombre,this.publicadorEditar.id)
+        this.firestore.EditarGrupo(this.publicadorEditar.grupo,this.publicadorEditar.nombre,this.publicadorEditar.id)
+        this.PublicadoresPorGrupo[this.publicadorEditar.grupo!].Encargado=this.publicadorEditar.nombre;
+        this.PublicadoresPorGrupo[this.publicadorEditar.grupo!].idEncargado=this.publicadorEditar.id;
+      },
+    },
+  ];
+  
+  alertEncargadoShow(show:boolean){
+    
+    this.isAlertEncargadoOpen=show;
+
   }
 
   // DATE PICKERS-----------------------------------------------------------------------------------

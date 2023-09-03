@@ -28,11 +28,10 @@
     <ion-item>
       <ion-select aria-label="Grupos de Predicación" (ionChange)="handlerVerGrupoChange($event)" interface="popover" value="Todos">
         <ion-select-option value="Todos" >Todos los Grupos</ion-select-option>
-        <!-- <ion-select-option *ngFor="let number of [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]" value={{number}}  >Grupo {{number}}</ion-select-option> -->
+    
         <div *ngFor="let grupo of PublicadoresPorGrupo; let i = index">
           <ion-select-option id="Filtro + {{i}}"  value="{{i}}"  *ngIf="i!=0"> Grupo {{i}}</ion-select-option>
         </div>
-        
       </ion-select>
     </ion-item>
   </ion-list>
@@ -96,6 +95,7 @@
       <ion-list>
         <ion-item [button]="true" [detail]="false" routerLink="/publicador/{{publicadorEditar.id}}">Ver Tarjeta</ion-item>
         <ion-item (click)="PresentEditarPublicador()" [button]="true" [detail]="false">Editar Publicador</ion-item>
+        <ion-item (click)="alertEncargadoShow(true)" [button]="true" [detail]="false">Establecer como Encargado</ion-item>
         <!-- <ion-item [button]="true" [detail]="false">Cambiar de Grupo</ion-item> -->
         <ion-item  (click)="alertEliminarPublicadorShow(true)" [button]="true" [detail]="false">
           <!-- <ion-button fill="clear" color="danger" id="present-alert-eliminar" (click)="alertEliminarShow(true)" > Eliminar</ion-button> -->
@@ -261,6 +261,16 @@
     subHeader="Debe primero asignar a los publicadores a otro grupo"
     [buttons]="alertButtonsEliminarGrupoValidacion"
     (didDismiss)="alertEliminarGrupoValidacionShow(false)"
+    >
+</ion-alert>
+
+
+<ion-alert 
+    [isOpen]="isAlertEncargadoOpen"
+    header="Cambio de Etiqueta de Encargado"
+    subHeader="Esta función solo sirve para establecer la etiqueta de Encargado, para establecer los permisos de edición vaya a la sección Usuarios, y otorgue permisos al usuario"
+    [buttons]="alertButtonsEncargado"
+    (didDismiss)="alertEncargadoShow(false)"
     >
 </ion-alert>
 

@@ -28,7 +28,13 @@ export class ReporteRegularPage implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    this.wheelDate=new Date().toISOString();
+
+    
+    this.wheelDate=new Date();
+    // const today=new Date(this.wheelDate);
+    // console.log(today.getHours())
+    // this.wheelDate.setHours(today.getHours() -6);
+    
     //var today=new Date();
     // var currentMonth=today.getMonth();
     //  today.setMonth(today.getMonth()+1);
@@ -42,11 +48,11 @@ export class ReporteRegularPage implements OnInit {
   wheelDate:any;
   showdate(){
     console.log(this.wheelDate)
-    
+
     let date=new Date(this.wheelDate );
-    console.log(date);
-    let month=date.getMonth() ;
-    console.log(month)
+    // console.log(date);
+    // let month=date.getMonth() ;
+    // // console.log(month)
     let year=date.getFullYear();
     console.log(year)
     date.setMonth(date.getMonth());

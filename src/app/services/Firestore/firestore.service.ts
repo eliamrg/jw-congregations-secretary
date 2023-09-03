@@ -100,8 +100,20 @@ export class FirestoreService {
       id:id,
       Encargado: "No Asignado",
       IdEncargado: 0,
-      Publicadores:[{}]
       
+      
+    },{merge:true});
+  }
+
+
+  async EditarGrupo(id:any,Encargado:any,idEncargado:any ){
+    
+    //console.log(id,Encargado,idEncargado)
+    await setDoc(doc(this.firestore, "Grupos", id.toString()), {
+      id:id,
+      Encargado: Encargado,
+      IdEncargado: idEncargado
+
     },{merge:true});
   }
 
