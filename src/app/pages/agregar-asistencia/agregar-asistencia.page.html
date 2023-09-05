@@ -12,9 +12,7 @@
   <ion-header collapse="condense">
     <ion-toolbar>
       <ion-title  size="large">Asistencia a Reuniones Semanales</ion-title>
-      <!-- <ion-buttons slot="end">
-        <ion-button id="open-modal"> <ion-icon name="calendar-outline"></ion-icon> </ion-button>
-      </ion-buttons> -->
+      
     </ion-toolbar>
   </ion-header>
 
@@ -34,22 +32,23 @@
         <ion-list>
 
           <ion-item>
-            <ion-input *ngIf="week.start!==3" label="Entre Semana" labelPlacement="stacked" placeholder="Asistencia" type="number"></ion-input>
-
-            
-            <ion-input *ngIf="week.start===3" label="Entre Semana" labelPlacement="stacked" placeholder="Asistencia" type="number" value="192" readonly="true"></ion-input>
-            
-            <ion-button *ngIf="week.start!==3" >Guardar</ion-button>
-            
-            
-            <ion-button color="warning" *ngIf="week.start===3" >Editar</ion-button>
+            <ion-input  label="Entre Semana" labelPlacement="stacked" placeholder="Asistencia" type="number"></ion-input>
           </ion-item>
           <ion-item>
             <ion-input label="Fin de Semana" labelPlacement="stacked" placeholder="Asistencia" type="number"></ion-input>
-            <ion-button>Guardar</ion-button>
           </ion-item>
         </ion-list>
         
+        <ion-grid>
+          <ion-row class="ion-align-items-center">
+            <ion-col class="ion-text-center">
+              <ion-button  fill="clear" style="font-weight: bold;"  >
+                Guardar
+                <ion-icon slot="start" name="checkmark-circle-outline"></ion-icon>
+              </ion-button>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
     
       </ion-card-content>
     </div>

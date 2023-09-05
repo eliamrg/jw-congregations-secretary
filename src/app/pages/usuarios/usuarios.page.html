@@ -44,13 +44,14 @@
           </ion-row>
   
           <ion-row class="ion-padding">
-            <ion-label  style="font-size: large; font-weight: bold;">Encargado de Grupo:</ion-label>
-            <ion-select   interface="popover"placeholder="Seleccionar" value="no" okText="Aceptar" cancelText="Cancelar" value="{{user.grupo}}" (ionChange)="handlerGrupoEncargadoChange($event,user)">
-              <ion-select-option value="0">No Asignado</ion-select-option>
+            <ion-label  style="font-size: large; font-weight: bold;">Acceso a Grupo(s):</ion-label>
+            
+            <ion-select  placeholder="Seleccionar"  okText="Aceptar" cancelText="Cancelar" [multiple]="true" [value]="this.Users[UserIndex].grupos" (ionChange)="handlerGrupoEncargadoChange($event,user)">
               <div *ngFor="let grupo of Grupos; let i = index">
                 <ion-select-option value="{{i}}"  *ngIf="i!=0"> Grupo {{i}}</ion-select-option>
               </div>
             </ion-select>
+
           </ion-row>
         </ion-grid>
       </ion-card-content>
@@ -63,6 +64,10 @@
   <ion-card>
     <ion-card-header>
       <ion-card-subtitle color="danger">Usuarios No Admitidos</ion-card-subtitle>
+    </ion-card-header>
+
+    <ion-card-header>
+      <ion-card-subtitle>Después de admitir por primera vez a un usuario dar de alta como Publicador</ion-card-subtitle>
     </ion-card-header>
   
     <div *ngFor="let user of Users; let UserIndex = index">

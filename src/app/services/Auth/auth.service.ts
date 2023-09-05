@@ -36,7 +36,7 @@ export class AuthService {
       async ()=>{
         if(await this.getFirestoreUser(this.getUserId())==false){
           
-          this.SetFirestoreUser(this.getUserId(),this.getUserName(), this.getUserEmail(),"Google",0,false,false,[]).then(()=>"Registrado");
+          this.SetFirestoreUser(this.getUserId(),this.getUserName(), this.getUserEmail(),"Google",0,false,false,[0]).then(()=>"Registrado");
         }
       }
     );
@@ -89,7 +89,7 @@ export class AuthService {
         },
         fromFirestore: (snapshot:any, options:any) => {
             const data = snapshot.data(options);
-            return new user(data.email,data.displayName, data.grupo,data.admited, data.administrador,data.loginProvider,data.uid,data.Grupos);
+            return new user(data.email,data.displayName, data.grupo,data.admited, data.administrador,data.loginProvider,data.uid,data.grupos);
         }
     };
 
@@ -291,7 +291,7 @@ class user {
   }
 
   toString() {
-      return this.displayName + ', ' + this.email + ', ' + this.grupo+ ', ' +this.admited+ ', ' + this.administrador + ', ' + this.loginProvider;
+      return this.displayName + ', ' + this.email + ', ' + this.grupo+ ', ' +this.admited+ ', ' + this.administrador + ', ' + this.loginProvider+ ', '+ this.grupos;
   }
 }
 

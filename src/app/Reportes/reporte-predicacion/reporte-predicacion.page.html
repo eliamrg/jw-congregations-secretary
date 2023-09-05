@@ -1,0 +1,98 @@
+<ion-header [translucent]="false" mode="ios">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    
+    <ion-title>Reportes de Predicación</ion-title>
+
+    <ion-buttons slot="end">
+      <button style="color: white;"  printSectionId="print-section" ngxPrint><ion-icon color="primary" size="large" name="print-outline"> </ion-icon> </button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+
+
+<ion-content  [fullscreen]="false" mode="ios">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Informe de Predicación {{stringDate}}</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+
+  <div  id="print-section"  class="myDivToPrint" style="font-family: Arial, Helvetica, sans-serif; margin: auto;">
+
+    <H2 id="printOnly" style="font-family: Arial, Helvetica, sans-serif;">Informe de Precursores Regulares {{stringDate}}</H2>
+
+    <div *ngFor="let grupo of Grupos" style="font-family: Arial, Helvetica, sans-serif;">
+      <h4  style="padding-left: 6px;">Grupo {{grupo.id}}</h4>
+      <hr class="solid">
+      <app-tabla-informe ></app-tabla-informe>
+  
+    </div>
+  </div>
+
+  
+  <ion-modal mode="ios" [isOpen]="isModalDatePickerOpen" (willDismiss)="setDatePickerOpen(false)">
+    <ng-template>
+      <ion-header>
+        <ion-toolbar>
+          <ion-title>Modal</ion-title>
+          <ion-buttons slot="end">
+            <ion-button (click)="setDatePickerOpen(false)">Aceptar</ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content class="ion-padding">
+        <ion-grid>
+          <ion-row class="ion-align-items-center">
+            <ion-col class="ion-text-center">
+              <ion-datetime size="cover" value="wheelDate" [(ngModel)]="wheelDate"  (ngModelChange)="showdate()" locale="es-MX" style="--background: translucent; --background-rgb: transluscent" presentation="month-year"></ion-datetime>
+        
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
+  
+
+
+</ion-content>
+
+
+
+<!-- <ion-modal trigger="open-modal-fecha-regular" (willDismiss)="onWillDismiss($event)">
+  <ng-template>
+    <ion-header>
+      <ion-toolbar>
+       
+        <ion-title>Seleccionar Fecha</ion-title>
+        <ion-buttons slot="end">
+          <ion-button (click)="confirm()" [strong]="true">Aceptar</ion-button>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-header>
+    <ion-content class="ion-padding">
+      <ion-card>
+        <ion-card-header>
+          <ion-card-title>Mes y Año</ion-card-title>
+          <ion-card-subtitle>Selección de Fecha</ion-card-subtitle>
+        </ion-card-header>
+      
+        <ion-card-content>
+          <ion-datetime size="cover" [(ngModel)]="wheelDate"  (ngModelChange)="showdate()" locale="es-MX" style="--background: translucent; --background-rgb: transluscent" presentation="month-year"></ion-datetime>
+      
+        </ion-card-content>
+      </ion-card>
+    </ion-content>
+  </ng-template>
+</ion-modal> -->
+
+
+<!-- <ion-fab slot="fixed" vertical="top" horizontal="end"  mode="ios">
+  <button style="background-color: transparent;" printSectionId="print-section" ngxPrint><ion-icon size="large" name="print-outline"> </ion-icon> </button>
+</ion-fab> -->
+

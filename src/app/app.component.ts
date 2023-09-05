@@ -14,18 +14,18 @@ export class AppComponent {
     
     { title: 'Informes de Predicación', url: '/informe', icon: 'newspaper' },
     { title: 'Asistencia a Reuniones', url: '/asistencia', icon: 'people' },
-    { title: 'Publicadores', url: '/publicadores', icon: 'briefcase' },
+    { title: 'Publicadores', url: '/publicadores', icon: 'man' },
     { title: 'Administrar Usuarios', url: '/usuarios', icon: 'person-circle' },
     { title: 'Configuración', url: '/configuracion', icon: 'settings' },
+    { title: 'Emergencia', url: '/emergencia', icon: 'alert-circle' },
     
   ];
 
 
   public appReports = [
     
-    { title: 'Precursores Regulares', url: '/reporte-regular', icon: 'star' },
-    { title: 'Precursores Auxiliares', url: '/reporte-auxiliar', icon: 'person-add' },
-    { title: 'Publicadores', url: '/reporte-publicador', icon: 'person' },
+    { title: 'Predicación', url: '/reporte-predicacion', icon: 'briefcase' },
+    { title: 'Infrome Anual', url: '/informe-anual', icon: 'bar-chart' },
     { title: 'Asistencia', url: 'reporte-asistencia', icon: 'people' },
     
   ];

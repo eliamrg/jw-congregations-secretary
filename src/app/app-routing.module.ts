@@ -54,24 +54,6 @@ const routes: Routes = [
     loadChildren: () => import('./pages/audio-video/audio-video.module').then( m => m.AudioVideoPageModule)
   },
   {
-    path: 'reporte-regular',
-    loadChildren: () => import('./Reportes/reporte-regular/reporte-regular.module').then( m => m.ReporteRegularPageModule),
-    ...canActivate(()=>redirectUnauthorizedTo(['/login'])),
-    canActivate:[IsAdmitedGuard,IsAdminGuard]
-  },
-  {
-    path: 'reporte-auxiliar',
-    loadChildren: () => import('./Reportes/reporte-auxiliar/reporte-auxiliar.module').then( m => m.ReporteAuxiliarPageModule),
-    ...canActivate(()=>redirectUnauthorizedTo(['/login'])),
-    canActivate:[IsAdmitedGuard,IsAdminGuard]
-  },
-  {
-    path: 'reporte-publicador',
-    loadChildren: () => import('./Reportes/reporte-publicador/reporte-publicador.module').then( m => m.ReportePublicadorPageModule),
-    ...canActivate(()=>redirectUnauthorizedTo(['/login'])),
-    canActivate:[IsAdmitedGuard,IsAdminGuard]
-  },
-  {
     path: 'reporte-asistencia',
     loadChildren: () => import('./Reportes/reporte-asistencia/reporte-asistencia.module').then( m => m.ReporteAsistenciaPageModule),
     ...canActivate(()=>redirectUnauthorizedTo(['/login'])),
@@ -81,6 +63,19 @@ const routes: Routes = [
     path: 'configuracion',
     loadChildren: () => import('./pages/configuracion/configuracion.module').then( m => m.ConfiguracionPageModule),
     ...canActivate(()=>redirectUnauthorizedTo(['/login']))
+  },
+  
+  {
+    path: 'reporte-predicacion',
+    loadChildren: () => import('./pages/reporte-predicacion/reporte-predicacion.module').then( m => m.ReportePredicacionPageModule)
+  },
+  {
+    path: 'informe-anual',
+    loadChildren: () => import('./pages/informe-anual/informe-anual.module').then( m => m.InformeAnualPageModule)
+  },
+  {
+    path: 'emergencia',
+    loadChildren: () => import('./pages/emergencia/emergencia.module').then( m => m.EmergenciaPageModule)
   },
   { 
     path: '**', 

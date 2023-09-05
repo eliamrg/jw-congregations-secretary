@@ -4,17 +4,17 @@ import { FormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
 
-import { ReporteAuxiliarPageRoutingModule } from './reporte-auxiliar-routing.module';
+import { InformeAnualPageRoutingModule } from './informe-anual-routing.module';
 
-import { ReporteAuxiliarPage } from './reporte-auxiliar.page';
+import { InformeAnualPage } from './informe-anual.page';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    ReporteAuxiliarPageRoutingModule
+    InformeAnualPageRoutingModule
   ],
-  declarations: [ReporteAuxiliarPage]
+  declarations: [InformeAnualPage]
 })
-export class ReporteAuxiliarPageModule {}
+export class InformeAnualPageModule {}

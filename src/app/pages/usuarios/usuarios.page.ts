@@ -21,18 +21,26 @@ export class UsuariosPage implements OnInit {
   UidAdmision:any; //Para saber cual user se admitira/eliminara
   indexAdmision:any; //Para hacer cambios localmente al array
   indexEliminar:any; //Para hacer cambios localmente al array
+  // UserGruposString:any[]=[]
 
 
   constructor(private auth: AuthService, private firestore:FirestoreService) { }
   ngOnInit() {
     this.auth.getUsers().then(users=>{
       this.Users=users;
-      //console.log(this.Users);
+      
+      console.log(this.Users);
+
     })
+
+    
+
     this.firestore.getGrupos().then(grupos=>{
       this.Grupos=grupos;
     })
   }
+
+  
 
   handlerMessage = '';
   roleMessage = '';
@@ -181,11 +189,14 @@ export class UsuariosPage implements OnInit {
 
   //POPOVER GRUPO----------------------------------------------------------------------------------------------
   handlerGrupoEncargadoChange(e:any, user:any) {
-    let Grupo=e.detail.value;
-    //console.log(e.detail.value)
+    let GruposSelected=e.detail.value;
+    // let GruposPush:any[]=[];
+    
+  //   GruposSelected.forEach((grupo:any) => {
+  //     GruposPush.push(Number(grupo));
+  //  });
 
-    console.log(this.Users);
-    this.auth.SetFirestoreUser(user.uid,user.displayName, user.email, user.loginProvider,Grupo,user.administrador,user.admited,user.grupos);
+    this.auth.SetFirestoreUser(user.uid,user.displayName, user.email, user.loginProvider,user.grupo,user.administrador,user.admited,GruposSelected);
   }
 
 

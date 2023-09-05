@@ -1,14 +1,11 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { IonModal } from '@ionic/angular';
-import { OverlayEventDetail } from '@ionic/core/components';
-
+import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-reporte-regular',
-  templateUrl: './reporte-regular.page.html',
-  styleUrls: ['./reporte-regular.page.scss'],
+  selector: 'app-reporte-predicacion',
+  templateUrl: './reporte-predicacion.page.html',
+  styleUrls: ['./reporte-predicacion.page.scss'],
 })
-export class ReporteRegularPage implements OnInit {
+export class ReportePredicacionPage implements OnInit {
 
   isModalDatePickerOpen=false;
   Grupos=[
@@ -112,4 +109,5 @@ export class ReporteRegularPage implements OnInit {
   
 
   }
+
 }
