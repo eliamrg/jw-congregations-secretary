@@ -16,6 +16,7 @@ export class publicador {
     sexo:string|undefined;
     uid:string |undefined;
     isUser!:boolean;
+    //AGREGAR Activo, sordo, ciego, encarcelado cambiar esperanza en tarjeta
     
     constructor(id: string,nombre: string) {
         let date: Date = new Date();  ;

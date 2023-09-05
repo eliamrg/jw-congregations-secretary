@@ -162,15 +162,72 @@ export class FirestoreService {
     return randomWithinRange
     }
 
-  // async prueba(){
-  //   const q = query(collection(this.firestore, "Publicadores"));
   
-  //   const querySnapshot = await getDocs(q);
-  //   querySnapshot.forEach((doc) => {
-  //     // doc.data() is never undefined for query doc snapshots
-  //     console.log(doc.id, " => ", doc.data());
-  //   });
-  // }
+    //ASISTENCIA-------------------------------------------------------------------------------------
+
+
+    async setAsisteniaAnual(Anio:any,Asistencia:any){
+      await setDoc(doc(this.firestore, "Asistencia",Anio), {
+        Asistencia
+      },{merge:true});
+    }
+
+    async getAsistenciaAnual(Anio:any){
+      const docRef = doc(this.firestore, "Asistencia", Anio);
+      const docSnap = await getDoc(docRef);
+
+      if (docSnap.exists()) {
+        return docSnap.data();
+      } else {
+        return false
+      }
+
+    }
+
+
+    async setAsistenciaSemanal(Anio:any,Mes:any,Dia:any,entreSemana:any,finSemana:any){
+      
+      await setDoc(doc(this.firestore, "Asistencia/"+Anio+"/"+Mes, Dia), {
+        entreSemana:entreSemana,
+        finSemana: finSemana
+      },{merge:true});
+
+    }
+
+    async getAsistenciaSemanal(Anio:any,Mes:any,Dia:any){
+      const docRef = doc(this.firestore, "Asistencia/"+Anio+"/"+Mes, Dia);
+      const docSnap = await getDoc(docRef);
+
+      if (docSnap.exists()) {
+        return docSnap.data();
+      } else {
+        return false
+      }
+    
+
+    }
+
+    async getAsistenciaMensual(Anio:any,Mes:any){
+      const q = query(collection(this.firestore, "Asistencia/"+Anio+"/"+ Mes));
+
+      const querySnapshot = await getDocs(q);
+      let data:any={};
+      querySnapshot.forEach((doc) => {
+        let docid=doc.id;
+        let docData=doc.data();
+        
+        data[docid]=docData
+        
+      });
+    
+      return data;
+
+    }
+
+
+
+
+
 }
 
 

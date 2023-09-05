@@ -22,6 +22,8 @@
       <ion-card-subtitle>Registro de Asistencia</ion-card-subtitle>
       
     </ion-card-header>
+
+    <!-- <input type="month" id="start" name="start" min="2018-03" value="2018-05" /> -->
     <div *ngFor="let week of weeks">
 
       <ion-card-header>
@@ -32,17 +34,17 @@
         <ion-list>
 
           <ion-item>
-            <ion-input  label="Entre Semana" labelPlacement="stacked" placeholder="Asistencia" type="number"></ion-input>
+            <ion-input [(ngModel)]="week.entreSemana"  label="Entre Semana" labelPlacement="stacked" placeholder="Asistencia" type="number" inputmode="tel"></ion-input>
           </ion-item>
           <ion-item>
-            <ion-input label="Fin de Semana" labelPlacement="stacked" placeholder="Asistencia" type="number"></ion-input>
+            <ion-input [(ngModel)]="week.finSemana" label="Fin de Semana" labelPlacement="stacked" placeholder="Asistencia" type="number" inputmode="tel"></ion-input>
           </ion-item>
         </ion-list>
         
         <ion-grid>
           <ion-row class="ion-align-items-center">
             <ion-col class="ion-text-center">
-              <ion-button  fill="clear" style="font-weight: bold;"  >
+              <ion-button (click)="guardar(week.anio,week.mes,week.start,week.entreSemana,week.finSemana)"  fill="clear" style="font-weight: bold;"  >
                 Guardar
                 <ion-icon slot="start" name="checkmark-circle-outline"></ion-icon>
               </ion-button>

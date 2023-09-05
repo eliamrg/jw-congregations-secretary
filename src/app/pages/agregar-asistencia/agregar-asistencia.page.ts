@@ -1,7 +1,7 @@
 import { Component, OnInit,  ViewChild } from '@angular/core';
 import { IonModal } from '@ionic/angular';
 import { OverlayEventDetail } from '@ionic/core/components';
-import { AuthService } from 'src/app/services/Auth/auth.service';
+import { FirestoreService } from 'src/app/services/Firestore/firestore.service';
 
 
 @Component({
@@ -11,36 +11,75 @@ import { AuthService } from 'src/app/services/Auth/auth.service';
 })
 export class AgregarAsistenciaPage implements OnInit {
 
-  weeks: { start: number; end: number; }[] | undefined;
-  constructor(private auth:AuthService) { }
+  weeks: {anio:any; mes:any;start: number; end: number; entreSemana:any; finSemana:any }[] | undefined;
+  constructor(private firestore:FirestoreService) { }
   wheelDate:any;
   stringDate:any;
+  asistenciaAnual:any;
 
   async ngOnInit() {
-
-    this.wheelDate=new Date().toISOString();
+    let UTCDate=new Date();
+    UTCDate.setHours(UTCDate.getHours() + 6);
+    this.wheelDate=UTCDate.toISOString();
     this.showdate();
-    //this.weeks=this.getWeeksInMonth(2023,6);
-    // this.auth.getUserObservable("1FiAbMWfjYbq9EyY4lURxJRuGAA3").then(x=>{
-    //   console.log(x)
-    // });
+    
     
   }
+
+
+
+  guardar(anio:any,mes:any,start:any,entreSemana:any,finSemana:any){
+    
+
+    if(!((entreSemana==0 && finSemana==0) || (entreSemana==undefined && finSemana==undefined) || (entreSemana==null && finSemana==null))){
+      this.firestore.setAsistenciaSemanal(anio.toString(),mes.toString(),start.toString(),Number(entreSemana),Number(finSemana));
+      console.log(anio,mes,start,entreSemana,finSemana)
+    }
+    
+  }
+
+
+
+
 
 
 
   //DATEPICKER
   showdate(){
     let date=new Date(this.wheelDate);
+    console.log(date);
     let month=date.getMonth() +1;
     let year=date.getFullYear();
     let stringMonth=this.getMonthName(month);
     
     this.stringDate=(stringMonth + " " + year);
     this.weeks=this.getWeeksInMonth(year,month-1 );
-    //var date=this.wheelDate.getDate();
+
+    this.showAsistencia(date.getFullYear(),date.getMonth()+1);
     
     
+  }
+
+  async showAsistencia(anio:any,mes:any){
+    
+    //console.log(anio,mes)
+    this.firestore.getAsistenciaMensual(anio.toString(),mes.toString()).then(x=>{
+      this.weeks!.forEach((element:any,index:number) => {
+      
+        if(x[this.weeks![index]["start"]]!=undefined){
+          this.weeks![index]["entreSemana"]=x[this.weeks![index]["start"]]["entreSemana"];
+          this.weeks![index]["finSemana"]=x[this.weeks![index]["start"]]["finSemana"];
+        }
+      });
+    })
+
+    // await this.firestore.getAsistenciaSemanal("2023","9","4").then((x:any)=>{
+    //   console.log(x)
+    // });
+
+    
+
+     //console.log(this.weeks)
   }
 
   getWeeksInMonth(year:number, month:number) {
@@ -55,7 +94,7 @@ export class AgregarAsistenciaPage implements OnInit {
 
     // Get all the other Mondays in the month
     while (d.getMonth() === month) {
-        weeks.push({"start":d.getDate(),"end":d.getDate() + 6});
+        weeks.push({"anio":d.getFullYear(),"mes":d.getMonth()+1,"start":d.getDate(),"end":d.getDate() + 6, "entreSemana":undefined, "finSemana":undefined});
         d.setDate(d.getDate() + 7);
     }
 
@@ -74,7 +113,7 @@ export class AgregarAsistenciaPage implements OnInit {
   }
 
    getMonthName(monthNumber:number) {
-    const date = new Date();
+    const date = new Date(this.wheelDate);
     date.setMonth(monthNumber - 1);
   
     return date.toLocaleString('es-MX', { month: 'long' });
@@ -86,21 +125,12 @@ export class AgregarAsistenciaPage implements OnInit {
   @ViewChild(IonModal)
   modal!: IonModal;
 
-  message = 'This modal example uses triggers to automatically open a modal when the button is clicked.';
-  name: string | undefined;
-  cancel() {
-    this.modal.dismiss(null, 'cancel');
-  }
-
   confirm() {
-    this.modal.dismiss(this.name, 'confirm');
+    this.modal.dismiss("", 'confirm');
   }
 
   onWillDismiss(event: Event) {
-    const ev = event as CustomEvent<OverlayEventDetail<string>>;
-    if (ev.detail.role === 'confirm') {
-      this.message = `Hello, ${ev.detail.data}!`;
-    }
+    
   }
 
 

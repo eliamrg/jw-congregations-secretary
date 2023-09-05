@@ -67,11 +67,11 @@ const routes: Routes = [
   
   {
     path: 'reporte-predicacion',
-    loadChildren: () => import('./pages/reporte-predicacion/reporte-predicacion.module').then( m => m.ReportePredicacionPageModule)
+    loadChildren: () => import('./Reportes/reporte-predicacion/reporte-predicacion.module').then( m => m.ReportePredicacionPageModule)
   },
   {
     path: 'informe-anual',
-    loadChildren: () => import('./pages/informe-anual/informe-anual.module').then( m => m.InformeAnualPageModule)
+    loadChildren: () => import('./Reportes/informe-anual/informe-anual.module').then( m => m.InformeAnualPageModule)
   },
   {
     path: 'emergencia',
