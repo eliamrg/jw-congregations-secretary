@@ -35,7 +35,7 @@ export class IsAdmitedGuard implements CanActivate {
       })
       
       if(user.admited){
-        
+        localStorage.setItem("userData", JSON.stringify(user));
         return true;
       }
       else{

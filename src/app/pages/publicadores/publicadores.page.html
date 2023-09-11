@@ -61,9 +61,10 @@
             <img alt="Silhouette of a person's head" src="https://ionicframework.com/docs/img/demos/avatar.svg" />
           </ion-avatar>
           
-          <ion-label routerLink="/publicador/{{Publicador.id}}" style="font-size: large; cursor:pointer; "> 
+          <ion-label [ngStyle]=" Publicador.activo ? {'color': 'black'} : {'color': 'gray'}" routerLink="/publicador/{{Publicador.id}}" style="font-size: large; cursor:pointer; "> 
             {{Publicador.nombre}}
-            <p style="font-size: small; font-weight: lighter;">{{Publicador.nombramiento}}</p>
+            <p style="font-size: small; font-weight: lighter;">{{Publicador.nombramiento}}  <span *ngIf="!Publicador.activo"> Inactivo</span> </p>
+            
           </ion-label>
           
           
@@ -151,9 +152,9 @@
           <ion-input [(ngModel)]="PublicadorAgregar.celular" type="number" inputmode="tel" label="Teléfono Móvil" labelPlacement="stacked" placeholder="Ingresar Móvil"></ion-input>
         </ion-item>
 
-        <ion-item>
+        <!-- <ion-item>
           <ion-input [(ngModel)]="PublicadorAgregar.discapacidades" label="Discapacidades" labelPlacement="stacked" placeholder="Ingresar Discapacidades"></ion-input>
-        </ion-item>
+        </ion-item> -->
 
         
         <ion-item>
@@ -179,6 +180,23 @@
         </ion-radio-group>
       </div>
        
+      <H4>Discapacidades</H4>
+      <div style="padding-left: 10px; padding-top: 10px;">
+        <ion-checkbox [(ngModel)]="PublicadorAgregar.sordo" labelPlacement="end">Sordo</ion-checkbox>
+      </div>
+      
+      <div style="padding-left: 10px; padding-top: 10px;">
+        <ion-checkbox [(ngModel)]="PublicadorAgregar.ciego" labelPlacement="end">Ciego</ion-checkbox>
+      </div>
+
+      <div style="padding-left: 10px; padding-top: 10px;">
+        <ion-checkbox [(ngModel)]="PublicadorAgregar.encarcelado" labelPlacement="end">Encarcelado</ion-checkbox>
+      </div>
+      
+      <ion-item>
+        <ion-input [(ngModel)]="PublicadorAgregar.discapacidades" label="Otras Discapacidades" labelPlacement="stacked" placeholder="Ingresar otras Discapacidades"></ion-input>
+      </ion-item>
+
 
       <H4>Bautismo</H4>
       <div style="padding-left: 10px; padding-top: 10px;">
@@ -218,6 +236,11 @@
         <ion-radio labelPlacement="end" value="Siervo Ministerial">Siervo Ministerial</ion-radio><br />
         <ion-radio labelPlacement="end" value="Precursor Regular">Precursor Regular</ion-radio><br />
       </ion-radio-group>
+
+      <div style="padding-left: 10px; padding-top: 10px;">
+        <ion-checkbox [(ngModel)]="PublicadorAgregar.activo" labelPlacement="end">Publicador Activo</ion-checkbox>
+      </div>
+
 
       <ion-button *ngIf="!isEditing"  (click)="CrearPublicador()"  expand="block">Guardar</ion-button>
       <ion-button *ngIf="isEditing" color="warning"  (click)="EditarPublicador()"  expand="block">Editar</ion-button>

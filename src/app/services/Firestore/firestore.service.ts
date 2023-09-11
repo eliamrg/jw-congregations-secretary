@@ -31,7 +31,11 @@ export class FirestoreService {
       discapacidades:pub.discapacidades,
       sexo:pub.sexo,
       uid:pub.uid,
-      isUser:pub.isUser
+      isUser:pub.isUser,
+      activo:pub.activo,
+      sordo:pub.sordo,
+      ciego:pub.ciego,
+      encarcelado:pub.encarcelado,
     },{merge:true}).then(()=>console.log("Post Created"));
   }
 
@@ -85,7 +89,11 @@ export class FirestoreService {
       discapacidades:pub.discapacidades,
       sexo:pub.sexo,
       uid:pub.uid,
-      isUser:pub.isUser
+      isUser:pub.isUser,
+      activo:pub.activo,
+      sordo:pub.sordo,
+      ciego:pub.ciego,
+      encarcelado:pub.encarcelado,
     }
     return temp;
   }

@@ -32,7 +32,7 @@ export class IsAdminGuard implements CanActivate {
       
       
       if(user.administrador){
-        
+        localStorage.setItem("userData", JSON.stringify(user));
         return true;
       }
       else{
