@@ -5,6 +5,7 @@ export class publicador {
     telefono: string | undefined;
     celular: string | undefined;
     nacimiento: Date | undefined;
+    fechaPublicador: Date | undefined;
     bautizado!:boolean;
     bautismo: Date | undefined;
     esperanza: string | undefined;
@@ -29,6 +30,7 @@ export class publicador {
         this.telefono="";
         this.celular="";
         this.nacimiento= date;
+        this.fechaPublicador=date;
         this.bautizado=false;
         this.bautismo=date;
         this.esperanza="OtrasOvejas";

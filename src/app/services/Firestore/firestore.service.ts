@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Firestore, collection, deleteDoc, setDoc, doc, getDoc, query, where, getDocs, onSnapshot, orderBy } from '@angular/fire/firestore';
 import { publicador } from 'src/app/Classes/publicador';
 import { from } from 'rxjs';
+import { informe } from 'src/app/Classes/informe';
 
 @Injectable({
   providedIn: 'root'
@@ -21,6 +22,7 @@ export class FirestoreService {
       telefono: pub.telefono,
       celular: pub.celular,
       nacimiento: pub.nacimiento,
+      fechaPublicador: pub.fechaPublicador,
       bautizado:pub.bautizado,
       bautismo: pub.bautismo,
       esperanza:pub.esperanza,
@@ -66,7 +68,8 @@ export class FirestoreService {
     return gruposConPublicadores;
     
   }
-
+    
+  
   async BorrarPublicador(id:string){
     await deleteDoc(doc(this.firestore, "Publicadores", id));
   }
@@ -80,6 +83,7 @@ export class FirestoreService {
       celular:pub.celular,
       nacimiento: pub.nacimiento,
       bautizado:pub.bautizado,
+      fechapPublicador:pub.fechaPublicador,
       bautismo:pub.bautismo,
       esperanza:pub.esperanza,
       nombramiento:pub.nombramiento,
@@ -128,7 +132,7 @@ export class FirestoreService {
 
   async getGrupos(){
 
-    let Grupos:any=[{'Encargado':'No Asignado','Publicadores':[]}];
+    let Grupos:any=[{'Encargado':'No Asignado','Publicadores':[],'visible':false,}];
     //let grupo0: any[] =['0':{'Encargado':'No Asignado'}]
 
     const q = query(collection(this.firestore, "Grupos"));
@@ -154,6 +158,31 @@ export class FirestoreService {
     //console.log(Grupos);
     return Grupos;
   }
+
+
+  async getGruposSimplified(){
+
+    let Grupos:any=[{'Encargado':'No Asignado','Publicadores':[],'visible': false}];
+    //let grupo0: any[] =['0':{'Encargado':'No Asignado'}]
+
+    const q = query(collection(this.firestore, "Grupos"));
+
+    const querySnapshot = await getDocs(q);
+    querySnapshot.forEach((doc) => {
+      let data=doc.data();
+      let temp:any={
+        'Encargado':data['Encargado'],
+        'Publicadores':[],
+        'visible':true,
+      }
+      Grupos.push(temp);
+    
+    });
+
+    //console.log(Grupos);
+    return Grupos;
+  }
+
 
   async BorrarGrupo(id:string){
     await deleteDoc(doc(this.firestore, "Grupos", id));
@@ -231,6 +260,33 @@ export class FirestoreService {
       return data;
 
     }
+
+    //Informes-------------------------------------------------------------------------------------------------
+
+    async setInformeMes(Anio:any,Mes:any,Informe:any,Userid:any){
+      
+      await setDoc(doc(this.firestore, "Informes/"+Anio+"/"+Mes, Userid), {
+        Informe
+      },{merge:true});
+
+    }
+
+    async getInformeMes(){
+      let gruposConPublicadores:any= await this.getGruposSimplified();
+      const q = query(collection(this.firestore, "Publicadores"),orderBy("nombre","asc"));
+      //console.log(grupos[1])
+      const querySnapshot = await getDocs(q);
+      querySnapshot.forEach((doc) => {
+        const tempPub:any={
+          id:doc.data()["id"],
+          nombre:doc.data()["nombre"],
+          "informe":new informe(doc.data()["id"],doc.data()["nombre"])
+        }
+        tempPub.informe.grupo=doc.data()["grupo"]
+        gruposConPublicadores[doc.data()["grupo"]]["Publicadores"].push(tempPub)
+      });
+      return gruposConPublicadores;
+  }
 
 
 

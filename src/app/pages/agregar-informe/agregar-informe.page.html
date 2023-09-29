@@ -21,12 +21,12 @@
 
   <ion-list>
     <ion-item>
-      <ion-select aria-label="Grupos de Predicación" interface="popover" value="Todos">
-        <ion-select-option value="Todos">Todos los Grupos</ion-select-option>
-        <!-- <ion-select-option *ngFor="let number of [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]" value={{number}}  >Grupo {{number}}</ion-select-option> -->
-
-        
-        
+      <ion-select aria-label="Grupos de Predicación" (ionChange)="handlerVerGrupoChange($event)" interface="popover" value="Todos">
+        <ion-select-option value="Todos" >Todos los Grupos</ion-select-option>
+    
+        <div *ngFor="let grupo of InformesPorGrupo; let i = index">
+          <ion-select-option id="Filtro + {{i}}"  value="{{i}}"  *ngIf="i!=0"> Grupo {{i}}</ion-select-option>
+        </div>
       </ion-select>
     </ion-item>
   </ion-list>
@@ -78,127 +78,236 @@
 
     <div style="padding-left: 15px;"><ion-label  style="font-size: small;">En dispositivos móviles considerar rotación de pantalla</ion-label> </div>
     
-    
-
-    <div id="TABLAS " *ngFor=" let grupo of Grupos" style="padding-top: 15px;">
-      <ion-item-divider>
-        <ion-label> Grupo {{grupo.id}} <span style="font-size: small; color: Red;">Cambios sin guardar</span></ion-label>
-      </ion-item-divider>
-
-      <div class="table-responsive" >
-
-        <table mat-table style="background-color: transparent;" [dataSource]="dataSource" class="mat-elevation-z8">
-    
-          <!--- Note that these columns can be defined in any order.
-                The actual rendered columns are set as a property on the row definition" -->
-        
-          <!-- Position Column -->
-          <ng-container matColumnDef="position">
-            <th mat-header-cell *matHeaderCellDef> <ion-label color="dark">No.</ion-label> </th>
-            <td mat-cell *matCellDef="let element"> 
-              <ion-item color="none"  lines="none">
-                <ion-input  value="{{element.position}}" > </ion-input>
-              </ion-item>
-            </td>
-          </ng-container>
-        
-          <!-- Name Column -->
-          <ng-container matColumnDef="nombre">
-            <th mat-header-cell *matHeaderCellDef> <ion-label style="font-weight: bold;" color="dark">Nombre</ion-label> </th>
-            <td mat-cell *matCellDef="let element"> 
-              <ion-item class="ion-no-padding" color="none"  lines="none">
-                <p  style="font-size: small; font-weight: bold;" >{{element.nombre}} </p>
-              </ion-item>
-            </td>
-          </ng-container>
-        
-          <!-- hours Column -->
-          <ng-container matColumnDef="horas">
-            <th mat-header-cell *matHeaderCellDef> <ion-label style="font-weight: bold;" color="dark">Horas</ion-label> </th>
-            <td mat-cell *matCellDef="let element"> 
-              <ion-item class="ion-no-padding"  color="none"  lines="none">
-                <ion-input  [ngClass]="{ 'greyedOut':element.horas == 0 }"  [(ngModel)]="element.horas"  type="number" inputmode="tel" placeholder="Agregar"> </ion-input>
-                
-                <!-- <ion-input  value="{{element.horas}}"   type="number" inputmode="tel" placeholder="Agregar"> </ion-input> -->
-              </ion-item>   
-            </td>
-          </ng-container>
+    <div *ngFor="let grupo of InformesPorGrupo; let i = index">
   
-          <ng-container matColumnDef="publicaciones">
-            <th mat-header-cell *matHeaderCellDef> <ion-label style="font-weight: bold;" color="dark">Publicaciones</ion-label> </th>
-            <td mat-cell *matCellDef="let element"> 
-              <ion-item class="ion-no-padding"  color="none"  lines="none">
-                <ion-input  [ngClass]="{ 'greyedOut':element.publicaciones == 0 }"  [(ngModel)]="element.publicaciones" type="number" inputmode="tel" placeholder="Agregar"> </ion-input>
-              </ion-item>   
-            </td>
-          </ng-container>
+      <div  *ngIf="i!=0 && grupo.visible==true">
         
-          <!-- Symbol Column -->
-          <ng-container matColumnDef="videos">
-            <th mat-header-cell *matHeaderCellDef> <ion-label style="font-weight: bold;" color="dark">Videos</ion-label> </th>
-            <td mat-cell *matCellDef="let element"> 
-            
-              <ion-item class="ion-no-padding"  color="none"  lines="none">
-                <ion-input [ngClass]="{ 'greyedOut':element.videos == 0 }"  [(ngModel)]="element.videos" placeholder="Agregar" type="number" inputmode="tel"> </ion-input>
-              </ion-item>
-            </td>
-          </ng-container>
         
-          <ng-container matColumnDef="revisitas">
-            <th mat-header-cell *matHeaderCellDef> <ion-label style="font-weight: bold;" color="dark">Revisitas</ion-label> </th>
-            <td mat-cell *matCellDef="let element"> 
-             
-              <ion-item class="ion-no-padding"  color="none"  lines="none" >
-                <ion-input  [ngClass]="{ 'greyedOut':element.revisitas== 0 }"  [(ngModel)]="element.revisitas" placeholder="Agregar" type="number" inputmode="tel"> </ion-input>
-              </ion-item>
-            </td>
-          </ng-container>
-          <ng-container matColumnDef="cursos">
-            <th mat-header-cell *matHeaderCellDef> <ion-label style="font-weight: bold;" color="dark">Cursos</ion-label> </th>
-            <td mat-cell *matCellDef="let element"> 
-            
-              <ion-item class="ion-no-padding"  color="none"  lines="none">
-                <ion-input [ngClass]="{ 'greyedOut':element.cursos == 0 }"  [(ngModel)]="element.cursos" placeholder="Agregar" type="number" inputmode="tel"> </ion-input>
-              </ion-item>
-              
-            </td>
-          </ng-container>
-          <ng-container matColumnDef="observaciones">
-            <th mat-header-cell *matHeaderCellDef> <ion-label style="font-weight: bold;" color="dark">Observaciones</ion-label> </th>
-            <td mat-cell *matCellDef="let element"> 
-            
-              <ion-input [ngClass]="{ 'greyedOut':element.observaciones == '' }" style="min-width: 50px;" [(ngModel)]="element.ovservaciones" placeholder="Agregar Obs."  > </ion-input>
-              
-
-              <ion-item class="ion-no-padding">
-                <ion-select  
-                  placeholder="Seleccionar" value="publicador" okText="Aceptar" cancelText="Cancelar">
-                  <ion-select-option value="publicador">Publicador</ion-select-option>
-                  <ion-select-option value="auxiliar">Precursor Auxiliar</ion-select-option>
-                  <ion-select-option value="regular">Precursor Regular</ion-select-option>
-                  <ion-select-option value="especial">Precursor Especial</ion-select-option>
-                </ion-select>
-              </ion-item>
-
-              <!-- <ion-button fill="clear" slot="icon-only" ><ion-icon name="add-circle-outline"></ion-icon></ion-button> -->
-              
-            </td>
-          </ng-container>
+        <ion-card-header>
+          <ion-card-title>Grupo {{i}}</ion-card-title>
+         
+          
+        </ion-card-header>
+        <ion-card-content>
     
-          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-        </table>
+          <div class="table-responsive">
+            <table style="color: black;">
+              <thead>
+                <tr style="text-align: center;">
+                  
+                  <th>Publicador</th>
+                  <th>Horas</th>
+                  <th>Publicaciones</th>
+                  <th>Videos</th>
+                  <th>Revisitas</th>
+                  <th>Cursos</th>
+                  <th>Observaciones</th>
+                  <th>Servicio</th>
+                </tr>
+              </thead>
+              <tbody  *ngFor=" let Publicador of grupo.Publicadores; let indexPub = index">
+                <tr>
+                  <td>
+                    <ion-label style="font-weight: bold;">{{Publicador.nombre}}.</ion-label>
+                    
+                  </td>
+                  <td>
+                    <ion-item style="text-align: center;"  color="transparent"  lines="none">
+                      <ion-input [(ngModel)]="Publicador.informe.horas"    type="number" inputmode="tel" placeholder="Agregar"> </ion-input>
+                    </ion-item>
+                  </td>
+                  <td>
+                    <ion-item style="text-align: center;" class="ion-no-padding"  color="transparent"  lines="none">
+                      <ion-input [(ngModel)]="Publicador.informe.publicaciones"     type="number" inputmode="tel" placeholder="Agregar"> </ion-input>
+                    </ion-item>
+                  </td>
+                  <td>
+                    <ion-item style="text-align: center;" class="ion-no-padding"  color="transparent"  lines="none">
+                      <ion-input  [(ngModel)]="Publicador.informe.videos"   type="number" inputmode="tel" placeholder="Agregar"> </ion-input>
+                    </ion-item>
+                  </td>
+                  <td>
+                    <ion-item style="text-align: center;" class="ion-no-padding"  color="transparent"  lines="none">
+                      <ion-input  [(ngModel)]="Publicador.informe.revisitas"    type="number" inputmode="tel" placeholder="Agregar"> </ion-input>
+                    </ion-item>
+                  </td>
+                  <td>
+                    <ion-item style="text-align: center;" class="ion-no-padding"  color="transparent" lines="none" >
+                      <ion-input [(ngModel)]="Publicador.informe.cursos"    type="number" inputmode="tel" placeholder="Agregar"> </ion-input>
+                    </ion-item>
+                  </td>
+                  <td>
+                    <ion-item style="text-align: center;" class="ion-no-padding" color="transparent" lines="none"  >
+                      <ion-input  [(ngModel)]="Publicador.informe.observacion"    placeholder="Agregar"> </ion-input>
+                    </ion-item>
+                    
+                  </td>
+                  <td>
+                    <ion-item color="transparent" lines="none">
+                      <ion-select  
+                        placeholder="Seleccionar" value="publicador" okText="Aceptar" cancelText="Cancelar">
+                        <ion-select-option value="publicador">Publicador</ion-select-option>
+                        <ion-select-option value="auxiliar">Precursor Auxiliar</ion-select-option>
+                        <ion-select-option value="regular">Precursor Regular</ion-select-option>
+                        <ion-select-option value="especial">Precursor Especial</ion-select-option>
+                      </ion-select>
+                    </ion-item>
+                  </td>
+                  
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          
+    
+          <!-- <ion-list  *ngFor=" let Publicador of grupo.Publicadores; let indexPub = index">
+            <ion-item style="cursor:pointer;"  color="none" lines="none"  >
+              <ion-avatar routerLink="/publicador/{{Publicador.id}}" slot="start">
+                <img alt="Silhouette of a person's head" src="https://ionicframework.com/docs/img/demos/avatar.svg" />
+              </ion-avatar>
+              
+              <ion-label [ngStyle]=" Publicador.activo ? {'color': 'black'} : {'color': 'gray'}" routerLink="/publicador/{{Publicador.id}}" style="font-size: large; cursor:pointer; "> 
+                {{Publicador.nombre}}
+                <p style="font-size: small; font-weight: lighter;">{{Publicador.nombramiento}}  <span *ngIf="!Publicador.activo"> Inactivo</span> </p>
+                
+              </ion-label>
+              
+              
+            </ion-item>
+            
+          </ion-list> -->
+    
+          <!-- AGREGAR PUBLICADOR boton -->
+         
+        </ion-card-content>
+        
       </div>
     </div>
+
     
     
     
   </ion-card>
 
-  
-  
-  
 
-<ion-label style="padding: 15px; ">Girar en caso de utilizar dispositivo móvil</ion-label>
 
 </ion-content>
+
+
+
+
+
+
+
+
+
+
+<!-- 
+
+<div id="TABLAS " *ngFor=" let grupo of Grupos" style="padding-top: 15px;">
+  <ion-item-divider>
+    <ion-label> Grupo {{grupo.id}} <span style="font-size: small; color: Red;">Cambios sin guardar</span></ion-label>
+  </ion-item-divider>
+
+  <div class="table-responsive" >
+
+    <table mat-table style="background-color: transparent;" [dataSource]="dataSource" class="mat-elevation-z8">
+
+      
+    
+      
+      <ng-container matColumnDef="position">
+        <th mat-header-cell *matHeaderCellDef> <ion-label color="dark">No.</ion-label> </th>
+        <td mat-cell *matCellDef="let element"> 
+          <ion-item color="none"  lines="none">
+            <ion-input  value="{{element.position}}" > </ion-input>
+          </ion-item>
+        </td>
+      </ng-container>
+    
+     
+      <ng-container matColumnDef="nombre">
+        <th mat-header-cell *matHeaderCellDef> <ion-label style="font-weight: bold;" color="dark">Nombre</ion-label> </th>
+        <td mat-cell *matCellDef="let element"> 
+          <ion-item class="ion-no-padding" color="none"  lines="none">
+            <p  style="font-size: small; font-weight: bold;" >{{element.nombre}} </p>
+          </ion-item>
+        </td>
+      </ng-container>
+    
+      <ng-container matColumnDef="horas">
+        <th mat-header-cell *matHeaderCellDef> <ion-label style="font-weight: bold;" color="dark">Horas</ion-label> </th>
+        <td mat-cell *matCellDef="let element"> 
+          <ion-item class="ion-no-padding"  color="none"  lines="none">
+            <ion-input  [ngClass]="{ 'greyedOut':element.horas == 0 }"  [(ngModel)]="element.horas"  type="number" inputmode="tel" placeholder="Agregar"> </ion-input>
+            
+          </ion-item>   
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="publicaciones">
+        <th mat-header-cell *matHeaderCellDef> <ion-label style="font-weight: bold;" color="dark">Publicaciones</ion-label> </th>
+        <td mat-cell *matCellDef="let element"> 
+          <ion-item class="ion-no-padding"  color="none"  lines="none">
+            <ion-input  [ngClass]="{ 'greyedOut':element.publicaciones == 0 }"  [(ngModel)]="element.publicaciones" type="number" inputmode="tel" placeholder="Agregar"> </ion-input>
+          </ion-item>   
+        </td>
+      </ng-container>
+    
+      
+      <ng-container matColumnDef="videos">
+        <th mat-header-cell *matHeaderCellDef> <ion-label style="font-weight: bold;" color="dark">Videos</ion-label> </th>
+        <td mat-cell *matCellDef="let element"> 
+        
+          <ion-item class="ion-no-padding"  color="none"  lines="none">
+            <ion-input [ngClass]="{ 'greyedOut':element.videos == 0 }"  [(ngModel)]="element.videos" placeholder="Agregar" type="number" inputmode="tel"> </ion-input>
+          </ion-item>
+        </td>
+      </ng-container>
+    
+      <ng-container matColumnDef="revisitas">
+        <th mat-header-cell *matHeaderCellDef> <ion-label style="font-weight: bold;" color="dark">Revisitas</ion-label> </th>
+        <td mat-cell *matCellDef="let element"> 
+         
+          <ion-item class="ion-no-padding"  color="none"  lines="none" >
+            <ion-input  [ngClass]="{ 'greyedOut':element.revisitas== 0 }"  [(ngModel)]="element.revisitas" placeholder="Agregar" type="number" inputmode="tel"> </ion-input>
+          </ion-item>
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="cursos">
+        <th mat-header-cell *matHeaderCellDef> <ion-label style="font-weight: bold;" color="dark">Cursos</ion-label> </th>
+        <td mat-cell *matCellDef="let element"> 
+        
+          <ion-item class="ion-no-padding"  color="none"  lines="none">
+            <ion-input [ngClass]="{ 'greyedOut':element.cursos == 0 }"  [(ngModel)]="element.cursos" placeholder="Agregar" type="number" inputmode="tel"> </ion-input>
+          </ion-item>
+          
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="observaciones">
+        <th mat-header-cell *matHeaderCellDef> <ion-label style="font-weight: bold;" color="dark">Observaciones</ion-label> </th>
+        <td mat-cell *matCellDef="let element"> 
+        
+          <ion-input [ngClass]="{ 'greyedOut':element.observaciones == '' }" style="min-width: 50px;" [(ngModel)]="element.ovservaciones" placeholder="Agregar Obs."  > </ion-input>
+          
+
+          <ion-item class="ion-no-padding">
+            <ion-select  
+              placeholder="Seleccionar" value="publicador" okText="Aceptar" cancelText="Cancelar">
+              <ion-select-option value="publicador">Publicador</ion-select-option>
+              <ion-select-option value="auxiliar">Precursor Auxiliar</ion-select-option>
+              <ion-select-option value="regular">Precursor Regular</ion-select-option>
+              <ion-select-option value="especial">Precursor Especial</ion-select-option>
+            </ion-select>
+          </ion-item>
+
+          
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+  </div>
+</div> -->
+

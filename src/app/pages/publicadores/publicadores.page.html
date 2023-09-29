@@ -158,12 +158,24 @@
 
         
         <ion-item>
-          <ion-input label="Fecha de Nacimiento"  value="{{nacimiento | date: 'dd-MM-yyyy'}} "  readonly="true" labelPlacement="stacked" placeholder="Ingresar Móvil"></ion-input>
+          <ion-input label="Fecha de Nacimiento"  value="{{nacimiento | date: 'dd-MM-yyyy'}} "  readonly="true" labelPlacement="stacked" placeholder="Ingresar Nacimiento"></ion-input>
           <ion-button fill="clear" *ngIf="!mostrarNacimientoDTP" (click)="MostrarFechaNac(true)"> <ion-icon slot="icon-only" name="calendar-outline"></ion-icon> </ion-button>
           <ion-button  fill="clear" *ngIf="mostrarNacimientoDTP" (click)="MostrarFechaNac(false)"> <ion-icon slot="icon-only" name="checkmark-outline"></ion-icon> </ion-button>
         </ion-item>
         <ion-item  *ngIf="mostrarNacimientoDTP"   >
           <ion-datetime [(ngModel)]="nacimiento" locale="es-ES">
+            
+          </ion-datetime>
+        </ion-item>
+
+
+        <ion-item>
+          <ion-input label="Fecha de Publicador"  value="{{fechaPublicador | date: 'dd-MM-yyyy'}} "  readonly="true" labelPlacement="stacked" placeholder="Ingresar Fecha"></ion-input>
+          <ion-button fill="clear" *ngIf="!mostrarfechaPublicadorDTP" (click)="MostrarFechaPub(true)"> <ion-icon slot="icon-only" name="calendar-outline"></ion-icon> </ion-button>
+          <ion-button  fill="clear" *ngIf="mostrarfechaPublicadorDTP" (click)="MostrarFechaPub(false)"> <ion-icon slot="icon-only" name="checkmark-outline"></ion-icon> </ion-button>
+        </ion-item>
+        <ion-item  *ngIf="mostrarfechaPublicadorDTP"   >
+          <ion-datetime [(ngModel)]="fechaPublicador" locale="es-ES">
             
           </ion-datetime>
         </ion-item>

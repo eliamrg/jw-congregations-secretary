@@ -11,7 +11,7 @@ export class AppComponent implements OnInit{
   data:any={};
   ngOnInit(): void {
     this.data = localStorage.getItem("userData");
-    console.log("data: ", JSON.parse(this.data));
+    // console.log("data: ", JSON.parse(this.data));
   }
   constructor(private Auth: AuthService, private router: Router) {}
 
@@ -23,7 +23,7 @@ export class AppComponent implements OnInit{
     { title: 'Publicadores', url: '/publicadores', icon: 'man' },
     { title: 'Administrar Usuarios', url: '/usuarios', icon: 'person-circle' },
     { title: 'Configuración', url: '/configuracion', icon: 'settings' },
-    { title: 'Emergencia', url: '/emergencia', icon: 'alert-circle' },
+    //{ title: 'Emergencia', url: '/emergencia', icon: 'alert-circle' },
     
   ];
 

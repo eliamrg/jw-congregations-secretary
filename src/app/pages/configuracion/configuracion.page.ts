@@ -31,6 +31,9 @@ export class ConfiguracionPage implements OnInit {
     });
   }
 
+  CodigoFuente(){
+    window.location.href='https://github.com/eliamrg/jw-congregations-secretary';
+  }
   CambiarPassword(){
     this.isMensajeContrasenaOpen=true;
     console.log("Cambiar password: "+this.email)

@@ -26,9 +26,11 @@ export class PublicadoresPage implements OnInit {
   mostrarValidacion=false;
   mostrarNacimientoDTP=false;
   mostrarBautismoDTP=false;
+  mostrarfechaPublicadorDTP=false;
   
   bautismo:any;
   nacimiento:any;
+  fechaPublicador:any
 
 
 
@@ -38,6 +40,7 @@ export class PublicadoresPage implements OnInit {
     
     this.bautismo=new Date().toISOString();
     this.nacimiento=new Date().toISOString();
+    this.fechaPublicador=new Date().toISOString();
     
     await this.firestore.getPublicadoresPorGrupo().then(PUBS=>{
       this.PublicadoresPorGrupo=PUBS;
@@ -73,6 +76,7 @@ export class PublicadoresPage implements OnInit {
 
         this.PublicadorAgregar.nacimiento=this.nacimiento;
         this.PublicadorAgregar.bautismo=this.bautismo;
+        this.PublicadorAgregar.fechaPublicador=this.fechaPublicador
         console.log(this.PublicadorAgregar)
         this.firestore.CrearPublicador(this.PublicadorAgregar).then(()=>{
         this.mostrarValidacion=false;
@@ -112,6 +116,7 @@ export class PublicadoresPage implements OnInit {
     this.isEditing=true;
     this.PublicadorAgregar=this.publicadorEditar;
     this.nacimiento=this.PublicadorAgregar.nacimiento;
+    this.fechaPublicador=this.PublicadorAgregar.fechaPublicador;
     this.grupoAgregarPublicador=this.PublicadorAgregar.grupo!;
   }
 
@@ -301,6 +306,9 @@ popoverPublicadorId:any;
   // DATE PICKERS-----------------------------------------------------------------------------------
   MostrarFechaNac(vista:boolean){
     this.mostrarNacimientoDTP=vista;
+  }
+  MostrarFechaPub(vista:boolean){
+    this.mostrarfechaPublicadorDTP=vista;
   }
   MostrarFechaBau(vista:boolean){
     this.mostrarBautismoDTP=vista;
