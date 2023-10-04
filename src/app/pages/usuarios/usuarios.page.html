@@ -46,13 +46,15 @@
           <ion-row class="ion-padding">
             <ion-label  style="font-size: large; font-weight: bold;">Acceso a Grupo(s):</ion-label>
             
-            <ion-select  placeholder="Seleccionar"  okText="Aceptar" cancelText="Cancelar" [multiple]="true" [value]="this.Users[UserIndex].grupos" (ionChange)="handlerGrupoEncargadoChange($event,user)">
+            <ion-select *ngIf="!this.Users[UserIndex].administrador" placeholder="Seleccionar"  okText="Aceptar" cancelText="Cancelar" [multiple]="true" [value]="this.Users[UserIndex].grupos" (ionChange)="handlerGrupoEncargadoChange($event,user)">
               <div *ngFor="let grupo of Grupos; let i = index">
                 <ion-select-option value="{{i}}"  *ngIf="i!=0"> Grupo {{i}}</ion-select-option>
               </div>
             </ion-select>
-
+            
           </ion-row>
+          
+            <ion-label class="ion-padding" *ngIf="this.Users[UserIndex].administrador"   style="font-size: medium; ">Todos</ion-label>
         </ion-grid>
       </ion-card-content>
     </div>
