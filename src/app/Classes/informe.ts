@@ -1,29 +1,27 @@
 export class informe {
     nombre: string;
     idPublicador:string;
-    horas: number| null;
-    publicaciones:number| null;
-    videos: number| null;
-    revisitas:number| null;
-    cursos:number| null;
+    horas: number| undefined;
+    publicaciones:number| undefined;
+    videos: number| undefined;
+    revisitas:number| undefined;
+    cursos:number| undefined;
     observacion:string;
     servicio:string;
     grupo:number;
 
-
     constructor(idPublicador: string, nombre: string) {
       this.nombre = nombre;
       this.idPublicador=idPublicador;
-      this.horas=null;
-      this.publicaciones= null;
-      this.videos=null;
-      this.revisitas=null;
-      this.cursos=null;
+      this.horas=undefined;
+      this.publicaciones= undefined;
+      this.videos=undefined;
+      this.revisitas=undefined;
+      this.cursos=undefined;
       this.observacion="";
-      this.servicio="Publicador";
+      this.servicio="publicador";
       this.grupo=0;
     }
-
   }
   
   

@@ -1,28 +1,8 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { IonModal } from '@ionic/angular';
+import { IonModal, LoadingController } from '@ionic/angular';
 import { OverlayEventDetail } from '@ionic/core/components';
 import { informe } from 'src/app/Classes/informe';
 import { FirestoreService } from 'src/app/services/Firestore/firestore.service';
-
-
-
-
-
-// const ELEMENT_DATA: informe[] = [
-//   {position: 1, nombre: 'Santiago Eliam Ramirez Garcia', horas: null, publicaciones: null,videos: null, revisitas: null, cursos: null,observacion:"", grupo:0},
-//   {position: 2, nombre: 'Eliezer Cruz Del Angel', horas: null, publicaciones: null,videos: null, revisitas: null, cursos: null, observacion:"", grupo:0},
-//   {position: 3, nombre: 'Rolando Ramirez Hernandez', horas: null, publicaciones: null,videos: null, revisitas: null, cursos: null, observacion:"", grupo:0},
-//   {position: 4, nombre: 'Angel Antonio Garza', horas: null, publicaciones: null,videos: null, revisitas: null, cursos: null, observacion:"", grupo:0},
-//   {position: 5, nombre: 'Eber Daniel Carrizales Jacobo', horas: null, publicaciones: null,videos: null, revisitas: null, cursos: null, observacion:"", grupo:0},
-//   {position: 6, nombre: 'Jaziel Cisneros Gallegos', horas: null, publicaciones: null,videos: null, revisitas: null, cursos: null, observacion:"", grupo:0},
-//   {position: 7, nombre: 'Jesus Beningno Vera', horas: null, publicaciones: null,videos: null, revisitas: null, cursos: null, observacion:"", grupo:0},
-//   {position: 8, nombre: 'Miguel Nuñez Soriano', horas: null, publicaciones: null,videos: null, revisitas: null, cursos: null, observacion:"", grupo:0},
-//   {position: 9, nombre: 'Brayan Gutierrez Covarrubias', horas: null, publicaciones: null,videos: null, revisitas: null, cursos: null, observacion:"", grupo:0},
-//   {position: 10, nombre: 'Gumercindo Nuñez ApellidoM', horas: null, publicaciones: null,videos: null, revisitas: null, cursos: null, observacion:"", grupo:0},
-// ];
-
-
-
 
 @Component({
   selector: 'app-agregar-informe',
@@ -31,39 +11,60 @@ import { FirestoreService } from 'src/app/services/Firestore/firestore.service';
   
 })
 
-
-
-
 export class AgregarInformePage implements OnInit {
 
-  constructor(private firestore: FirestoreService) { }
+  constructor(private firestore: FirestoreService,private loadingCtrl: LoadingController) { }
 
   InformesPorGrupo:any;
- 
+  SelectedMonth:any;
+  SelectedYear:any;
+  userPrivs:any
   
 
-
- 
   async ngOnInit() {
-    await this.firestore.getInformeMes().then(x=>{
-      console.log(x)
-      this.InformesPorGrupo=x;
-    })
+    
     var today=new Date();
-    var currentMonth=today.getMonth();
+    this.SelectedMonth=today.getMonth();
+    this.SelectedYear=today.getFullYear();
     today.setMonth(today.getMonth()-1);
     this.wheelDate=today.toISOString();
-    this.showdate();
+    this.showdate();//AQUI SE CARGAN INFORMES
+
+    this.userPrivs = JSON.parse(localStorage.getItem("userData")!);
+    
+    
   }
 
+  async ObtenerInformesDeFecha(){
+    const loading = await this.loadingCtrl.create({
+      message: 'Cargando Informes...',
+      duration:1500
+    });
+    loading.present();
+
+    await this.firestore.getInformeMes(this.SelectedYear,this.SelectedMonth).then(x=>{
+      //console.log(x)
+      this.InformesPorGrupo=x;
+    })
+    
+  }
+
+  async GuardarInforme(Grupo:any){
+    const loadingiNFORME = await this.loadingCtrl.create({
+      message: 'Guardando Informes...',
+      duration:1200
+    });
+    loadingiNFORME.present();
+    let InformesGrupoSeleccionado=this.InformesPorGrupo[Number(Grupo)].Publicadores;
+    InformesGrupoSeleccionado.forEach(async (publicador:any) => {
+      let temp= publicador.informe;
+      console.log(this.SelectedYear,this.SelectedMonth,temp);
 
 
-
-
-  //TABLE
-  // displayedColumns: string[] = [ 'nombre', 'horas', 'publicaciones',"videos","revisitas","cursos","observaciones"];
-  // dataSource = ELEMENT_DATA;
-
+      await this.firestore.setInformeMes(this.SelectedYear,this.SelectedMonth,temp,temp.idPublicador)
+    });
+    
+  }
 
 
 
@@ -73,13 +74,16 @@ export class AgregarInformePage implements OnInit {
   showdate(){
     let date=new Date(this.wheelDate);
     let month=date.getMonth() +1;
+    this.SelectedMonth=month;
+    
     let year=date.getFullYear();
+    this.SelectedYear=year;
     let stringMonth=this.getMonthName(month);
     
     this.stringDate=(stringMonth + " " + year);
     //this.weeks=this.getWeeksInMonth(year,month-1 );
     //var date=this.wheelDate.getDate();
-    
+    this.ObtenerInformesDeFecha();
     
   }
 
@@ -118,12 +122,24 @@ export class AgregarInformePage implements OnInit {
     let seleccion=e.detail.value;
 
     if(seleccion=='Todos'){
-      this.InformesPorGrupo.forEach((element: any,index:number) => {
-        // console.log(index,element);
-        this.InformesPorGrupo[index].visible=true;
-      });
+      if (this.userPrivs.administrador){
+        this.InformesPorGrupo.forEach((element: any,index:number) => {
+          // console.log(index,element);
+          this.InformesPorGrupo[index].visible=true;
+        });
+      }
+      else{
+        this.InformesPorGrupo.forEach((element: any,index:number) => {
+          if(index!=0){
+            //console.log(index,element);
+            this.InformesPorGrupo[index].visible=this.userPrivs.grupos.includes(index.toString());
+          }
+        });
+      }
+      
     }
     else{
+      
       this.InformesPorGrupo.forEach((element: any,index:number) => {
         // console.log(index,element);
         this.InformesPorGrupo[index].visible=false;
@@ -132,6 +148,8 @@ export class AgregarInformePage implements OnInit {
     }
   }
 
+ 
 
+  
 
 }

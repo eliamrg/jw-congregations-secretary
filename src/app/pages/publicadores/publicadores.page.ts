@@ -19,6 +19,7 @@ export class PublicadoresPage implements OnInit {
   isAlertEliminarPublicadorOpen=false;
   isAlertEliminarGrupoValidacionOpen=false;
   isAlertEncargadoOpen=false;
+  isAlertAuxiliarOpen=false;
   publicadorEditar=new publicador(this.firestore.getRandomNumber(0,9999).toString(),"");
   indexPubEditando=0;
   grupoEditando=0;
@@ -289,8 +290,8 @@ popoverPublicadorId:any;
       text: 'Aceptar',
       role: 'confirm',
       handler: () => {
-        //console.log(this.publicadorEditar.grupo,this.publicadorEditar.nombre,this.publicadorEditar.id)
-        this.firestore.EditarGrupo(this.publicadorEditar.grupo,this.publicadorEditar.nombre,this.publicadorEditar.id)
+        //console.log(this.publicadorEditar.grupo,this.publicadorEditar.nombre,this.publicadorEditar.id,this.PublicadoresPorGrupo[this.publicadorEditar.grupo!]["Auxiliar"]|| "No Asignado")
+        this.firestore.EditarGrupo(this.publicadorEditar.grupo,this.publicadorEditar.nombre,this.publicadorEditar.id,this.PublicadoresPorGrupo[this.publicadorEditar.grupo!]["Auxiliar"] || "No Asignado")
         this.PublicadoresPorGrupo[this.publicadorEditar.grupo!].Encargado=this.publicadorEditar.nombre;
         this.PublicadoresPorGrupo[this.publicadorEditar.grupo!].idEncargado=this.publicadorEditar.id;
       },
@@ -302,6 +303,31 @@ popoverPublicadorId:any;
     this.isAlertEncargadoOpen=show;
 
   }
+
+
+   //CAMBIO DE AUXILIAR----------------------------------------------------------------------------------
+
+   public alertButtonsAuxiliar = [
+    {
+      text: 'Aceptar',
+      role: 'confirm',
+      handler: async () => {
+        let idEncargado=await this.PublicadoresPorGrupo[this.publicadorEditar.grupo!].idEncargado;
+        let NombreEncargado=this.PublicadoresPorGrupo[this.publicadorEditar.grupo!]["Encargado"];
+        //console.log(this.publicadorEditar.grupo,NombreEncargado,idEncargado,this.publicadorEditar.nombre)
+        this.firestore.EditarGrupo(this.publicadorEditar.grupo,NombreEncargado,idEncargado,this.publicadorEditar.nombre)
+        this.PublicadoresPorGrupo[this.publicadorEditar.grupo!].Auxiliar=this.publicadorEditar.nombre;
+        
+      },
+    },
+  ];
+  
+  alertAuxiliarShow(show:boolean){
+    
+    this.isAlertAuxiliarOpen=show;
+
+  }
+
 
   // DATE PICKERS-----------------------------------------------------------------------------------
   MostrarFechaNac(vista:boolean){

@@ -10,7 +10,7 @@ import { informe } from 'src/app/Classes/informe';
 export class FirestoreService {
 
   constructor(public firestore:Firestore) { }
-
+  userPrivs:any;
   //PUBLICADORES--------------------------------------------------------------------------------------------------
 
   async CrearPublicador(pub: publicador){ //AL CREAR PASAR EL ID
@@ -27,6 +27,7 @@ export class FirestoreService {
       bautismo: pub.bautismo,
       esperanza:pub.esperanza,
       nombramiento: pub.nombramiento,
+      precursor: pub.precursor,
       grupo: pub.grupo,
       acomodador:false,
       sonido: false,
@@ -38,7 +39,7 @@ export class FirestoreService {
       sordo:pub.sordo,
       ciego:pub.ciego,
       encarcelado:pub.encarcelado,
-    },{merge:true}).then(()=>console.log("Post Created"));
+    },{merge:true}).then(()=>console.log("Publicador Created"));
   }
 
   async getPublicador(id:string){
@@ -56,7 +57,7 @@ export class FirestoreService {
   async getPublicadoresPorGrupo(){
     
     let gruposConPublicadores:any= await this.getGrupos();
-    let pubs:any=[];
+    //console.log(gruposConPublicadores)
     const q = query(collection(this.firestore, "Publicadores"),orderBy("nombre","asc"));
   
     //console.log(grupos[1])
@@ -83,10 +84,11 @@ export class FirestoreService {
       celular:pub.celular,
       nacimiento: pub.nacimiento,
       bautizado:pub.bautizado,
-      fechapPublicador:pub.fechaPublicador,
+      fechaPublicador:pub.fechaPublicador,
       bautismo:pub.bautismo,
       esperanza:pub.esperanza,
       nombramiento:pub.nombramiento,
+      precursor:pub.precursor,
       grupo:pub.grupo,
       acomodador:pub.acomodador,
       sonido:pub.sonido,
@@ -109,23 +111,22 @@ export class FirestoreService {
   
   async CrearGrupo(id:any){
     await setDoc(doc(this.firestore, "Grupos", id), {
-      id:id,
+      id:Number(id),
       Encargado: "No Asignado",
+      Auxiliar: "No Asignado",
       IdEncargado: 0,
-      
-      
     },{merge:true});
   }
 
 
-  async EditarGrupo(id:any,Encargado:any,idEncargado:any ){
+  async EditarGrupo(id:any,Encargado:any, idEncargado:any, Auxiliar:any ){
     
     //console.log(id,Encargado,idEncargado)
     await setDoc(doc(this.firestore, "Grupos", id.toString()), {
-      id:id,
+      id:Number(id),
       Encargado: Encargado,
+      Auxiliar: Auxiliar,
       IdEncargado: idEncargado
-
     },{merge:true});
   }
 
@@ -135,20 +136,26 @@ export class FirestoreService {
     let Grupos:any=[{'Encargado':'No Asignado','Publicadores':[],'visible':false,}];
     //let grupo0: any[] =['0':{'Encargado':'No Asignado'}]
 
-    const q = query(collection(this.firestore, "Grupos"));
+    const q = query(collection(this.firestore, "Grupos"),orderBy("id","asc"));
 
     const querySnapshot = await getDocs(q);
     querySnapshot.forEach((doc) => {
       
       let data=doc.data();
-
+      this.userPrivs = JSON.parse(localStorage.getItem("userData")!);
       let temp:any={
         
         'Encargado':data['Encargado'],
+        'Auxiliar':data['Auxiliar'],
         'email':data['email'],
-        'idEncargado':data['idEncargado'],
+        'idEncargado':data['IdEncargado'],
         'Publicadores':[],
         'visible':true,
+        'permitido':true,
+      }
+      if (!this.userPrivs.administrador){
+        temp['visible']=this.userPrivs.grupos.includes(doc.id);
+        temp['permitido']=this.userPrivs.grupos.includes(doc.id);
       }
       
       Grupos.push(temp);
@@ -165,15 +172,24 @@ export class FirestoreService {
     let Grupos:any=[{'Encargado':'No Asignado','Publicadores':[],'visible': false}];
     //let grupo0: any[] =['0':{'Encargado':'No Asignado'}]
 
-    const q = query(collection(this.firestore, "Grupos"));
+    const q = query(collection(this.firestore, "Grupos"),orderBy("id","asc"));
+
+    this.userPrivs = JSON.parse(localStorage.getItem("userData")!);
+    
 
     const querySnapshot = await getDocs(q);
     querySnapshot.forEach((doc) => {
       let data=doc.data();
       let temp:any={
         'Encargado':data['Encargado'],
+        'Auxiliar':data['Auxiliar'],
         'Publicadores':[],
         'visible':true,
+        'permitido':true,
+      }
+      if (!this.userPrivs.administrador){
+        temp['visible']=this.userPrivs.grupos.includes(doc.id);
+        temp['permitido']=this.userPrivs.grupos.includes(doc.id);
       }
       Grupos.push(temp);
     
@@ -266,25 +282,51 @@ export class FirestoreService {
     async setInformeMes(Anio:any,Mes:any,Informe:any,Userid:any){
       
       await setDoc(doc(this.firestore, "Informes/"+Anio+"/"+Mes, Userid), {
-        Informe
+        nombre: Informe.nombre,
+        idPublicador:Informe.idPublicador,
+        horas: Informe.horas ||null,
+        publicaciones:Informe.publicaciones||null,
+        videos: Informe.videos||null,
+        revisitas:Informe.revisitas||null,
+        cursos:Informe.cursos||null,
+        observacion:Informe.observacion||"",
+        servicio:Informe.servicio,
+        grupo:Informe.grupo 
       },{merge:true});
 
     }
 
-    async getInformeMes(){
+    async getInformeMes(Anio:any,Mes:any){
       let gruposConPublicadores:any= await this.getGruposSimplified();
       const q = query(collection(this.firestore, "Publicadores"),orderBy("nombre","asc"));
       //console.log(grupos[1])
       const querySnapshot = await getDocs(q);
-      querySnapshot.forEach((doc) => {
-        const tempPub:any={
-          id:doc.data()["id"],
-          nombre:doc.data()["nombre"],
-          "informe":new informe(doc.data()["id"],doc.data()["nombre"])
+
+      querySnapshot.forEach(async (document) => {
+
+        let informePub:any=new informe(document.data()["id"],document.data()["nombre"]);
+        //obtener informe
+        const InformeSnap = await getDoc(doc(this.firestore, "Informes/"+Anio+"/"+Mes, document.data()["id"]))
+        
+        
+        if (InformeSnap.exists()) {
+          informePub= InformeSnap.data();
+          //console.log(InformeSnap.data())
         }
-        tempPub.informe.grupo=doc.data()["grupo"]
-        gruposConPublicadores[doc.data()["grupo"]]["Publicadores"].push(tempPub)
+        const tempPub:any={
+          id:document.data()["id"],
+          nombre:document.data()["nombre"],
+          precursor:document.data()["precursor"],
+          "informe":informePub
+        }
+
+        if(tempPub.precursor=="regular" || tempPub.precursor=="especial" ){
+          tempPub.informe.servicio=tempPub.precursor;
+        } 
+        tempPub.informe.grupo=document.data()["grupo"]
+        gruposConPublicadores[document.data()["grupo"]]["Publicadores"].push(tempPub)
       });
+      console.log(gruposConPublicadores)
       return gruposConPublicadores;
   }
 

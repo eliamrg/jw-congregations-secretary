@@ -26,8 +26,8 @@
 
   <ion-list>
     <ion-item>
-      <ion-select aria-label="Grupos de Predicación" (ionChange)="handlerVerGrupoChange($event)" interface="popover" value="Todos">
-        <ion-select-option value="Todos" >Todos los Grupos</ion-select-option>
+      <ion-select aria-label="Grupos de Predicación" (ionChange)="handlerVerGrupoChange($event)" okText="Aceptar" cancelText="Cancelar" value="Todos">
+        <ion-select-option value="Todos" >Todos mis Grupos</ion-select-option>
     
         <div *ngFor="let grupo of PublicadoresPorGrupo; let i = index">
           <ion-select-option id="Filtro + {{i}}"  value="{{i}}"  *ngIf="i!=0"> Grupo {{i}}</ion-select-option>
@@ -48,7 +48,9 @@
     
     <ion-card-header>
       <ion-card-title>Grupo {{i}}</ion-card-title>
+      <ion-card-subtitle style="font-size: x-small;">Auxiliar: {{grupo.Auxiliar}}</ion-card-subtitle>
       <ion-card-subtitle>Encargado: {{grupo.Encargado}}</ion-card-subtitle>
+      
       
     </ion-card-header>
     <ion-card-content>
@@ -56,14 +58,17 @@
       <!-- PUBLICADORES -->
 
       <ion-list  *ngFor=" let Publicador of grupo.Publicadores; let indexPub = index">
-        <ion-item style="cursor:pointer;"  color="none" lines="none"  >
-          <ion-avatar routerLink="/publicador/{{Publicador.id}}" slot="start">
+        <ion-item style="cursor:pointer;"  >
+          <!-- <ion-avatar routerLink="/publicador/{{Publicador.id}}" slot="start"> -->
+          <ion-avatar (click)="presentPopover($event,Publicador,indexPub)" slot="start">
             <img alt="Silhouette of a person's head" src="https://ionicframework.com/docs/img/demos/avatar.svg" />
           </ion-avatar>
-          
-          <ion-label [ngStyle]=" Publicador.activo ? {'color': 'black'} : {'color': 'gray'}" routerLink="/publicador/{{Publicador.id}}" style="font-size: large; cursor:pointer; "> 
+          <div >
+
+          </div>
+          <ion-label [ngStyle]=" Publicador.activo ? {'color': 'black'} : {'color': 'gray'} || Publicador.nombramiento=='Anciano' && {'font-weight': 'bold'} || Publicador.nombramiento=='Siervo Ministerial' && {'font-weight': 'bold'} " routerLink="/publicador/{{Publicador.id}}" style="font-size: large; cursor:pointer; "> 
             {{Publicador.nombre}}
-            <p style="font-size: small; font-weight: lighter;">{{Publicador.nombramiento}}  <span *ngIf="!Publicador.activo"> Inactivo</span> </p>
+            <p style="color: black; font-size: small; font-weight: lighter;">{{Publicador.nombramiento}}  <span *ngIf="!Publicador.activo"> Inactivo</span> </p>
             
           </ion-label>
           
@@ -97,13 +102,16 @@
         <ion-item [button]="true" [detail]="false" routerLink="/publicador/{{publicadorEditar.id}}">Ver Tarjeta</ion-item>
         <ion-item (click)="PresentEditarPublicador()" [button]="true" [detail]="false">Editar Publicador</ion-item>
         <ion-item (click)="alertEncargadoShow(true)" [button]="true" [detail]="false">Establecer como Encargado</ion-item>
+        <ion-item (click)="alertAuxiliarShow(true)" [button]="true" [detail]="false">Establecer como Auxiliar</ion-item>
         <!-- <ion-item [button]="true" [detail]="false">Cambiar de Grupo</ion-item> -->
-        <ion-item  (click)="alertEliminarPublicadorShow(true)" [button]="true" [detail]="false">
-          <!-- <ion-button fill="clear" color="danger" id="present-alert-eliminar" (click)="alertEliminarShow(true)" > Eliminar</ion-button> -->
+        
+        <!-- BOTON PARA ELIMINAR DESHABILITADO TEMPORALMENTE -->
+        
+        <!-- <ion-item  (click)="alertEliminarPublicadorShow(true)" [button]="true" [detail]="false">
           <ion-label color="danger">
             Eliminar
           </ion-label>
-        </ion-item>
+        </ion-item> -->
       </ion-list>
     </ion-content>
   </ng-template>
@@ -123,6 +131,7 @@
     </ion-header>
     <ion-content mode="ios" class="ion-padding">
 
+      <ion-label color="medium" >Recuerde Guardar los Cambios</ion-label>
       <H4>Grupo</H4>
       <ion-list>
         <ion-item>
@@ -246,8 +255,16 @@
         <ion-radio labelPlacement="end" value="Publicador">Ninguno</ion-radio><br />
         <ion-radio labelPlacement="end" value="Anciano">Anciano de Congregación</ion-radio><br />
         <ion-radio labelPlacement="end" value="Siervo Ministerial">Siervo Ministerial</ion-radio><br />
-        <ion-radio labelPlacement="end" value="Precursor Regular">Precursor Regular</ion-radio><br />
+        <!-- <ion-radio labelPlacement="end" value="Precursor Regular">Precursor Regular</ion-radio><br /> -->
       </ion-radio-group>
+
+      <H4>Precursor</H4><!--***************************************************************************************-->
+      <ion-radio-group [allowEmptySelection]="false" [(ngModel)]="PublicadorAgregar.precursor">
+        <ion-radio labelPlacement="end" value="no">No</ion-radio><br />
+        <ion-radio labelPlacement="end" value="regular">Precursor Regular</ion-radio><br />
+        <ion-radio labelPlacement="end" value="especial">Precursor Especial</ion-radio><br />
+        
+        </ion-radio-group>
 
       <div style="padding-left: 10px; padding-top: 10px;">
         <ion-checkbox [(ngModel)]="PublicadorAgregar.activo" labelPlacement="end">Publicador Activo</ion-checkbox>
@@ -255,7 +272,7 @@
 
 
       <ion-button *ngIf="!isEditing"  (click)="CrearPublicador()"  expand="block">Guardar</ion-button>
-      <ion-button *ngIf="isEditing" color="warning"  (click)="EditarPublicador()"  expand="block">Editar</ion-button>
+      <ion-button *ngIf="isEditing" color="warning"  (click)="EditarPublicador()"  expand="block">Guardar Cambios</ion-button>
 
       <ion-label *ngIf="!PublicadorAgregar.nombre" style="font-size: small; color: red;">Al menos el nombre es Requerido.</ion-label>
 
@@ -306,6 +323,14 @@
     subHeader="Esta función solo sirve para establecer la etiqueta de Encargado, para establecer los permisos de edición vaya a la sección Usuarios, y otorgue permisos al usuario"
     [buttons]="alertButtonsEncargado"
     (didDismiss)="alertEncargadoShow(false)"
+    >
+</ion-alert>
+<ion-alert 
+    [isOpen]="isAlertAuxiliarOpen"
+    header="Cambio de Etiqueta de Auxiliar"
+    subHeader="Esta función solo sirve para establecer la etiqueta de Auxiliar, para establecer los permisos de edición vaya a la sección Usuarios, y otorgue permisos al usuario"
+    [buttons]="alertButtonsAuxiliar"
+    (didDismiss)="alertAuxiliarShow(false)"
     >
 </ion-alert>
 

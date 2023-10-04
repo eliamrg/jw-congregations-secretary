@@ -9,9 +9,9 @@ export interface PeriodicElement {
   mes: string;
   publicaciones:number;
   position: number;
-  horas: number;
-  videos: number;
-  revisitas:number;
+  horas: number |null;
+  videos: number |null;
+  revisitas:number |null;
   cursos:number;
   observaciones:string;
 }

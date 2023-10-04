@@ -10,6 +10,7 @@ export class publicador {
     bautismo: Date | undefined;
     esperanza: string | undefined;
     nombramiento: string | undefined;
+    precursor: string | undefined;
     grupo: number | undefined;
     acomodador!: boolean;
     sonido!: boolean;
@@ -35,6 +36,7 @@ export class publicador {
         this.bautismo=date;
         this.esperanza="OtrasOvejas";
         this.nombramiento="Publicador";
+        this.precursor="no";
         this.grupo=1;
         this.acomodador=false;
         this.sonido=false;
