@@ -18,7 +18,7 @@
       <ion-label position="stacked">Contraseña:</ion-label>
       <ion-input aria-label="Contraseña" type="password" placeholder="Tu Contraseña" formControlName="password"></ion-input>
     </ion-item>
-    <ion-label routerLink="#" class="forgot-password-link">Olvidaste tu contraseña?</ion-label>
+    <ion-label (click)="AbrirModalCambiarContrasena(true)" class="forgot-password-link">Olvidaste tu contraseña?</ion-label>
 
     <ion-button type="submit" >Ingresar</ion-button>
     <br>
@@ -38,7 +38,7 @@
 
 
 
-  <ion-modal [isOpen]="isModalOpen">
+  <ion-modal [isOpen]="isModalOpen"  (willDismiss)="setOpen(false)">
     <ng-template>
       <ion-header>
         <ion-toolbar>
@@ -76,5 +76,70 @@
     </ng-template>
   </ion-modal>
 
+
+  <ion-modal [isOpen]="isModalContrasenaOpen" (willDismiss)="AbrirModalCambiarContrasena(false)">
+    <ng-template>
+      <ion-toolbar>
+        <ion-title>Olvidaste tu Contraseña?</ion-title>
+        <ion-buttons slot="end">
+          <ion-button color="danger" (click)="AbrirModalCambiarContrasena(false)">Cancelar</ion-button>
+        </ion-buttons>
+      </ion-toolbar>
+      <ion-content class="ion-padding">
+
+        <ion-card>
+          <ion-card-header>
+            <ion-card-title>Cambio de Contraseña</ion-card-title>
+            
+          </ion-card-header>
+        
+          <ion-card-content>
+
+            <ion-label> 
+              Ingrese su dirección de correo electrónico, 
+              y si su cuenta existe se le enviará un correo con un enlace (link) 
+              para ingresar una contraseña nueva.
+            </ion-label>
+
+            <ion-item >
+              <ion-label  position="stacked">Correo Electrónico:</ion-label>
+              <ion-input [(ngModel)]="CorreoCambiarContrasena" aria-label="Correo" (input)="setEmail($event)" [value]="email" type="email" placeholder="ejemplo@correo.com"></ion-input>
+    
+            </ion-item>
+            <ion-grid>
+              <ion-row class="ion-align-items-center">
+                <ion-col class="ion-text-center">
+                  <ion-button (click)="CambiarContrasena()"  fill="clear" style="font-weight: bold;"  >
+                    Enviar Correo Electrónico
+                    <ion-icon slot="start" name="paper-plane-outline"></ion-icon>
+                  </ion-button>
+                </ion-col>
+              </ion-row>
+            </ion-grid>
+
+            <ion-label> 
+              Después de ser enviado favor de revisar su buzón de correo electrónico,
+              en caso de no encontrarlo verificar su buzón de SPAM o correo no deseado
+            </ion-label>
+          </ion-card-content>
+        </ion-card>
+
+        <br><br>
+
+        <ion-card color="warning"  *ngIf="IsCorreoEnviado">
+          <ion-card-header class="ion-padding">
+            <ion-card-title>Correo Enviado</ion-card-title>
+            
+          </ion-card-header>
+        
+          <ion-card-content style="padding: 6px;">
+            Revise su correo electrónico, una vez cambiada la contraseña podrá iniciar sesión con correo y su nueva contraseña
+          </ion-card-content>
+        </ion-card>
+      </ion-content>
+      
+      
+    </ng-template>
+  </ion-modal>
 
 </ion-content>

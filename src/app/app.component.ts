@@ -9,9 +9,12 @@ import { Router } from '@angular/router';
 export class AppComponent implements OnInit{
 
   data:any={};
+  userPrivs:any;
+  isAdmin:any;
   ngOnInit(): void {
-    this.data = localStorage.getItem("userData");
-    // console.log("data: ", JSON.parse(this.data));
+    this.userPrivs = JSON.parse(localStorage.getItem("userData")!);
+    this.isAdmin=this.userPrivs.administrador;
+    
   }
   constructor(private Auth: AuthService, private router: Router) {}
 
@@ -19,10 +22,10 @@ export class AppComponent implements OnInit{
   public appPages = [
     
     { title: 'Informes de Predicación', url: '/informe', icon: 'newspaper', condicion:true },
-    { title: 'Asistencia a Reuniones', url: '/asistencia', icon: 'people', condicion:this.data.administrador},
-    { title: 'Publicadores', url: '/publicadores', icon: 'man' },
-    { title: 'Administrar Usuarios', url: '/usuarios', icon: 'person-circle' },
-    { title: 'Configuración', url: '/configuracion', icon: 'settings' },
+    { title: 'Asistencia a Reuniones', url: '/asistencia', icon: 'people', condicion: JSON.parse(localStorage.getItem("userData")!).administrador},
+    { title: 'Publicadores', url: '/publicadores', icon: 'man' , condicion:JSON.parse(localStorage.getItem("userData")!).administrador},
+    { title: 'Administrar Usuarios', url: '/usuarios', icon: 'person-circle', condicion:JSON.parse(localStorage.getItem("userData")!).administrador },
+    { title: 'Configuración', url: '/configuracion', icon: 'settings',condicion:true },
     //{ title: 'Emergencia', url: '/emergencia', icon: 'alert-circle' },
     
   ];
@@ -30,9 +33,9 @@ export class AppComponent implements OnInit{
 
   public appReports = [
     
-    { title: 'Predicación', url: '/reporte-predicacion', icon: 'briefcase' },
-    { title: 'Infrome Anual', url: '/informe-anual', icon: 'bar-chart' },
-    { title: 'Asistencia', url: 'reporte-asistencia', icon: 'people' },
+    { title: 'Predicación', url: '/reporte-predicacion', icon: 'briefcase',condicion:JSON.parse(localStorage.getItem("userData")!).administrador },
+    { title: 'Infrome Anual', url: '/informe-anual', icon: 'bar-chart',condicion:JSON.parse(localStorage.getItem("userData")!).administrador },
+    { title: 'Asistencia', url: 'reporte-asistencia', icon: 'people',condicion:JSON.parse(localStorage.getItem("userData")!).administrador },
     
   ];
   public reportes = ['Precursores Regulares', 'Precursores Auxiliares', 'Publicadores', 'Asistencia'];

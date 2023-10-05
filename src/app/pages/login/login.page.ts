@@ -26,6 +26,9 @@ export class LoginPage implements OnInit {
   id!:any;
   formLogin!: FormGroup;
   formRegister!: FormGroup;
+  isModalContrasenaOpen=false;
+  CorreoCambiarContrasena="";
+  IsCorreoEnviado=false;
   
   // constructor(private userService: UserService, private router:Router) { }
 
@@ -69,6 +72,24 @@ export class LoginPage implements OnInit {
       });
     
     
+  }
+
+  CambiarContrasena(){
+    if (this.CorreoCambiarContrasena!=null && this.CorreoCambiarContrasena!=undefined && this.CorreoCambiarContrasena.length>5){
+
+      try{
+        this.Auth.cambioContrasena(this.CorreoCambiarContrasena);
+        this.IsCorreoEnviado=true;
+      }catch(error){
+        this.presentAlert('Error al Cambiar Contraseña','Verificar que su correo sea correcto',"Mensaje de error:" + "\n\n"+error);
+      }
+    }
+
+  }
+  AbrirModalCambiarContrasena(abrir:boolean){
+    this.CorreoCambiarContrasena="";
+    this.isModalContrasenaOpen=abrir;
+    this.IsCorreoEnviado=false;
   }
 
 
