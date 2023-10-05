@@ -74,15 +74,19 @@ export class LoginPage implements OnInit {
     
   }
 
-  CambiarContrasena(){
+  async CambiarContrasena(){
     if (this.CorreoCambiarContrasena!=null && this.CorreoCambiarContrasena!=undefined && this.CorreoCambiarContrasena.length>5){
 
-      try{
-        this.Auth.cambioContrasena(this.CorreoCambiarContrasena);
+      await this.Auth.cambioContrasena(this.CorreoCambiarContrasena).then(()=>{
         this.IsCorreoEnviado=true;
-      }catch(error){
-        this.presentAlert('Error al Cambiar Contraseña','Verificar que su correo sea correcto',"Mensaje de error:" + "\n\n"+error);
-      }
+      })
+      
+      // this.Auth.cambioContrasena(this.CorreoCambiarContrasena).then(()=>{
+      //   this.IsCorreoEnviado=true;
+      // }).catch((error: any)=>{
+      //   this.presentAlert('Error al Cambiar Contraseña','Verificar que su correo sea correcto',"Mensaje de error:" + "\n\n"+error);
+      //   });
+      
     }
 
   }

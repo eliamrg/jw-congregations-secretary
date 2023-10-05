@@ -95,11 +95,11 @@
         
           <ion-card-content>
 
-            <ion-label> 
+            <p style="padding: 6px;"> 
               Ingrese su dirección de correo electrónico, 
               y si su cuenta existe se le enviará un correo con un enlace (link) 
               para ingresar una contraseña nueva.
-            </ion-label>
+            </p>
 
             <ion-item >
               <ion-label  position="stacked">Correo Electrónico:</ion-label>
@@ -117,16 +117,16 @@
               </ion-row>
             </ion-grid>
 
-            <ion-label> 
+            <p style="padding: 6px;"> 
               Después de ser enviado favor de revisar su buzón de correo electrónico,
               en caso de no encontrarlo verificar su buzón de SPAM o correo no deseado
-            </ion-label>
+            </p>
           </ion-card-content>
         </ion-card>
 
         <br><br>
 
-        <ion-card color="warning"  *ngIf="IsCorreoEnviado">
+        <!-- <ion-card color="warning"  *ngIf="IsCorreoEnviado">
           <ion-card-header class="ion-padding">
             <ion-card-title>Correo Enviado</ion-card-title>
             
@@ -135,7 +135,7 @@
           <ion-card-content style="padding: 6px;">
             Revise su correo electrónico, una vez cambiada la contraseña podrá iniciar sesión con correo y su nueva contraseña
           </ion-card-content>
-        </ion-card>
+        </ion-card> -->
       </ion-content>
       
       

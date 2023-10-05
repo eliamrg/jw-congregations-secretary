@@ -3,13 +3,14 @@ import { Auth, getAuth, sendPasswordResetEmail, updateProfile } from '@angular/f
 import { createUserWithEmailAndPassword, GoogleAuthProvider, signInWithEmailAndPassword, signInWithPopup, signOut } from '@angular/fire/auth';
 import { Firestore, setDoc, doc, getDoc, query, collection, getDocs, where, onSnapshot } from '@angular/fire/firestore';
 import { Router } from '@angular/router';
+import { AlertController } from '@ionic/angular';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
-  constructor(private auth: Auth, private firestore:Firestore,private router:Router) { }
+  constructor(private auth: Auth, private firestore:Firestore,private router:Router, private alertController: AlertController) { }
 
  //RESGISTER-----------------------------------------------------------------------------------------------
  register({email,password}:any){
@@ -185,19 +186,31 @@ export class AuthService {
 
   //OLVIDASTE CONTRASEÑA
 
-  cambioContrasena(email:any){
+  async cambioContrasena(email:any){
     const auth = getAuth();
     sendPasswordResetEmail(auth, email)
       .then(() => {
-        // Password reset email sent!
-        // ..
+        this.presentAlert('Correo Enviado','Verificar su buzon',"En caso de no encontrarlo verificar su buzon de correo no deseado o SPAM");
       })
       .catch((error) => {
         const errorCode = error.code;
         const errorMessage = error.message;
+        this.presentAlert('Error al Cambiar Contraseña','Verificar que su correo sea correcto',"Mensaje de error:" + "\n\n"+error.message);
+        //   
         // ..
       });
 
+  }
+
+  async presentAlert(header:string,subheader:string,message:string) {
+    const alert = await this.alertController.create({
+      header: header,
+      subHeader: subheader,
+      message:  message,
+      buttons: ['OK'],
+    });
+
+    await alert.present();
   }
 //   import { getAuth, sendPasswordResetEmail } from "firebase/auth";
 
