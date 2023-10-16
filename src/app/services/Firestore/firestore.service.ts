@@ -284,11 +284,11 @@ export class FirestoreService {
       await setDoc(doc(this.firestore, "Informes/"+Anio+"/"+Mes, Userid), {
         nombre: Informe.nombre,
         idPublicador:Informe.idPublicador,
-        horas: Informe.horas ||null,
-        publicaciones:Informe.publicaciones||null,
-        videos: Informe.videos||null,
-        revisitas:Informe.revisitas||null,
-        cursos:Informe.cursos||null,
+        horas: Informe.horas ||0,
+        publicaciones:Informe.publicaciones||0,
+        videos: Informe.videos||0,
+        revisitas:Informe.revisitas||0,
+        cursos:Informe.cursos||0,
         observacion:Informe.observacion||"",
         servicio:Informe.servicio,
         grupo:Informe.grupo 
@@ -326,7 +326,7 @@ export class FirestoreService {
         tempPub.informe.grupo=document.data()["grupo"]
         gruposConPublicadores[document.data()["grupo"]]["Publicadores"].push(tempPub)
       });
-      console.log(gruposConPublicadores)
+      //console.log(gruposConPublicadores)
       return gruposConPublicadores;
   }
 

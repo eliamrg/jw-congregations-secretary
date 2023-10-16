@@ -19,6 +19,14 @@ export class AgregarInformePage implements OnInit {
   SelectedMonth:any;
   SelectedYear:any;
   userPrivs:any
+
+  sumaHoras=0;
+  sumaPublicaciones=0;
+  sumaVideos=0;
+  sumaRevisitas=0;
+  sumaCursos=0;
+
+  ReporteGenerado=false;
   
 
   async ngOnInit() {
@@ -45,7 +53,9 @@ export class AgregarInformePage implements OnInit {
     await this.firestore.getInformeMes(this.SelectedYear,this.SelectedMonth).then(x=>{
       //console.log(x)
       this.InformesPorGrupo=x;
+      
     })
+    
     
   }
 
@@ -84,6 +94,7 @@ export class AgregarInformePage implements OnInit {
     //this.weeks=this.getWeeksInMonth(year,month-1 );
     //var date=this.wheelDate.getDate();
     this.ObtenerInformesDeFecha();
+    
     
   }
 
@@ -148,6 +159,30 @@ export class AgregarInformePage implements OnInit {
     }
   }
 
+  GenerarReporte(){
+
+    this.sumaHoras=0;
+    this.sumaPublicaciones=0;
+    this.sumaVideos=0;
+    this.sumaRevisitas=0;
+    this.sumaCursos=0;
+    let contador=0;
+    this.InformesPorGrupo.forEach((grupo:any) => {
+      
+      let pubs=grupo["Publicadores"];
+      //console.log(pubs)
+      pubs.forEach((publicador:any) => {
+        console.log(publicador.nombre, publicador.informe.horas||0)
+        this.sumaHoras+=publicador.informe.horas||0;
+        this.sumaPublicaciones+=publicador.informe.publicaciones||0;
+        this.sumaVideos+=publicador.informe.videos||0;
+        this.sumaRevisitas+=publicador.informe.revisitas||0;
+        this.sumaCursos+=publicador.informe.cursos||0;
+      });
+    });
+
+    this.ReporteGenerado=true;
+  }
  
 
   

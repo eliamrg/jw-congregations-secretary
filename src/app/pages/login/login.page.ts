@@ -62,8 +62,22 @@ export class LoginPage implements OnInit {
   login(){
     this.showLoading();
     this.Auth.login(this.formLogin.value)
-      .then(response=>{
+      .then(async response=>{
         console.log(response);
+        let user:any;
+        let uid:any
+       
+        await this.Auth.initialize();
+        await this.Auth.getUserId().then(async uidDoc=>{
+          uid=uidDoc;
+        
+        })
+        await this.Auth.getFirestoreUser(uid).then((userDoc:any)=>{
+          user=userDoc;
+         
+        })
+
+        localStorage.setItem("userData", JSON.stringify(user));
         this.router.navigate(['/informe']);
       })
       .catch(error=>{
@@ -127,17 +141,31 @@ export class LoginPage implements OnInit {
           //console.log(this.name, this.id,this.email,)
 
           //CREACION DE USUARIO EN FIRESTORE
-          this.Auth.SetFirestoreUser(this.id,this.name,this.email,"Email",0,false,false,[0]).then(()=>{
+          this.Auth.SetFirestoreUser(this.id,this.name,this.email,"Email",0,false,false,[0]).then(async ()=>{
             //console.log('id:'+ this.id,this.name)
             this.setOpen(false);
 
-            this.router.navigate(['/configuracion']).then(() => {
-            // window.location.reload();
-            });
-          });
+
+            let user:any;
+          let uid:any
+        
+          await this.Auth.initialize();
+          await this.Auth.getUserId().then(async uidDoc=>{
+            uid=uidDoc;
           
+          })
+          await this.Auth.getFirestoreUser(uid).then((userDoc:any)=>{
+            user=userDoc;
+          
+          })
 
+          localStorage.setItem("userData", JSON.stringify(user));
 
+              this.router.navigate(['/configuracion']).then(() => {
+              // window.location.reload();
+              });
+            });
+          
           })
           .catch(error=>{
             console.log(error);
