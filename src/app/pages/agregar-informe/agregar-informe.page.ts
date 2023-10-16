@@ -3,6 +3,7 @@ import { IonModal, LoadingController } from '@ionic/angular';
 import { OverlayEventDetail } from '@ionic/core/components';
 import { informe } from 'src/app/Classes/informe';
 import { FirestoreService } from 'src/app/services/Firestore/firestore.service';
+import { ReportesService } from 'src/app/services/Reportes/reportes.service';
 
 @Component({
   selector: 'app-agregar-informe',
@@ -13,18 +14,14 @@ import { FirestoreService } from 'src/app/services/Firestore/firestore.service';
 
 export class AgregarInformePage implements OnInit {
 
-  constructor(private firestore: FirestoreService,private loadingCtrl: LoadingController) { }
+  constructor(private firestore: FirestoreService,private loadingCtrl: LoadingController, private reporteService:ReportesService) { }
 
   InformesPorGrupo:any;
   SelectedMonth:any;
   SelectedYear:any;
   userPrivs:any
 
-  sumaHoras=0;
-  sumaPublicaciones=0;
-  sumaVideos=0;
-  sumaRevisitas=0;
-  sumaCursos=0;
+  ReporteInforme:any;
 
   ReporteGenerado=false;
   
@@ -160,29 +157,11 @@ export class AgregarInformePage implements OnInit {
   }
 
   GenerarReporte(){
-
-    this.sumaHoras=0;
-    this.sumaPublicaciones=0;
-    this.sumaVideos=0;
-    this.sumaRevisitas=0;
-    this.sumaCursos=0;
-    let contador=0;
-    this.InformesPorGrupo.forEach((grupo:any) => {
-      
-      let pubs=grupo["Publicadores"];
-      //console.log(pubs)
-      pubs.forEach((publicador:any) => {
-        console.log(publicador.nombre, publicador.informe.horas||0)
-        this.sumaHoras+=publicador.informe.horas||0;
-        this.sumaPublicaciones+=publicador.informe.publicaciones||0;
-        this.sumaVideos+=publicador.informe.videos||0;
-        this.sumaRevisitas+=publicador.informe.revisitas||0;
-        this.sumaCursos+=publicador.informe.cursos||0;
-      });
-    });
+    this.ReporteInforme=this.reporteService.ReporteInformes(this.InformesPorGrupo)
+    console.log(this.ReporteInforme)
 
     this.ReporteGenerado=true;
-  }
+    }
  
 
   
