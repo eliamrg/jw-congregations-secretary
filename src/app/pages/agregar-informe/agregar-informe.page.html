@@ -29,6 +29,10 @@
         </div>
       </ion-select>
     </ion-item>
+    <ion-item lines="none">
+      <ion-label>Formato Simplificado</ion-label>
+      <ion-toggle [(ngModel)]="formatoSimplificado" slot="start"></ion-toggle>
+    </ion-item>
   </ion-list>
 
 
@@ -89,16 +93,16 @@
         <thead>
           <tr style="text-align: center;">
             <th>Servicio</th>
-            <th>Horas</th>
-            <th>Publicaciones</th>
-            <th>Videos</th>
-            <th>Revisitas</th>
-            <th>Cursos</th>
+            <th >Horas</th>
+            <th *ngIf="!formatoSimplificado">Publicaciones</th>
+            <th *ngIf="!formatoSimplificado">Videos</th>
+            <th *ngIf="!formatoSimplificado">Revisitas</th>
+            <th >Cursos</th>
           </tr>
         </thead>
         <tbody  >
           
-          <tr>
+          <tr  *ngIf="!formatoSimplificado">
             <td>
               <ion-label style="font-weight: bold;">Publicadores ({{ReporteInforme.Publicadores.cantidad}})</ion-label>
             </td>
@@ -131,17 +135,17 @@
               <ion-label >{{ReporteInforme.Auxiliares.sumaHoras}}</ion-label>
               
             </td>
-            <td>
+            <td  *ngIf="!formatoSimplificado">
               
                 <ion-label>{{ReporteInforme.Auxiliares.sumaPublicaciones}}</ion-label>
               
             </td>
-            <td>
+            <td  *ngIf="!formatoSimplificado">
               
                 <ion-label >{{ReporteInforme.Auxiliares.sumaVideos}}</ion-label>
               
             </td>
-            <td>
+            <td  *ngIf="!formatoSimplificado">
               <ion-label >{{ReporteInforme.Auxiliares.sumaRevisitas}}</ion-label>
             </td>
             <td>
@@ -156,20 +160,20 @@
               <ion-label >{{ReporteInforme.Regulares.sumaHoras}}</ion-label>
               
             </td>
-            <td>
+            <td  *ngIf="!formatoSimplificado">
               
                 <ion-label >{{ReporteInforme.Regulares.sumaPublicaciones}}</ion-label>
               
             </td>
-            <td>
+            <td  *ngIf="!formatoSimplificado">
               
                 <ion-label >{{ReporteInforme.Regulares.sumaVideos}}</ion-label>
               
             </td>
-            <td>
+            <td  *ngIf="!formatoSimplificado">
               <ion-label>{{ReporteInforme.Regulares.sumaRevisitas}}</ion-label>
             </td>
-            <td>
+            <td >
               <ion-label >{{ReporteInforme.Regulares.sumaCursos}}</ion-label>
             </td>
           </tr>
@@ -181,24 +185,24 @@
               <ion-label >{{ReporteInforme.Especiales.sumaHoras}}</ion-label>
               
             </td>
-            <td>
+            <td  *ngIf="!formatoSimplificado">
               
                 <ion-label >{{ReporteInforme.Especiales.sumaPublicaciones}}</ion-label>
               
             </td>
-            <td>
+            <td  *ngIf="!formatoSimplificado">
               
                 <ion-label >{{ReporteInforme.Especiales.sumaVideos}}</ion-label>
               
             </td>
-            <td>
+            <td  *ngIf="!formatoSimplificado">
               <ion-label>{{ReporteInforme.Especiales.sumaRevisitas}}</ion-label>
             </td>
             <td>
               <ion-label >{{ReporteInforme.Especiales.sumaCursos}}</ion-label>
             </td>
           </tr>
-          <tr>
+          <tr  *ngIf="!formatoSimplificado">
             <td>
               <ion-label style="font-weight: bold;">Total de Congregación ({{ReporteInforme.Congregacion.cantidad}})</ion-label>
             </td>
@@ -238,15 +242,15 @@
           <tr style="text-align: center;">
             <th>Servicio</th>
             <th>Horas</th>
-            <th>Publicaciones</th>
-            <th>Videos</th>
-            <th>Revisitas</th>
+            <th  *ngIf="!formatoSimplificado">Publicaciones</th>
+            <th *ngIf="!formatoSimplificado">Videos</th>
+            <th *ngIf="!formatoSimplificado">Revisitas</th>
             <th>Cursos</th>
           </tr>
         </thead>
         <tbody  >
           
-          <tr>
+          <tr  *ngIf="!formatoSimplificado">
             <td>
               <ion-label style="font-weight: bold;">Publicadores ({{ReporteInforme.Publicadores.cantidad}})</ion-label>
             </td>
@@ -279,18 +283,18 @@
               <ion-label >{{ReporteInforme.Auxiliares.promedioHoras| number : '1.2-2'}}</ion-label>
               
             </td>
-            <td>
+            <td *ngIf="!formatoSimplificado">
               
-                <ion-label >{{ReporteInforme.Auxiliares.promedioPublicaciones| number : '1.2-2'}}</ion-label>
+                <ion-label  >{{ReporteInforme.Auxiliares.promedioPublicaciones| number : '1.2-2'}}</ion-label>
               
             </td>
-            <td>
+            <td *ngIf="!formatoSimplificado">
               
                 <ion-label >{{ReporteInforme.Auxiliares.promedioVideos| number : '1.2-2'}}</ion-label>
               
             </td>
-            <td>
-              <ion-label >{{ReporteInforme.Auxiliares.promedioRevisitas| number : '1.2-2'}}</ion-label>
+            <td *ngIf="!formatoSimplificado">
+              <ion-label  >{{ReporteInforme.Auxiliares.promedioRevisitas| number : '1.2-2'}}</ion-label>
             </td>
             <td>
               <ion-label >{{ReporteInforme.Auxiliares.promedioCursos| number : '1.2-2'}}</ion-label>
@@ -304,17 +308,17 @@
               <ion-label >{{ReporteInforme.Regulares.promedioHoras| number : '1.2-2'}}</ion-label>
               
             </td>
-            <td>
+            <td *ngIf="!formatoSimplificado">
               
-                <ion-label>{{ReporteInforme.Regulares.promedioPublicaciones| number : '1.2-2'}}</ion-label>
-              
-            </td>
-            <td>
-              
-                <ion-label >{{ReporteInforme.Regulares.promedioVideos| number : '1.2-2'}}</ion-label>
+                <ion-label >{{ReporteInforme.Regulares.promedioPublicaciones| number : '1.2-2'}}</ion-label>
               
             </td>
-            <td>
+            <td *ngIf="!formatoSimplificado">
+              
+                <ion-label  >{{ReporteInforme.Regulares.promedioVideos| number : '1.2-2'}}</ion-label>
+              
+            </td>
+            <td *ngIf="!formatoSimplificado">
               <ion-label >{{ReporteInforme.Regulares.promedioRevisitas| number : '1.2-2'}}</ion-label>
             </td>
             <td>
@@ -329,24 +333,24 @@
               <ion-label >{{ReporteInforme.Especiales.promedioHoras| number : '1.2-2'}}</ion-label>
               
             </td>
-            <td>
+            <td *ngIf="!formatoSimplificado">
               
                 <ion-label >{{ReporteInforme.Especiales.promedioPublicaciones| number : '1.2-2'}}</ion-label>
               
             </td>
-            <td>
+            <td  *ngIf="!formatoSimplificado">
               
                 <ion-label >{{ReporteInforme.Especiales.promedioVideos| number : '1.2-2'}}</ion-label>
               
             </td>
-            <td>
-              <ion-label >{{ReporteInforme.Especiales.promedioRevisitas| number : '1.2-2'}}</ion-label>
+            <td  *ngIf="!formatoSimplificado">
+              <ion-label  >{{ReporteInforme.Especiales.promedioRevisitas| number : '1.2-2'}}</ion-label>
             </td>
             <td>
               <ion-label >{{ReporteInforme.Especiales.promedioCursos| number : '1.2-2'}}</ion-label>
             </td>
           </tr>
-          <tr>
+          <tr  *ngIf="!formatoSimplificado">
             <td>
               <ion-label style="font-weight: bold;">Total de Congregación ({{ReporteInforme.Congregacion.cantidad}})</ion-label>
             </td>
@@ -401,10 +405,10 @@
                   
                   <th>Publicador</th>
                   <th>Horas</th>
-                  <th>Publicaciones</th>
-                  <th>Videos</th>
-                  <th>Revisitas</th>
-                  <th>Cursos</th>
+                  <th *ngIf="!formatoSimplificado">Publicaciones</th>
+                  <th *ngIf="!formatoSimplificado">Videos</th>
+                  <th *ngIf="!formatoSimplificado">Revisitas</th>
+                  <th >Cursos</th>
                   <th>Observaciones</th>
                   <th>Servicio</th>
                 </tr>
@@ -416,31 +420,34 @@
                     
                   </td>
                   <td>
-                    <ion-item style="text-align: center;"  color="transparent"  lines="none">
+                    <ion-item *ngIf="Publicador.informe.servicio!='publicador'|| !formatoSimplificado" style="text-align: center;"  color="transparent"  lines="none">
                       <ion-input [(ngModel)]="Publicador.informe.horas"    type="number" inputmode="tel" placeholder="Ingresar"> </ion-input>
                     </ion-item>
+                    <ion-item *ngIf="Publicador.informe.servicio=='publicador' && formatoSimplificado" style="text-align: center;"  color="transparent"  lines="none">
+                      <ion-input  value="No Aplica" readonly="true"> </ion-input>
+                    </ion-item>
                   </td>
-                  <td>
-                    <ion-item style="text-align: center;" class="ion-no-padding"  color="transparent"  lines="none">
+                  <td  *ngIf="!formatoSimplificado">
+                    <ion-item  style="text-align: center;" class="ion-no-padding"  color="transparent"  lines="none">
                       <ion-input [(ngModel)]="Publicador.informe.publicaciones"     type="number" inputmode="tel" placeholder="Ingresar"> </ion-input>
                     </ion-item>
                   </td>
-                  <td>
+                  <td  *ngIf="!formatoSimplificado">
                     <ion-item style="text-align: center;" class="ion-no-padding"  color="transparent"  lines="none">
                       <ion-input  [(ngModel)]="Publicador.informe.videos"   type="number" inputmode="tel" placeholder="Ingresar"> </ion-input>
                     </ion-item>
                   </td>
-                  <td>
+                  <td  *ngIf="!formatoSimplificado">
                     <ion-item style="text-align: center;" class="ion-no-padding"  color="transparent"  lines="none">
                       <ion-input  [(ngModel)]="Publicador.informe.revisitas"    type="number" inputmode="tel" placeholder="Ingresar"> </ion-input>
                     </ion-item>
                   </td>
-                  <td>
-                    <ion-item style="text-align: center;" class="ion-no-padding"  color="transparent" lines="none" >
+                  <td  >
+                    <ion-item  style="text-align: center;" class="ion-no-padding"  color="transparent" lines="none" >
                       <ion-input [(ngModel)]="Publicador.informe.cursos"    type="number" inputmode="tel" placeholder="Ingresar"> </ion-input>
                     </ion-item>
                   </td>
-                  <td>
+                  <td >
                     <ion-item style="text-align: center;" class="ion-no-padding" color="transparent" lines="none"  >
                       <ion-input  [(ngModel)]="Publicador.informe.observacion"    placeholder="Ingresar"> </ion-input>
                     </ion-item>
@@ -456,6 +463,8 @@
                         <ion-select-option value="especial">Precursor Especial</ion-select-option>
                       </ion-select>
                     </ion-item>
+                    <ion-checkbox *ngIf="formatoSimplificado" [(ngModel)]="Publicador.informe.participo" labelPlacement="end">Participó en la Predicación</ion-checkbox>
+
                   </td>
                   
                 </tr>

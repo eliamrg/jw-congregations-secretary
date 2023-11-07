@@ -7,7 +7,36 @@ export class ReportesService {
 
   constructor() { }
 
-  
+  ReporteAsistencia(semanas:any){
+
+    let reporteAsistencia:any
+    console.log(semanas)
+    let countEntreSemana=0;
+    let countFinSemana=0;
+    let sumaEntreSemana=0;
+    let sumaFinSemana=0;
+    semanas.forEach((asistencia:any) => {
+      if(asistencia.entreSemana>0){
+        countEntreSemana+=1;
+        sumaEntreSemana+=asistencia.entreSemana;
+      }
+      if(asistencia.finSemana>0){
+        countFinSemana+=1;
+        sumaFinSemana+=asistencia.finSemana;
+      }
+
+       reporteAsistencia={
+        cantidadReunionesEntreSemana:countEntreSemana,
+        cantidadReunionesFinSemana:countFinSemana,
+        sumaEntreSemana:sumaEntreSemana,
+        sumaFinSemana:sumaFinSemana,
+        promedioEntreSemana:sumaEntreSemana/countEntreSemana,
+        promedioFinSemana:sumaFinSemana/countFinSemana
+      }
+    });
+    //console.log(reporteAsistencia)
+    return reporteAsistencia;
+  }
 
   ReporteInformes(InformesPorGrupo:any){
     console.log(InformesPorGrupo)

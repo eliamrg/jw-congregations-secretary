@@ -2,6 +2,7 @@ import { Component, OnInit,  ViewChild } from '@angular/core';
 import { IonModal } from '@ionic/angular';
 import { OverlayEventDetail } from '@ionic/core/components';
 import { FirestoreService } from 'src/app/services/Firestore/firestore.service';
+import { ReportesService } from 'src/app/services/Reportes/reportes.service';
 
 
 @Component({
@@ -12,10 +13,19 @@ import { FirestoreService } from 'src/app/services/Firestore/firestore.service';
 export class AgregarAsistenciaPage implements OnInit {
 
   weeks: {anio:any; mes:any;start: number; end: number; entreSemana:any; finSemana:any }[] | undefined;
-  constructor(private firestore:FirestoreService) { }
+  constructor(private firestore:FirestoreService, private reportesService: ReportesService) { }
   wheelDate:any;
   stringDate:any;
   asistenciaAnual:any;
+  reporteGenerado=false;
+  reporteAsistencia:any={
+    cantidadReunionesEntreSemana:0,
+        cantidadReunionesFinSemana:0,
+        sumaEntreSemana:0,
+        sumaFinSemana:0,
+        promedioEntreSemana:0,
+        promedioFinSemana:0
+  };
 
   async ngOnInit() {
     let UTCDate=new Date();
@@ -69,17 +79,10 @@ export class AgregarAsistenciaPage implements OnInit {
         if(x[this.weeks![index]["start"]]!=undefined){
           this.weeks![index]["entreSemana"]=x[this.weeks![index]["start"]]["entreSemana"];
           this.weeks![index]["finSemana"]=x[this.weeks![index]["start"]]["finSemana"];
+          console.log(this.weeks);
         }
       });
     })
-
-    // await this.firestore.getAsistenciaSemanal("2023","9","4").then((x:any)=>{
-    //   console.log(x)
-    // });
-
-    
-
-     //console.log(this.weeks)
   }
 
   getWeeksInMonth(year:number, month:number) {
@@ -133,6 +136,11 @@ export class AgregarAsistenciaPage implements OnInit {
     
   }
 
+  GenerarReporte(){
+    this.reporteAsistencia=this.reportesService.ReporteAsistencia(this.weeks);
+    this.reporteGenerado=true;
+    //console.log(this.reporteAsistencia)
+  }
 
 
 }

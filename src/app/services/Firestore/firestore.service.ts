@@ -291,7 +291,8 @@ export class FirestoreService {
         cursos:Informe.cursos||0,
         observacion:Informe.observacion||"",
         servicio:Informe.servicio,
-        grupo:Informe.grupo 
+        grupo:Informe.grupo,
+        participo:Informe.participo||false
       },{merge:true});
 
     }

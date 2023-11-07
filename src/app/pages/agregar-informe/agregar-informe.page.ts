@@ -16,6 +16,7 @@ export class AgregarInformePage implements OnInit {
 
   constructor(private firestore: FirestoreService,private loadingCtrl: LoadingController, private reporteService:ReportesService) { }
 
+  formatoSimplificado:boolean=true;
   InformesPorGrupo:any;
   SelectedMonth:any;
   SelectedYear:any;

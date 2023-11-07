@@ -1,4 +1,5 @@
 export class publicador {
+    
     id!: string;
     nombre!: string;
     direccion: string | undefined;

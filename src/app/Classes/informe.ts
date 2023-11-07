@@ -1,4 +1,5 @@
 export class informe {
+    participo:boolean;
     nombre: string;
     idPublicador:string;
     horas: number| undefined;
@@ -11,6 +12,7 @@ export class informe {
     grupo:number;
 
     constructor(idPublicador: string, nombre: string) {
+      this.participo=true;
       this.nombre = nombre;
       this.idPublicador=idPublicador;
       this.horas=undefined;

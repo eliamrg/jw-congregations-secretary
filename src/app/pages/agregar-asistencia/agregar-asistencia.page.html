@@ -23,6 +23,55 @@
       
     </ion-card-header>
 
+    <ion-card-content>
+      <ion-button (click)="GenerarReporte()">
+        Generar Reporte de Asistencia
+      </ion-button>
+
+      
+      <ion-card-title *ngIf="reporteGenerado" >Reporte de Asistencia</ion-card-title>
+      <div *ngIf="reporteGenerado" class="table-responsive">
+        <table style="color: black;">
+          <thead>
+            <tr style="text-align: center;">
+              <th>Reunión</th>
+              <th>Suma</th>
+              <th>Promedio</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                <ion-label style="font-weight: bold;">Entre Semana ({{reporteAsistencia.cantidadReunionesEntreSemana                }})</ion-label>
+              </td>
+              <td>
+                <ion-label >{{reporteAsistencia.sumaEntreSemana}}</ion-label>
+              </td>
+              <td>
+                <ion-label>{{reporteAsistencia.promedioEntreSemana}}</ion-label>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <ion-label style="font-weight: bold;">Fin de Semana ({{reporteAsistencia.cantidadReunionesFinSemana}})</ion-label>
+              </td>
+              <td>
+                <ion-label >{{reporteAsistencia.sumaFinSemana}}</ion-label>
+              </td>
+              <td>
+                <ion-label>{{reporteAsistencia.promedioFinSemana}}</ion-label>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+  
+        
+        
+      </div>
+    </ion-card-content>
+
+
+
     <!-- <input type="month" id="start" name="start" min="2018-03" value="2018-05" /> -->
     <div *ngFor="let week of weeks">
 
