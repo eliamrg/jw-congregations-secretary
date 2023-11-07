@@ -420,10 +420,10 @@
                     
                   </td>
                   <td>
-                    <ion-item *ngIf="Publicador.informe.servicio!='publicador'|| !formatoSimplificado" style="text-align: center;"  color="transparent"  lines="none">
+                    <ion-item *ngIf="(Publicador.informe.servicio!='publicador'&& Publicador.informe.participo)|| !formatoSimplificado" style="text-align: center;"  color="transparent"  lines="none">
                       <ion-input [(ngModel)]="Publicador.informe.horas"    type="number" inputmode="tel" placeholder="Ingresar"> </ion-input>
                     </ion-item>
-                    <ion-item *ngIf="Publicador.informe.servicio=='publicador' && formatoSimplificado" style="text-align: center;"  color="transparent"  lines="none">
+                    <ion-item *ngIf="(Publicador.informe.servicio=='publicador' || !Publicador.informe.participo) && formatoSimplificado" style="text-align: center;"  color="transparent"  lines="none">
                       <ion-input  value="No Aplica" readonly="true"> </ion-input>
                     </ion-item>
                   </td>
@@ -443,14 +443,18 @@
                     </ion-item>
                   </td>
                   <td  >
-                    <ion-item  style="text-align: center;" class="ion-no-padding"  color="transparent" lines="none" >
+                    <ion-item  *ngIf="Publicador.informe.participo || !formatoSimplificado"  style="text-align: center;" class="ion-no-padding"  color="transparent" lines="none" >
                       <ion-input [(ngModel)]="Publicador.informe.cursos"    type="number" inputmode="tel" placeholder="Ingresar"> </ion-input>
+                    </ion-item>
+                    <ion-item *ngIf="!Publicador.informe.participo && formatoSimplificado" style="text-align: center;"  color="transparent"  lines="none">
+                      <ion-input  value="No Aplica" readonly="true"> </ion-input>
                     </ion-item>
                   </td>
                   <td >
                     <ion-item style="text-align: center;" class="ion-no-padding" color="transparent" lines="none"  >
                       <ion-input  [(ngModel)]="Publicador.informe.observacion"    placeholder="Ingresar"> </ion-input>
                     </ion-item>
+                    
                     
                   </td>
                   <td>
