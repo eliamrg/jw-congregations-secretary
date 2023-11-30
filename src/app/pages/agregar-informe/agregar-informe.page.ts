@@ -21,6 +21,8 @@ export class AgregarInformePage implements OnInit {
   SelectedMonth:any;
   SelectedYear:any;
   userPrivs:any
+  cantidadPubsParticiparon:number=0;
+  
 
   ReporteInforme:any;
 
@@ -53,6 +55,8 @@ export class AgregarInformePage implements OnInit {
       this.InformesPorGrupo=x;
       
     })
+
+    
     
     
   }
@@ -162,6 +166,19 @@ export class AgregarInformePage implements OnInit {
     console.log(this.ReporteInforme)
 
     this.ReporteGenerado=true;
+
+    this.InformesPorGrupo.forEach((grupo:any) => {
+      
+      grupo.Publicadores.forEach((publicador:any) => {
+        if(publicador.informe.participo && publicador.informe.servicio=="publicador"){
+          this.cantidadPubsParticiparon+=1;
+        }
+        
+      });
+    });
+    this.ReporteGenerado=true;
+    console.log(this.cantidadPubsParticiparon)
+
     }
  
 

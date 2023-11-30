@@ -1,0 +1,72 @@
+<ion-header [translucent]="false" mode="ios">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Publicadores</ion-title>
+    <ion-buttons slot="end">
+      <button style="color: white;"  printSectionId="print-section" ngxPrint><ion-icon color="primary" size="large" name="print-outline"> </ion-icon> </button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="false" mode="ios">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Información de Contacto de Publicadores</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <ion-item lines="none">
+    <ion-label>Separar Por Grupos</ion-label>
+    <ion-toggle [(ngModel)]="separarPorGrupo" slot="start"></ion-toggle>
+  </ion-item>
+
+  <div  id="print-section"  class="myDivToPrint" style="font-family: Arial, Helvetica, sans-serif; margin: auto;">
+
+    <H2 id="printOnly" style="font-family: Arial, Helvetica, sans-serif;">Publicadores: Información de Contacto</H2>
+    <!-- POR GRUPOS -->
+    <div *ngIf="separarPorGrupo">
+      <div  *ngFor="let grupo of PublicadoresPorGrupo; let i=index">
+        <H3 style="font-family: Arial, Helvetica, sans-serif; padding-left: 6px;" *ngIf="i!=0 " >Grupo {{i}}</H3>
+        <table *ngIf="i!=0 "  style="width: 100%; font-family: Arial, Helvetica, sans-serif; border-collapse: collapse;" >
+      
+          <tr style=" border: 1px solid;">
+            <th style=" border: 1px solid #ddd;">Nombre</th>
+            <th style=" border: 1px solid #ddd;">Dirección</th>
+            <th style=" border: 1px solid #ddd;">Teléfono</th>
+            <th style=" border: 1px solid #ddd;">Teléfono Móvil</th>
+            
+          </tr>
+          <tr *ngFor="let publicador of  grupo.Publicadores;">
+            <td style="font-weight: bold; border: 1px solid #ddd; padding-left: 6px;">{{publicador.nombre}}</td>
+            <td style=" border: 1px solid #ddd;padding-left: 6px;">{{publicador.direccion}}</td>
+            <td style=" border: 1px solid #ddd;padding-left: 6px;">{{publicador.telefono}}</td>
+            <td style=" border: 1px solid #ddd;padding-left: 6px;">{{publicador.celular}}</td>
+          </tr> 
+          
+        </table>
+      </div>
+    </div>
+    
+    
+    <!-- EN ORDEN ALFABETICO -->
+    <div *ngIf="!separarPorGrupo">
+      <table style="width: 100%; font-family: Arial, Helvetica, sans-serif; border-collapse: collapse;" >
+    
+        <tr style=" border: 1px solid;">
+          <th style=" border: 1px solid #ddd;">Nombre</th>
+          <th style=" border: 1px solid #ddd;">Dirección</th>
+          <th style=" border: 1px solid #ddd;">Teléfono</th>
+          <th style=" border: 1px solid #ddd;">Teléfono Móvil</th>
+        </tr>
+        <tr *ngFor="let publicador of Publicadores">
+          <td style="font-weight: bold; border: 1px solid #ddd; padding-left: 6px;">{{publicador.nombre}}</td>
+          <td style=" border: 1px solid #ddd;padding-left: 6px;">{{publicador.direccion}}</td>
+          <td style=" border: 1px solid #ddd;padding-left: 6px;">{{publicador.telefono}}</td>
+          <td style=" border: 1px solid #ddd;padding-left: 6px;">{{publicador.celular}}</td>
+        </tr> 
+      </table>
+    </div>
+  </div>
+</ion-content>

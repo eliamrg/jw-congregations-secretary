@@ -77,11 +77,21 @@ const routes: Routes = [
     path: 'emergencia',
     loadChildren: () => import('./pages/emergencia/emergencia.module').then( m => m.EmergenciaPageModule)
   },
+  {
+    path: 'publicadores-contacto',
+    loadChildren: () => import('./Reportes/publicadores/publicadores.module').then( m => m.PublicadoresPageModule)
+  },
+  {
+    path: 'predicacion-visita',
+    loadChildren: () => import('./Reportes/predicacion-visita/predicacion-visita.module').then( m => m.PredicacionVisitaPageModule)
+  },
   { 
     path: '**', 
     loadChildren: () => import('./pages/agregar-informe/agregar-informe.module').then( m => m.AgregarInformePageModule),
     ...canActivate(()=>redirectUnauthorizedTo(['/login'])) 
   },
+  
+  
 
 ];
 

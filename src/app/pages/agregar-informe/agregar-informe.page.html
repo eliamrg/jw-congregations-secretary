@@ -102,25 +102,29 @@
         </thead>
         <tbody  >
           
-          <tr  *ngIf="!formatoSimplificado">
+          <tr  >
             <td>
               <ion-label style="font-weight: bold;">Publicadores ({{ReporteInforme.Publicadores.cantidad}})</ion-label>
+              <br>
+              <ion-label *ngIf="formatoSimplificado" style="font-size: small;">Participaron: {{cantidadPubsParticiparon}}, No Participaron: {{ReporteInforme.Publicadores.cantidad-cantidadPubsParticiparon}}</ion-label>
+            
             </td>
             <td>
-              <ion-label >{{ReporteInforme.Publicadores.sumaHoras}}</ion-label>
+              <ion-label *ngIf="!formatoSimplificado">{{ReporteInforme.Publicadores.sumaHoras}}</ion-label>
+              <ion-label *ngIf="formatoSimplificado">N/A</ion-label>
               
             </td>
-            <td>
+            <td *ngIf="!formatoSimplificado">
               
                 <ion-label>{{ReporteInforme.Publicadores.sumaPublicaciones}}</ion-label>
               
             </td>
-            <td>
+            <td *ngIf="!formatoSimplificado">
               
                 <ion-label >{{ReporteInforme.Publicadores.sumaVideos}}</ion-label>
               
             </td>
-            <td>
+            <td *ngIf="!formatoSimplificado">
               <ion-label >{{ReporteInforme.Publicadores.sumaRevisitas}}</ion-label>
             </td>
             <td>
@@ -250,25 +254,28 @@
         </thead>
         <tbody  >
           
-          <tr  *ngIf="!formatoSimplificado">
+          <tr >
             <td>
               <ion-label style="font-weight: bold;">Publicadores ({{ReporteInforme.Publicadores.cantidad}})</ion-label>
+              <br>
+              <ion-label *ngIf="formatoSimplificado" style="font-size: small;">Participaron: {{cantidadPubsParticiparon}}, No Participaron: {{ReporteInforme.Publicadores.cantidad-cantidadPubsParticiparon}}</ion-label>
             </td>
             <td>
-              <ion-label >{{ReporteInforme.Publicadores.promedioHoras| number : '1.2-2'}}</ion-label>
+              <ion-label *ngIf="!formatoSimplificado">{{ReporteInforme.Publicadores.promedioHoras| number : '1.2-2'}}</ion-label>
+              <ion-label *ngIf="formatoSimplificado">N/A</ion-label>
               
             </td>
-            <td>
+            <td *ngIf="!formatoSimplificado">
               
                 <ion-label >{{ReporteInforme.Publicadores.promedioPublicaciones| number : '1.2-2'}}</ion-label>
               
             </td>
-            <td>
+            <td *ngIf="!formatoSimplificado">
               
                 <ion-label >{{ReporteInforme.Publicadores.promedioVideos| number : '1.2-2'}}</ion-label>
               
             </td>
-            <td>
+            <td *ngIf="!formatoSimplificado">
               <ion-label >{{ReporteInforme.Publicadores.promedioRevisitas| number : '1.2-2'}}</ion-label>
             </td>
             <td>

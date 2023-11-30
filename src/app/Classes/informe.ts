@@ -7,7 +7,7 @@ export class informe {
     videos: number| undefined;
     revisitas:number| undefined;
     cursos:number| undefined;
-    observacion:string;
+    observacion:string ;
     servicio:string;
     grupo:number;
 

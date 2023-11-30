@@ -1,20 +1,68 @@
-hr.solid {
-    border-top: 3px solid #bbb;
-  }
-  @media print {
-    .hidePrint {
-        display: none;
-    }
+ion-list{
+  --ion-item-background:transparent;
 }
 
-#printOnly {
-  display : none;
+.table-responsive {
+  display: block;
+  width: 100%;
+  overflow-x: auto;
+}
+.greyedOut{
+color: lightcoral;
+font-weight: bolder;
 }
 
-@media print {
-   #printOnly {
-      display : block;
-   }
+mat-table {
+ width: 1200px;
+ max-width: 1200px;
+ margin-bottom: 1rem;
+ display: table;
+ border-collapse: collapse;
+ margin: 0px;
+}
+
+mat-row,
+mat-header-row {
+  display: table-row;
+}
+mat-cell,
+mat-header-cell {
+  word-wrap: initial;
+  display: table-cell;
+  padding: 0px 5px;
+  line-break: unset;
+  width: auto;
+  white-space: nowrap;
+  overflow: hidden;
+  vertical-align: middle;
+}
+
+ion-input{
+  min-width: 70px;
+  
+}
+
+table {
+  font-family: Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+ 
+  border-collapse:separate;
+  border-radius:6px;
+}
+table, th, td {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+tr:nth-child(even){background-color: #f2f2f2;}
+
+tr:hover {background-color: #ddd;}
+
+th {
+padding-top: 12px;
+padding-bottom: 12px;
+
+background-color: #4a6da7;
+color: white;
 }
 
 

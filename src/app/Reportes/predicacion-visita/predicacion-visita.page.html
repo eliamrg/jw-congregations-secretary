@@ -1,0 +1,168 @@
+<ion-header [translucent]="false" mode="ios">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Reportes de Predicación</ion-title>
+    <ion-buttons slot="end">
+      <button style="color: white;"  printSectionId="print-section" ngxPrint><ion-icon color="primary" size="large" name="print-outline"> </ion-icon> </button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="false" mode="ios">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Reportes de Predicación</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <ion-list>
+    <ion-item>
+      <ion-select label="Meses:" placeholder="Selecciona los meses a reportar" [multiple]="true" [(ngModel)]="mesesSeleccionados" (ionChange)="updateSelectedMonths()">
+        <ion-select-option *ngFor="let mes of Ultimos15meses" [value]="mes.monthName">{{mes.monthName}}</ion-select-option>
+      </ion-select>
+    </ion-item>
+  </ion-list>
+
+  <ion-grid>
+    <ion-row class="ion-align-items-center">
+      <ion-col class="ion-text-center">
+        <ion-button (click)="GenerarReporte()" fill="clear" style="font-weight: bold;"  >
+          Generar Reporte
+          <ion-icon slot="start" name="document-text-outline"></ion-icon>
+        </ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <div *ngIf="reporteGenerado" id="print-section"  class="myDivToPrint" style="font-family: Arial, Helvetica, sans-serif; margin: auto;">
+
+    <H2 id="printOnly" style="font-family: Arial, Helvetica, sans-serif;">Reporte de predicación</H2>
+
+
+    <H2 style="font-family: Arial, Helvetica, sans-serif; padding-left: 6px;" >Precursores Regulares y Especiales</H2>
+    <!-- PRECURSORES -->
+    <div *ngFor="let publicador of reportePrecursores">
+      <table *ngIf="publicador.precursor!='no'" style="width: 100%; font-family: Arial, Helvetica, sans-serif; border-collapse: collapse;">
+          
+          <tr style=" border: 1px solid #ddd; font-weight: bold;">
+              <th style=" border: 1px solid #ddd; font-weight: bold; width: 20%;">{{publicador.nombre}}</th>
+              <th style=" border: 1px solid #ddd; width: 10%;">Horas</th>
+              <th style=" border: 1px solid #ddd; width: 10%;">Publicaciones</th>
+              <th style=" border: 1px solid #ddd; width: 10%;">Videos</th>
+              <th style=" border: 1px solid #ddd; width: 10%;">Revisitas</th>
+              <th style=" border: 1px solid #ddd; width: 10%;">Cursos</th>
+              <th style=" border: 1px solid #ddd; width: 30%;">Observaciones</th>
+          </tr>
+          <tr *ngFor="let informePub of publicador.informes">
+              <td style=" border: 1px solid #ddd;">{{informePub.monthName}}</td>
+              <td style=" border: 1px solid #ddd;">{{informePub.informe.horas}}</td>
+              <td style=" border: 1px solid #ddd;">
+                <p *ngIf="!informePub.informe.FormatoAnterior"> - </p>
+                <p *ngIf="informePub.informe.FormatoAnterior"> {{informePub.informe.publicaciones}}</p>  
+              </td>
+              <td style=" border: 1px solid #ddd;">
+                <p *ngIf="!informePub.informe.FormatoAnterior"> - </p>
+                <p *ngIf="informePub.informe.FormatoAnterior"> {{informePub.informe.videos}}</p>
+              </td>
+              <td style=" border: 1px solid #ddd;">
+                <p *ngIf="!informePub.informe.FormatoAnterior"> - </p>
+                <p *ngIf="informePub.informe.FormatoAnterior"> {{informePub.informe.revisitas}}</p>
+              </td>
+              <td style=" border: 1px solid #ddd;">{{informePub.informe.cursos}}</td>
+              <td style=" border: 1px solid #ddd;">Pecursor {{publicador.precursor}} <br> {{informePub.informe.observacion}}</td>
+          </tr>
+          <br>
+      </table>
+      
+    </div>
+
+    <H2 style="font-family: Arial, Helvetica, sans-serif; padding-left: 6px;" >Publicadores Activos</H2>
+    
+    <!-- CONGREGACION -->
+    <div *ngFor="let grupo of reporte; let i = index">
+      <div *ngIf="i!=0" >
+        <H2 style="font-family: Arial, Helvetica, sans-serif; padding-left: 6px;" >Grupo {{i}}:</H2>
+        <p style="font-family: Arial, Helvetica, sans-serif; padding-left: 6px; color: gray; font-size: small;">
+          Encargado: {{grupo.Encargado}}
+          <br>
+          Auxiliar: {{grupo.Auxiliar}}
+        </p>
+    <hr style="border-top: 6px solid #bbb; border-radius: 5px;">
+        <div *ngFor="let publicador of grupo.Publicadores">
+          <table *ngIf="publicador.precursor=='no'" style="width: 100%; font-family: Arial, Helvetica, sans-serif; border-collapse: collapse;">
+              
+              <tr style=" border: 1px solid #ddd; font-weight: bold;">
+                  <th style=" border: 1px solid #ddd; font-weight: bold; width: 20%;">{{publicador.nombre}}</th>
+                  <th style=" border: 1px solid #ddd; width: 10%;">Horas</th>
+                  <th style=" border: 1px solid #ddd; width: 10%;">Publicaciones</th>
+                  <th style=" border: 1px solid #ddd; width: 10%;">Videos</th>
+                  <th style=" border: 1px solid #ddd; width: 10%;">Revisitas</th>
+                  <th style=" border: 1px solid #ddd; width: 10%;">Cursos</th>
+                  <th style=" border: 1px solid #ddd; width: 30%;">Observaciones</th>
+              </tr>
+              <tr *ngFor="let informePub of publicador.informes">
+                  <td style=" border: 1px solid #ddd;">{{informePub.monthName}}</td>
+                  <td style=" border: 1px solid #ddd;">
+                    <p *ngIf="!informePub.informe.FormatoAnterior && informePub.informe.servicio!='auxiliar'"> - </p>
+                    <p *ngIf="informePub.informe.FormatoAnterior || informePub.informe.servicio=='auxiliar'"> {{informePub.informe.horas}}</p>
+                  </td>
+                  <td style=" border: 1px solid #ddd;">
+                    <p *ngIf="!informePub.informe.FormatoAnterior"> - </p>
+                    <p *ngIf="informePub.informe.FormatoAnterior"> {{informePub.informe.publicaciones}}</p>  
+                  </td>
+                  <td style=" border: 1px solid #ddd;">
+                    <p *ngIf="!informePub.informe.FormatoAnterior"> - </p>
+                    <p *ngIf="informePub.informe.FormatoAnterior"> {{informePub.informe.videos}}</p>
+                  </td>
+                  <td style=" border: 1px solid #ddd;">
+                    <p *ngIf="!informePub.informe.FormatoAnterior"> - </p>
+                    <p *ngIf="informePub.informe.FormatoAnterior"> {{informePub.informe.revisitas}}</p>
+                  </td>
+                  <td style=" border: 1px solid #ddd;">{{informePub.informe.cursos}}</td>
+                  <td style=" border: 1px solid #ddd;">
+                    <p *ngIf="informePub.informe.servicio=='auxiliar'" style="font-weight: bold;">Precursor Auxiliar </p>
+                    <div *ngIf="!informePub.informe.FormatoAnterior && informePub.informe.servicio!='auxiliar'">
+                      <p *ngIf="informePub.informe.participo">Participó en la predicación</p>
+                      <p *ngIf="!informePub.informe.participo"><span style="font-weight: bold;">NO</span> Participó en la predicación</p>
+                    </div>
+                    <p *ngIf="informePub.informe.observacion "> {{informePub.informe.observacion}}</p>
+                    
+                  </td>
+              </tr>
+              <!-- Repite las filas para cada mes -->
+              <!-- ... -->
+              <!-- <tr class="totals">
+                  <td>Sumatoria</td>
+                  <td>30</td>
+                  <td>44</td>
+                  <td>35</td>
+                  <td>52</td>
+                  <td>58</td>
+                  <td>52</td>
+              </tr>
+              <tr class="totals">
+                  <td>Promedio</td>
+                  <td>5</td>
+                  <td>7.33</td>
+                  <td>5.83</td>
+                  <td>8.67</td>
+                  <td>9.67</td>
+                  <td>8.67</td>
+              </tr> -->
+              <br>
+          </table>
+        </div>
+      </div>
+
+    </div>
+
+
+    <H2 style="font-family: Arial, Helvetica, sans-serif; padding-left: 6px;" >Publicadores Inactivos</H2>
+  </div>
+    
+    
+
+
+</ion-content>

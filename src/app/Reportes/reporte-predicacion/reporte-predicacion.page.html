@@ -2,97 +2,525 @@
   <ion-toolbar>
     <ion-buttons slot="start">
       <ion-menu-button></ion-menu-button>
+      <ion-button id="open-modal-informe"> <ion-icon name="calendar-outline"></ion-icon> </ion-button>
     </ion-buttons>
-    
-    <ion-title>Reportes de Predicación</ion-title>
-
-    <ion-buttons slot="end">
-      <button style="color: white;"  printSectionId="print-section" ngxPrint><ion-icon color="primary" size="large" name="print-outline"> </ion-icon> </button>
-    </ion-buttons>
+    <ion-title>Informes de Predicación</ion-title>
   </ion-toolbar>
 </ion-header>
 
-
-
-<ion-content  [fullscreen]="false" mode="ios">
+<ion-content [fullscreen]="false" mode="ios">
   <ion-header collapse="condense">
     <ion-toolbar>
-      <ion-title size="large">Informe de Predicación {{stringDate}}</ion-title>
+      <ion-title  size="large">Informes de Predicación</ion-title>
+      
+      
+      
     </ion-toolbar>
   </ion-header>
 
 
-  <div  id="print-section"  class="myDivToPrint" style="font-family: Arial, Helvetica, sans-serif; margin: auto;">
+  <ion-list>
+    <ion-item>
+      <ion-select label="Grupos de Predicación" (ionChange)="handlerVerGrupoChange($event)" okText="Aceptar" cancelText="Cancelar"  value="Todos">
+        <ion-select-option  value="Todos" >Todos mis Grupos</ion-select-option>
+    
+        <div *ngFor="let grupo of InformesPorGrupo; let i = index">
+          <ion-select-option  id="Filtro + {{i}}"  value="{{i}}"  *ngIf="i!=0 && grupo.permitido"> Grupo {{i}}</ion-select-option>
+        </div>
+      </ion-select>
+    </ion-item>
+    <ion-item lines="none">
+      <ion-label>Formato Simplificado</ion-label>
+      <ion-toggle [(ngModel)]="formatoSimplificado" slot="start"></ion-toggle>
+    </ion-item>
+  </ion-list>
 
-    <H2 id="printOnly" style="font-family: Arial, Helvetica, sans-serif;">Informe de Precursores Regulares {{stringDate}}</H2>
 
-    <div *ngFor="let grupo of Grupos" style="font-family: Arial, Helvetica, sans-serif;">
-      <h4  style="padding-left: 6px;">Grupo {{grupo.id}}</h4>
-      <hr class="solid">
-      <app-tabla-informe ></app-tabla-informe>
   
-    </div>
-  </div>
-
   
-  <ion-modal mode="ios" [isOpen]="isModalDatePickerOpen" (willDismiss)="setDatePickerOpen(false)">
+  <ion-modal trigger="open-modal-informe" (willDismiss)="onWillDismiss($event)">
     <ng-template>
       <ion-header>
         <ion-toolbar>
-          <ion-title>Modal</ion-title>
+          <ion-buttons slot="start">
+            
+          </ion-buttons>
+          <ion-title>Seleccionar</ion-title>
           <ion-buttons slot="end">
-            <ion-button (click)="setDatePickerOpen(false)">Aceptar</ion-button>
+            <ion-button (click)="confirm()" [strong]="true">Aceptar</ion-button>
           </ion-buttons>
         </ion-toolbar>
       </ion-header>
       <ion-content class="ion-padding">
-        <ion-grid>
-          <ion-row class="ion-align-items-center">
-            <ion-col class="ion-text-center">
-              <ion-datetime size="cover" value="wheelDate" [(ngModel)]="wheelDate"  (ngModelChange)="showdate()" locale="es-MX" style="--background: translucent; --background-rgb: transluscent" presentation="month-year"></ion-datetime>
+        <ion-card>
+          <ion-card-header>
+            <ion-card-title>Mes y Año</ion-card-title>
+            <ion-card-subtitle>Selección de Fecha</ion-card-subtitle>
+          </ion-card-header>
         
-            </ion-col>
-          </ion-row>
-        </ion-grid>
+          <ion-card-content>
+            <ion-datetime size="cover" [(ngModel)]="wheelDate"  (ngModelChange)="showdate()" locale="es-MX" style="--background: translucent; --background-rgb: transluscent" presentation="month-year"></ion-datetime>
+        
+          </ion-card-content>
+        </ion-card>
       </ion-content>
     </ng-template>
   </ion-modal>
   
+  
+  
+  
+ 
+  <ion-card>
+
+    <ion-card-header>
+      <ion-card-title>{{stringDate}}</ion-card-title>
+      <ion-card-subtitle>Registro de Informes</ion-card-subtitle>
+      
+    </ion-card-header>
 
 
+    <ion-card-content>
+      <ion-button (click)="GenerarReporte()">Generar Reporte de Congregación</ion-button>
+    </ion-card-content>
+    
+    <ion-card-content *ngIf="ReporteGenerado" >
+      <br>
+      
+    <ion-card-title >Sumatoria Total</ion-card-title>
+    <div class="table-responsive">
+      <table style="color: black;">
+        <thead>
+          <tr style="text-align: center;">
+            <th>Servicio</th>
+            <th >Horas</th>
+            <th *ngIf="!formatoSimplificado">Publicaciones</th>
+            <th *ngIf="!formatoSimplificado">Videos</th>
+            <th *ngIf="!formatoSimplificado">Revisitas</th>
+            <th >Cursos</th>
+          </tr>
+        </thead>
+        <tbody  >
+          
+          <tr  >
+            <td>
+              <ion-label style="font-weight: bold;">Publicadores ({{ReporteInforme.Publicadores.cantidad}})</ion-label>
+              <br>
+              <ion-label *ngIf="formatoSimplificado" style="font-size: small;">Participaron: {{cantidadPubsParticiparon}}, No Participaron: {{ReporteInforme.Publicadores.cantidad-cantidadPubsParticiparon}}</ion-label>
+            
+            </td>
+            <td>
+              <ion-label *ngIf="!formatoSimplificado">{{ReporteInforme.Publicadores.sumaHoras}}</ion-label>
+              <ion-label *ngIf="formatoSimplificado">N/A</ion-label>
+              
+            </td>
+            <td *ngIf="!formatoSimplificado">
+              
+                <ion-label>{{ReporteInforme.Publicadores.sumaPublicaciones}}</ion-label>
+              
+            </td>
+            <td *ngIf="!formatoSimplificado">
+              
+                <ion-label >{{ReporteInforme.Publicadores.sumaVideos}}</ion-label>
+              
+            </td>
+            <td *ngIf="!formatoSimplificado">
+              <ion-label >{{ReporteInforme.Publicadores.sumaRevisitas}}</ion-label>
+            </td>
+            <td>
+              <ion-label >{{ReporteInforme.Publicadores.sumaCursos}}</ion-label>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <ion-label style="font-weight: bold;">Precursores Auxiliares ({{ReporteInforme.Auxiliares.cantidad}})</ion-label>
+            </td>
+            <td>
+              <ion-label >{{ReporteInforme.Auxiliares.sumaHoras}}</ion-label>
+              
+            </td>
+            <td  *ngIf="!formatoSimplificado">
+              
+                <ion-label>{{ReporteInforme.Auxiliares.sumaPublicaciones}}</ion-label>
+              
+            </td>
+            <td  *ngIf="!formatoSimplificado">
+              
+                <ion-label >{{ReporteInforme.Auxiliares.sumaVideos}}</ion-label>
+              
+            </td>
+            <td  *ngIf="!formatoSimplificado">
+              <ion-label >{{ReporteInforme.Auxiliares.sumaRevisitas}}</ion-label>
+            </td>
+            <td>
+              <ion-label >{{ReporteInforme.Auxiliares.sumaCursos}}</ion-label>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <ion-label style="font-weight: bold;">Precursores Regulares ({{ReporteInforme.Regulares.cantidad}})</ion-label>
+            </td>
+            <td>
+              <ion-label >{{ReporteInforme.Regulares.sumaHoras}}</ion-label>
+              
+            </td>
+            <td  *ngIf="!formatoSimplificado">
+              
+                <ion-label >{{ReporteInforme.Regulares.sumaPublicaciones}}</ion-label>
+              
+            </td>
+            <td  *ngIf="!formatoSimplificado">
+              
+                <ion-label >{{ReporteInforme.Regulares.sumaVideos}}</ion-label>
+              
+            </td>
+            <td  *ngIf="!formatoSimplificado">
+              <ion-label>{{ReporteInforme.Regulares.sumaRevisitas}}</ion-label>
+            </td>
+            <td >
+              <ion-label >{{ReporteInforme.Regulares.sumaCursos}}</ion-label>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <ion-label style="font-weight: bold;">Precursores Especiales ({{ReporteInforme.Especiales.cantidad}})</ion-label>
+            </td>
+            <td>
+              <ion-label >{{ReporteInforme.Especiales.sumaHoras}}</ion-label>
+              
+            </td>
+            <td  *ngIf="!formatoSimplificado">
+              
+                <ion-label >{{ReporteInforme.Especiales.sumaPublicaciones}}</ion-label>
+              
+            </td>
+            <td  *ngIf="!formatoSimplificado">
+              
+                <ion-label >{{ReporteInforme.Especiales.sumaVideos}}</ion-label>
+              
+            </td>
+            <td  *ngIf="!formatoSimplificado">
+              <ion-label>{{ReporteInforme.Especiales.sumaRevisitas}}</ion-label>
+            </td>
+            <td>
+              <ion-label >{{ReporteInforme.Especiales.sumaCursos}}</ion-label>
+            </td>
+          </tr>
+          <tr  *ngIf="!formatoSimplificado">
+            <td>
+              <ion-label style="font-weight: bold;">Total de Congregación ({{ReporteInforme.Congregacion.cantidad}})</ion-label>
+            </td>
+            <td>
+              <ion-label >{{ReporteInforme.Congregacion.sumaHoras}}</ion-label>
+              
+            </td>
+            <td>
+              
+                <ion-label >{{ReporteInforme.Congregacion.sumaPublicaciones}}</ion-label>
+              
+            </td>
+            <td>
+              
+                <ion-label >{{ReporteInforme.Congregacion.sumaVideos}}</ion-label>
+              
+            </td>
+            <td>
+              <ion-label >{{ReporteInforme.Congregacion.sumaRevisitas}}</ion-label>
+            </td>
+            <td>
+              <ion-label>{{ReporteInforme.Congregacion.sumaCursos}}</ion-label>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      
+      
+    </div>
+
+
+    <ion-card-title >Promedios Totales</ion-card-title>
+    <div class="table-responsive">
+      <table style="color: black;">
+        <thead>
+          <tr style="text-align: center;">
+            <th>Servicio</th>
+            <th>Horas</th>
+            <th  *ngIf="!formatoSimplificado">Publicaciones</th>
+            <th *ngIf="!formatoSimplificado">Videos</th>
+            <th *ngIf="!formatoSimplificado">Revisitas</th>
+            <th>Cursos</th>
+          </tr>
+        </thead>
+        <tbody  >
+          
+          <tr >
+            <td>
+              <ion-label style="font-weight: bold;">Publicadores ({{ReporteInforme.Publicadores.cantidad}})</ion-label>
+              <br>
+              <ion-label *ngIf="formatoSimplificado" style="font-size: small;">Participaron: {{cantidadPubsParticiparon}}, No Participaron: {{ReporteInforme.Publicadores.cantidad-cantidadPubsParticiparon}}</ion-label>
+            </td>
+            <td>
+              <ion-label *ngIf="!formatoSimplificado">{{ReporteInforme.Publicadores.promedioHoras| number : '1.2-2'}}</ion-label>
+              <ion-label *ngIf="formatoSimplificado">N/A</ion-label>
+              
+            </td>
+            <td *ngIf="!formatoSimplificado">
+              
+                <ion-label >{{ReporteInforme.Publicadores.promedioPublicaciones| number : '1.2-2'}}</ion-label>
+              
+            </td>
+            <td *ngIf="!formatoSimplificado">
+              
+                <ion-label >{{ReporteInforme.Publicadores.promedioVideos| number : '1.2-2'}}</ion-label>
+              
+            </td>
+            <td *ngIf="!formatoSimplificado">
+              <ion-label >{{ReporteInforme.Publicadores.promedioRevisitas| number : '1.2-2'}}</ion-label>
+            </td>
+            <td>
+              <ion-label >{{ReporteInforme.Publicadores.promedioCursos| number : '1.2-2'}}</ion-label>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <ion-label style="font-weight: bold;">Precursores Auxiliares ({{ReporteInforme.Auxiliares.cantidad}})</ion-label>
+            </td>
+            <td>
+              <ion-label >{{ReporteInforme.Auxiliares.promedioHoras| number : '1.2-2'}}</ion-label>
+              
+            </td>
+            <td *ngIf="!formatoSimplificado">
+              
+                <ion-label  >{{ReporteInforme.Auxiliares.promedioPublicaciones| number : '1.2-2'}}</ion-label>
+              
+            </td>
+            <td *ngIf="!formatoSimplificado">
+              
+                <ion-label >{{ReporteInforme.Auxiliares.promedioVideos| number : '1.2-2'}}</ion-label>
+              
+            </td>
+            <td *ngIf="!formatoSimplificado">
+              <ion-label  >{{ReporteInforme.Auxiliares.promedioRevisitas| number : '1.2-2'}}</ion-label>
+            </td>
+            <td>
+              <ion-label >{{ReporteInforme.Auxiliares.promedioCursos| number : '1.2-2'}}</ion-label>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <ion-label style="font-weight: bold;">Precursores Regulares ({{ReporteInforme.Regulares.cantidad}})</ion-label>
+            </td>
+            <td>
+              <ion-label >{{ReporteInforme.Regulares.promedioHoras| number : '1.2-2'}}</ion-label>
+              
+            </td>
+            <td *ngIf="!formatoSimplificado">
+              
+                <ion-label >{{ReporteInforme.Regulares.promedioPublicaciones| number : '1.2-2'}}</ion-label>
+              
+            </td>
+            <td *ngIf="!formatoSimplificado">
+              
+                <ion-label  >{{ReporteInforme.Regulares.promedioVideos| number : '1.2-2'}}</ion-label>
+              
+            </td>
+            <td *ngIf="!formatoSimplificado">
+              <ion-label >{{ReporteInforme.Regulares.promedioRevisitas| number : '1.2-2'}}</ion-label>
+            </td>
+            <td>
+              <ion-label >{{ReporteInforme.Regulares.promedioCursos| number : '1.2-2'}}</ion-label>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <ion-label style="font-weight: bold;">Precursores Especiales ({{ReporteInforme.Especiales.cantidad}})</ion-label>
+            </td>
+            <td>
+              <ion-label >{{ReporteInforme.Especiales.promedioHoras| number : '1.2-2'}}</ion-label>
+              
+            </td>
+            <td *ngIf="!formatoSimplificado">
+              
+                <ion-label >{{ReporteInforme.Especiales.promedioPublicaciones| number : '1.2-2'}}</ion-label>
+              
+            </td>
+            <td  *ngIf="!formatoSimplificado">
+              
+                <ion-label >{{ReporteInforme.Especiales.promedioVideos| number : '1.2-2'}}</ion-label>
+              
+            </td>
+            <td  *ngIf="!formatoSimplificado">
+              <ion-label  >{{ReporteInforme.Especiales.promedioRevisitas| number : '1.2-2'}}</ion-label>
+            </td>
+            <td>
+              <ion-label >{{ReporteInforme.Especiales.promedioCursos| number : '1.2-2'}}</ion-label>
+            </td>
+          </tr>
+          <tr  *ngIf="!formatoSimplificado">
+            <td>
+              <ion-label style="font-weight: bold;">Total de Congregación ({{ReporteInforme.Congregacion.cantidad}})</ion-label>
+            </td>
+            <td>
+              <ion-label >{{ReporteInforme.Congregacion.promedioHoras| number : '1.2-2'}}</ion-label>
+              
+            </td>
+            <td>
+              
+                <ion-label >{{ReporteInforme.Congregacion.promedioPublicaciones| number : '1.2-2'}}</ion-label>
+              
+            </td>
+            <td>
+              
+                <ion-label >{{ReporteInforme.Congregacion.promedioVideos| number : '1.2-2'}}</ion-label>
+              
+            </td>
+            <td>
+              <ion-label >{{ReporteInforme.Congregacion.promedioRevisitas| number : '1.2-2'}}</ion-label>
+            </td>
+            <td>
+              <ion-label >{{ReporteInforme.Congregacion.promedioCursos| number : '1.2-2'}}</ion-label>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      
+      
+    </div>
+    </ion-card-content>
+    
+
+    <div style="padding-left: 15px;"><ion-label  style="font-size: small;">En dispositivos móviles considerar rotación de pantalla</ion-label> </div>
+    <div style="padding-left: 15px;"><ion-label  style="font-size: small;">NOTA: Los campos vacios se llenarán con ceros</ion-label> </div>
+    
+    <div *ngFor="let grupo of InformesPorGrupo; let i = index">
+  
+      <div  *ngIf="i!=0 && grupo.visible==true">
+        
+        
+        <ion-card-header>
+          <ion-card-subtitle color="primary">RECUERDE GUARDAR LOS CAMBIOS</ion-card-subtitle>
+          <ion-card-title>Grupo {{i}}</ion-card-title>
+        </ion-card-header>
+        <ion-card-content>
+    
+          <div class="table-responsive">
+            <table style="color: black;">
+              <thead>
+                <tr style="text-align: center;">
+                  
+                  <th>Publicador</th>
+                  <th>Horas</th>
+                  <th *ngIf="!formatoSimplificado">Publicaciones</th>
+                  <th *ngIf="!formatoSimplificado">Videos</th>
+                  <th *ngIf="!formatoSimplificado">Revisitas</th>
+                  <th >Cursos</th>
+                  <th>Observaciones</th>
+                  <th>Servicio</th>
+                </tr>
+              </thead>
+              <tbody  *ngFor=" let Publicador of grupo.Publicadores; let indexPub = index">
+                <tr>
+                  <td>
+                    <ion-label style="font-weight: bold;">{{Publicador.nombre}}.</ion-label>
+                    
+                  </td>
+                  <td>
+                    <ion-item *ngIf="(Publicador.informe.servicio!='publicador'&& Publicador.informe.participo)|| !formatoSimplificado" style="text-align: center;"  color="transparent"  lines="none">
+                      <ion-input [(ngModel)]="Publicador.informe.horas"    type="number" inputmode="tel" placeholder="Ingresar"> </ion-input>
+                    </ion-item>
+                    <ion-item *ngIf="(Publicador.informe.servicio=='publicador' || !Publicador.informe.participo) && formatoSimplificado" style="text-align: center;"  color="transparent"  lines="none">
+                      <ion-input  value="No Aplica" readonly="true"> </ion-input>
+                    </ion-item>
+                  </td>
+                  <td  *ngIf="!formatoSimplificado">
+                    <ion-item  style="text-align: center;" class="ion-no-padding"  color="transparent"  lines="none">
+                      <ion-input [(ngModel)]="Publicador.informe.publicaciones"     type="number" inputmode="tel" placeholder="Ingresar"> </ion-input>
+                    </ion-item>
+                  </td>
+                  <td  *ngIf="!formatoSimplificado">
+                    <ion-item style="text-align: center;" class="ion-no-padding"  color="transparent"  lines="none">
+                      <ion-input  [(ngModel)]="Publicador.informe.videos"   type="number" inputmode="tel" placeholder="Ingresar"> </ion-input>
+                    </ion-item>
+                  </td>
+                  <td  *ngIf="!formatoSimplificado">
+                    <ion-item style="text-align: center;" class="ion-no-padding"  color="transparent"  lines="none">
+                      <ion-input  [(ngModel)]="Publicador.informe.revisitas"    type="number" inputmode="tel" placeholder="Ingresar"> </ion-input>
+                    </ion-item>
+                  </td>
+                  <td  >
+                    <ion-item  *ngIf="Publicador.informe.participo || !formatoSimplificado"  style="text-align: center;" class="ion-no-padding"  color="transparent" lines="none" >
+                      <ion-input [(ngModel)]="Publicador.informe.cursos"    type="number" inputmode="tel" placeholder="Ingresar"> </ion-input>
+                    </ion-item>
+                    <ion-item *ngIf="!Publicador.informe.participo && formatoSimplificado" style="text-align: center;"  color="transparent"  lines="none">
+                      <ion-input  value="No Aplica" readonly="true"> </ion-input>
+                    </ion-item>
+                  </td>
+                  <td >
+                    <ion-item style="text-align: center;" class="ion-no-padding" color="transparent" lines="none"  >
+                      <ion-input  [(ngModel)]="Publicador.informe.observacion"    placeholder="Ingresar"> </ion-input>
+                    </ion-item>
+                    
+                    
+                  </td>
+                  <td>
+                    <ion-item color="transparent" lines="none">
+                      <ion-select  
+                        placeholder="Seleccionar" [(ngModel)]="Publicador.informe.servicio" value="publicador" okText="Aceptar" cancelText="Cancelar">
+                        <ion-select-option value="publicador">Publicador</ion-select-option>
+                        <ion-select-option value="auxiliar">Precursor Auxiliar</ion-select-option>
+                        <ion-select-option value="regular">Precursor Regular</ion-select-option>
+                        <ion-select-option value="especial">Precursor Especial</ion-select-option>
+                      </ion-select>
+                    </ion-item>
+                    <ion-checkbox *ngIf="formatoSimplificado" [(ngModel)]="Publicador.informe.participo" labelPlacement="end">Participó en la Predicación</ion-checkbox>
+
+                  </td>
+                  
+                </tr>
+              </tbody>
+            </table>
+            <ion-grid>
+              <ion-row class="ion-align-items-center">
+                <ion-col class="ion-text-center">
+                  <ion-button (click)="GuardarInforme(i)" fill="clear" style="font-weight: bold;"  >
+                    Guardar
+                    <ion-icon slot="start" name="checkmark-circle-outline"></ion-icon>
+                  </ion-button>
+                </ion-col>
+              </ion-row>
+            </ion-grid>
+          </div>
+          
+    
+          <!-- <ion-list  *ngFor=" let Publicador of grupo.Publicadores; let indexPub = index">
+            <ion-item style="cursor:pointer;"  color="none" lines="none"  >
+              <ion-avatar routerLink="/publicador/{{Publicador.id}}" slot="start">
+                <img alt="Silhouette of a person's head" src="https://ionicframework.com/docs/img/demos/avatar.svg" />
+              </ion-avatar>
+              
+              <ion-label [ngStyle]=" Publicador.activo ? {'color': 'black'} : {'color': 'gray'}" routerLink="/publicador/{{Publicador.id}}" style="font-size: large; cursor:pointer; "> 
+                {{Publicador.nombre}}
+                <p style="font-size: small; font-weight: lighter;">{{Publicador.nombramiento}}  <span *ngIf="!Publicador.activo"> Inactivo</span> </p>
+                
+              </ion-label>
+              
+              
+            </ion-item>
+            
+          </ion-list> -->
+    
+          <!-- AGREGAR PUBLICADOR boton -->
+         
+        </ion-card-content>
+      </div>
+    </div>
+  </ion-card>
 </ion-content>
 
 
 
-<!-- <ion-modal trigger="open-modal-fecha-regular" (willDismiss)="onWillDismiss($event)">
-  <ng-template>
-    <ion-header>
-      <ion-toolbar>
-       
-        <ion-title>Seleccionar Fecha</ion-title>
-        <ion-buttons slot="end">
-          <ion-button (click)="confirm()" [strong]="true">Aceptar</ion-button>
-        </ion-buttons>
-      </ion-toolbar>
-    </ion-header>
-    <ion-content class="ion-padding">
-      <ion-card>
-        <ion-card-header>
-          <ion-card-title>Mes y Año</ion-card-title>
-          <ion-card-subtitle>Selección de Fecha</ion-card-subtitle>
-        </ion-card-header>
-      
-        <ion-card-content>
-          <ion-datetime size="cover" [(ngModel)]="wheelDate"  (ngModelChange)="showdate()" locale="es-MX" style="--background: translucent; --background-rgb: transluscent" presentation="month-year"></ion-datetime>
-      
-        </ion-card-content>
-      </ion-card>
-    </ion-content>
-  </ng-template>
-</ion-modal> -->
 
 
-<!-- <ion-fab slot="fixed" vertical="top" horizontal="end"  mode="ios">
-  <button style="background-color: transparent;" printSectionId="print-section" ngxPrint><ion-icon size="large" name="print-outline"> </ion-icon> </button>
-</ion-fab> -->
 

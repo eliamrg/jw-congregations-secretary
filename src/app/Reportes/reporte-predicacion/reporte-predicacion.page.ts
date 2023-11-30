@@ -1,4 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { IonModal, LoadingController } from '@ionic/angular';
+import { OverlayEventDetail } from '@ionic/core/components';
+import { informe } from 'src/app/Classes/informe';
+import { FirestoreService } from 'src/app/services/Firestore/firestore.service';
+import { ReportesService } from 'src/app/services/Reportes/reportes.service';
 
 @Component({
   selector: 'app-reporte-predicacion',
@@ -7,107 +12,173 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ReportePredicacionPage implements OnInit {
 
-  isModalDatePickerOpen=false;
-  Grupos=[
-    {"id":1},
-    {"id":2},
-    {"id":3,},
-    {"id":4},
-    {"id":5},
-    {"id":6},
-    {"id":7},
-    {"id":8},
-    {"id":9},
-    {"id":10},
-    {"id":11},
-    {"id":12},
-  ]
-  constructor() { }
+  constructor(private firestore: FirestoreService,private loadingCtrl: LoadingController, private reporteService:ReportesService) { }
 
-  ngOnInit() {
+  formatoSimplificado:boolean=true;
+  InformesPorGrupo:any;
+  SelectedMonth:any;
+  SelectedYear:any;
+  userPrivs:any
+  cantidadPubsParticiparon:number=0;
+  
 
+  ReporteInforme:any;
+
+  ReporteGenerado=false;
+  
+
+  async ngOnInit() {
     
-    this.wheelDate=new Date();
-    // const today=new Date(this.wheelDate);
-    // console.log(today.getHours())
-    // this.wheelDate.setHours(today.getHours() -6);
+    var today=new Date();
+    this.SelectedMonth=today.getMonth();
+    this.SelectedYear=today.getFullYear();
+    today.setMonth(today.getMonth()-1);
+    this.wheelDate=today.toISOString();
+    this.showdate();//AQUI SE CARGAN INFORMES
+
+    this.userPrivs = JSON.parse(localStorage.getItem("userData")!);
     
-    //var today=new Date();
-    // var currentMonth=today.getMonth();
-    //  today.setMonth(today.getMonth()+1);
-    //  this.wheelDate=today.toISOString();
-    this.showdate();
+    
   }
+
+  async ObtenerInformesDeFecha(){
+    const loading = await this.loadingCtrl.create({
+      message: 'Cargando Informes...',
+      duration:1500
+    });
+    loading.present();
+
+    await this.firestore.getInformeMes(this.SelectedYear,this.SelectedMonth).then(x=>{
+      //console.log(x)
+      this.InformesPorGrupo=x;
+      
+    })
+
+    
+    
+    
+  }
+
+  async GuardarInforme(Grupo:any){
+    const loadingiNFORME = await this.loadingCtrl.create({
+      message: 'Guardando Informes...',
+      duration:1200
+    });
+    loadingiNFORME.present();
+    let InformesGrupoSeleccionado=this.InformesPorGrupo[Number(Grupo)].Publicadores;
+    InformesGrupoSeleccionado.forEach(async (publicador:any) => {
+      let temp= publicador.informe;
+      console.log(this.SelectedYear,this.SelectedMonth,temp);
+
+
+      await this.firestore.setInformeMes(this.SelectedYear,this.SelectedMonth,temp,temp.idPublicador)
+    });
+    
+  }
+
 
 
   //DATEPICKER
   stringDate:any;
   wheelDate:any;
   showdate(){
-    console.log(this.wheelDate)
-
-    let date=new Date(this.wheelDate );
-    // console.log(date);
-    // let month=date.getMonth() ;
-    // // console.log(month)
+    let date=new Date(this.wheelDate);
+    let month=date.getMonth() +1;
+    this.SelectedMonth=month;
+    
     let year=date.getFullYear();
-    console.log(year)
-    date.setMonth(date.getMonth());
-    let stringMonth= date.toLocaleString('es-MX', {
-      month: 'long',
-    });
-
-    console.log(stringMonth)
+    this.SelectedYear=year;
+    let stringMonth=this.getMonthName(month);
     
     this.stringDate=(stringMonth + " " + year);
-    
+    //this.weeks=this.getWeeksInMonth(year,month-1 );
+    //var date=this.wheelDate.getDate();
+    this.ObtenerInformesDeFecha();
     
     
   }
 
-  // getMonthName(monthNumber:number) {
-  //   const date = new Date();
-  //   date.setMonth(monthNumber+1);
+  getMonthName(monthNumber:number) {
+    const date = new Date();
+    date.setMonth(monthNumber - 1);
   
-  //   return date.toLocaleString('es-MX', { month: 'long' });
-  // }
+    return date.toLocaleString('es-MX', { month: 'long' });
+  }
 
 
 
 
   //MODAL DATE
-  // @ViewChild(IonModal)
-  // modal!: IonModal;
+  @ViewChild(IonModal)
+  modal!: IonModal;
 
-  // message = 'This modal example uses triggers to automatically open a modal when the button is clicked.';
-  // nombre: string | undefined;
-  // cancel() {
-  //   this.modal.dismiss(null, 'cancel');
-  // }
-
-  // confirm() {
-  //   this.modal.dismiss(this.nombre, 'confirm');
-  // }
-
-  
-
-  setDatePickerOpen(open:boolean){
-    this.isModalDatePickerOpen=open;
+  message = 'This modal example uses triggers to automatically open a modal when the button is clicked.';
+  nombre: string | undefined;
+  cancel() {
+    this.modal.dismiss(null, 'cancel');
   }
 
-
-  print(){
-    
-      // let popupWinindow:any
-      // let innerContents:any = document.getElementById("tablas")!.innerHTML;
-      // popupWinindow = window.open('x', '_blank', 'scrollbars=no,menubar=no,toolbar=no,status=no,titlebar=no');
-      // popupWinindow.document.open();
-      // popupWinindow.document.write('<html><head><link rel="stylesheet" type="text/css" href="style.css"  /></head><body onload="window.print()"> <h1 style="font-family: Arial, Helvetica, sans-serif;"> Informe de Precursores Regulares</h1>' + innerContents + '</html>');
-      
-      // popupWinindow.document.close();
-      
-  
-
+  confirm() {
+    this.modal.dismiss(this.nombre, 'confirm');
   }
+
+  onWillDismiss(event: Event) {
+    const ev = event as CustomEvent<OverlayEventDetail<string>>;
+    if (ev.detail.role === 'confirm') {
+      this.message = `Hello, ${ev.detail.data}!`;
+    }
+  }
+
+  handlerVerGrupoChange(e:any) {
+    let seleccion=e.detail.value;
+
+    if(seleccion=='Todos'){
+      if (this.userPrivs.administrador){
+        this.InformesPorGrupo.forEach((element: any,index:number) => {
+          // console.log(index,element);
+          this.InformesPorGrupo[index].visible=true;
+        });
+      }
+      else{
+        this.InformesPorGrupo.forEach((element: any,index:number) => {
+          if(index!=0){
+            //console.log(index,element);
+            this.InformesPorGrupo[index].visible=this.userPrivs.grupos.includes(index.toString());
+          }
+        });
+      }
+      
+    }
+    else{
+      
+      this.InformesPorGrupo.forEach((element: any,index:number) => {
+        // console.log(index,element);
+        this.InformesPorGrupo[index].visible=false;
+      });
+      this.InformesPorGrupo[seleccion].visible=true;
+    }
+  }
+
+  GenerarReporte(){
+    this.ReporteInforme=this.reporteService.ReporteInformes(this.InformesPorGrupo)
+    console.log(this.ReporteInforme)
+
+    this.ReporteGenerado=true;
+
+    this.InformesPorGrupo.forEach((grupo:any) => {
+      
+      grupo.Publicadores.forEach((publicador:any) => {
+        if(publicador.informe.participo && publicador.informe.servicio=="publicador"){
+          this.cantidadPubsParticiparon+=1;
+        }
+        
+      });
+    });
+    this.ReporteGenerado=true;
+    console.log(this.cantidadPubsParticiparon)
+
+    }
+ 
+
 
 }

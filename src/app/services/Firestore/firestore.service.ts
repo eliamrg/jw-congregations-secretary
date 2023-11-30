@@ -69,6 +69,16 @@ export class FirestoreService {
     return gruposConPublicadores;
     
   }
+
+  async getPublicadores(){
+    let Publicadores:any=[]
+    const q = query(collection(this.firestore, "Publicadores"),orderBy("nombre","asc"));
+    const querySnapshot = await getDocs(q);
+    querySnapshot.forEach((doc) => {
+      Publicadores.push(doc.data())
+    });
+    return Publicadores;
+  }
     
   
   async BorrarPublicador(id:string){
@@ -292,46 +302,147 @@ export class FirestoreService {
         observacion:Informe.observacion||"",
         servicio:Informe.servicio,
         grupo:Informe.grupo,
-        participo:Informe.participo||false
+        participo:Informe.participo
       },{merge:true});
 
     }
 
-    async getInformeMes(Anio:any,Mes:any){
+  async getInformeMes(Anio:any,Mes:any){
+  let gruposConPublicadores:any= await this.getGruposSimplified();
+  const q = query(collection(this.firestore, "Publicadores"),orderBy("nombre","asc"));
+  console.log(gruposConPublicadores)
+  const querySnapshot = await getDocs(q);
+
+  querySnapshot.forEach(async (document) => {
+
+    let informePub:any=new informe(document.data()["id"],document.data()["nombre"]);
+    //obtener informe
+    const InformeSnap = await getDoc(doc(this.firestore, "Informes/"+Anio+"/"+Mes, document.data()["id"]))
+    
+    
+    if (InformeSnap.exists()) {
+      informePub= InformeSnap.data();
+      //console.log(InformeSnap.data())
+    }
+    const tempPub:any={
+      id:document.data()["id"],
+      nombre:document.data()["nombre"],
+      precursor:document.data()["precursor"],
+      "informe":informePub
+    }
+
+    if(tempPub.precursor=="regular" || tempPub.precursor=="especial" ){
+      tempPub.informe.servicio=tempPub.precursor;
+    } 
+    tempPub.informe.grupo=document.data()["grupo"]
+    gruposConPublicadores[document.data()["grupo"]]["Publicadores"].push(tempPub)
+    
+  });
+  console.log(gruposConPublicadores)
+  return gruposConPublicadores;
+}
+
+
+
+
+  async getInformeMeses(meses:any){
+     
+
       let gruposConPublicadores:any= await this.getGruposSimplified();
       const q = query(collection(this.firestore, "Publicadores"),orderBy("nombre","asc"));
-      //console.log(grupos[1])
       const querySnapshot = await getDocs(q);
-
+      //console.log(gruposConPublicadores)
       querySnapshot.forEach(async (document) => {
 
-        let informePub:any=new informe(document.data()["id"],document.data()["nombre"]);
+        
+
+        let informes:any=[];
+        
+        meses.forEach(async ( month:any) => {
+          let informePub:any=new informe(document.data()["id"],document.data()["nombre"]);
+          informePub.participo=false;
+          const InformeSnap = await getDoc(doc(this.firestore, "Informes/"+month.year+"/"+month.month, document.data()["id"]))
+          
+          if (InformeSnap.exists()) {
+            informePub= InformeSnap.data();
+            //console.log(InformeSnap.data())
+          }
+          if(document.data()["precursor"]=="regular" || document.data()["precursor"]=="especial" ){
+            informePub.servicio=document.data()["precursor"];
+          } 
+          informePub.grupo=document.data()["grupo"]
+          
+
+          informePub["FormatoAnterior"]=(month.month<10 && month.year<=2023);
+          let informeMes={
+            mes:month.month,
+            anio:month.year,
+            monthName:month.monthName,
+            informe:informePub
+          }
+          informes.push(informeMes);
+        });
+
+        
         //obtener informe
-        const InformeSnap = await getDoc(doc(this.firestore, "Informes/"+Anio+"/"+Mes, document.data()["id"]))
         
         
-        if (InformeSnap.exists()) {
-          informePub= InformeSnap.data();
-          //console.log(InformeSnap.data())
-        }
+        
+       
         const tempPub:any={
           id:document.data()["id"],
           nombre:document.data()["nombre"],
           precursor:document.data()["precursor"],
-          "informe":informePub
+          "informes":informes
         }
 
-        if(tempPub.precursor=="regular" || tempPub.precursor=="especial" ){
-          tempPub.informe.servicio=tempPub.precursor;
-        } 
-        tempPub.informe.grupo=document.data()["grupo"]
+        
+        
         gruposConPublicadores[document.data()["grupo"]]["Publicadores"].push(tempPub)
+        
       });
       //console.log(gruposConPublicadores)
       return gruposConPublicadores;
-  }
+}
 
 
+
+
+//ORIGINAL
+// async getInformeMes(Anio:any,Mes:any){
+//   let gruposConPublicadores:any= await this.getGruposSimplified();
+//   const q = query(collection(this.firestore, "Publicadores"),orderBy("nombre","asc"));
+//   console.log(gruposConPublicadores)
+//   const querySnapshot = await getDocs(q);
+
+//   querySnapshot.forEach(async (document) => {
+
+//     let informePub:any=new informe(document.data()["id"],document.data()["nombre"]);
+//     //obtener informe
+//     const InformeSnap = await getDoc(doc(this.firestore, "Informes/"+Anio+"/"+Mes, document.data()["id"]))
+    
+    
+//     if (InformeSnap.exists()) {
+//       informePub= InformeSnap.data();
+//       //console.log(InformeSnap.data())
+//     }
+//     const tempPub:any={
+//       id:document.data()["id"],
+//       nombre:document.data()["nombre"],
+//       precursor:document.data()["precursor"],
+//       "informe":informePub
+//     }
+
+//     if(tempPub.precursor=="regular" || tempPub.precursor=="especial" ){
+//       tempPub.informe.servicio=tempPub.precursor;
+//     } 
+//     tempPub.informe.grupo=document.data()["grupo"]
+//     gruposConPublicadores[document.data()["grupo"]]["Publicadores"].push(tempPub)
+    
+//   });
+//   console.log(gruposConPublicadores)
+//   return gruposConPublicadores;
+// }
 
 
 

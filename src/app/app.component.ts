@@ -32,10 +32,11 @@ export class AppComponent implements OnInit{
 
 
   public appReports = [
-    
-    { title: 'Predicación', url: '/reporte-predicacion', icon: 'briefcase',condicion: true },
-    { title: 'Infrome Anual', url: '/informe-anual', icon: 'bar-chart',condicion: true },
-    { title: 'Asistencia', url: 'reporte-asistencia', icon: 'people',condicion: true},
+    { title: 'Info. Contacto', url: '/publicadores-contacto', icon: 'man',condicion: true },
+    { title: 'Informe para Visita', url: '/predicacion-visita', icon: 'briefcase',condicion: true },
+    { title: 'Predicación Mensual (desarrollo)', url: '/reporte-predicacion', icon: 'briefcase',condicion: true },
+    { title: 'Infrome Anual (desarrollo)', url: '/informe-anual', icon: 'bar-chart',condicion: true },
+    { title: 'Asistencia(desarrollo)', url: 'reporte-asistencia', icon: 'people',condicion: true},
     
   ];
   public reportes = ['Precursores Regulares', 'Precursores Auxiliares', 'Publicadores', 'Asistencia'];
