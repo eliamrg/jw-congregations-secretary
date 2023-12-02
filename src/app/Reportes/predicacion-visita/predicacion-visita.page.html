@@ -36,62 +36,117 @@
     </ion-row>
   </ion-grid>
 
-  <div *ngIf="reporteGenerado" id="print-section"  class="myDivToPrint" style="font-family: Arial, Helvetica, sans-serif; margin: auto;">
+  <ion-card>
+    <ion-card-content *ngIf="reporteGenerado" >
+      <div id="print-section"  class="myDivToPrint" style="font-family: Arial, Helvetica, sans-serif; margin: auto;">
 
-    <H2 id="printOnly" style="font-family: Arial, Helvetica, sans-serif;">Reporte de predicación</H2>
-
-
-    <H2 style="font-family: Arial, Helvetica, sans-serif; padding-left: 6px;" >Precursores Regulares y Especiales</H2>
-    <!-- PRECURSORES -->
-    <div *ngFor="let publicador of reportePrecursores">
-      <table *ngIf="publicador.precursor!='no'" style="width: 100%; font-family: Arial, Helvetica, sans-serif; border-collapse: collapse;">
-          
-          <tr style=" border: 1px solid #ddd; font-weight: bold;">
-              <th style=" border: 1px solid #ddd; font-weight: bold; width: 20%;">{{publicador.nombre}}</th>
-              <th style=" border: 1px solid #ddd; width: 10%;">Horas</th>
-              <th style=" border: 1px solid #ddd; width: 10%;">Publicaciones</th>
-              <th style=" border: 1px solid #ddd; width: 10%;">Videos</th>
-              <th style=" border: 1px solid #ddd; width: 10%;">Revisitas</th>
-              <th style=" border: 1px solid #ddd; width: 10%;">Cursos</th>
-              <th style=" border: 1px solid #ddd; width: 30%;">Observaciones</th>
-          </tr>
-          <tr *ngFor="let informePub of publicador.informes">
-              <td style=" border: 1px solid #ddd;">{{informePub.monthName}}</td>
-              <td style=" border: 1px solid #ddd;">{{informePub.informe.horas}}</td>
-              <td style=" border: 1px solid #ddd;">
-                <p *ngIf="!informePub.informe.FormatoAnterior"> - </p>
-                <p *ngIf="informePub.informe.FormatoAnterior"> {{informePub.informe.publicaciones}}</p>  
-              </td>
-              <td style=" border: 1px solid #ddd;">
-                <p *ngIf="!informePub.informe.FormatoAnterior"> - </p>
-                <p *ngIf="informePub.informe.FormatoAnterior"> {{informePub.informe.videos}}</p>
-              </td>
-              <td style=" border: 1px solid #ddd;">
-                <p *ngIf="!informePub.informe.FormatoAnterior"> - </p>
-                <p *ngIf="informePub.informe.FormatoAnterior"> {{informePub.informe.revisitas}}</p>
-              </td>
-              <td style=" border: 1px solid #ddd;">{{informePub.informe.cursos}}</td>
-              <td style=" border: 1px solid #ddd;">Pecursor {{publicador.precursor}} <br> {{informePub.informe.observacion}}</td>
-          </tr>
-          <br>
-      </table>
-      
-    </div>
-
-    <H2 style="font-family: Arial, Helvetica, sans-serif; padding-left: 6px;" >Publicadores Activos</H2>
+        <H2 id="printOnly" style="font-family: Arial, Helvetica, sans-serif; font-size: xx-large;">Reporte de Predicación</H2>
     
-    <!-- CONGREGACION -->
-    <div *ngFor="let grupo of reporte; let i = index">
-      <div *ngIf="i!=0" >
-        <H2 style="font-family: Arial, Helvetica, sans-serif; padding-left: 6px;" >Grupo {{i}}:</H2>
-        <p style="font-family: Arial, Helvetica, sans-serif; padding-left: 6px; color: gray; font-size: small;">
-          Encargado: {{grupo.Encargado}}
-          <br>
-          Auxiliar: {{grupo.Auxiliar}}
-        </p>
-    <hr style="border-top: 6px solid #bbb; border-radius: 5px;">
-        <div *ngFor="let publicador of grupo.Publicadores">
-          <table *ngIf="publicador.precursor=='no'" style="width: 100%; font-family: Arial, Helvetica, sans-serif; border-collapse: collapse;">
+        <H2 style="font-family: Arial, Helvetica, sans-serif; padding-left: 6px; font-size: x-large;" >Totales y Promedios</H2>
+        <!-- TOTALES Y PROMEDIOS -->
+        <div *ngFor="let totalMes of totales">
+    
+          <table  style="width: 100%; font-family: Arial, Helvetica, sans-serif; border-collapse: collapse;">
+              
+            <tr style=" border: 1px solid #ddd; font-weight: bold;">
+                <th style=" border: 1px solid #ddd; font-weight: bold; width: 20%;">{{totalMes.monthName}}</th>
+                <th style=" border: 1px solid #ddd; width: 10%;">Total Horas</th>
+                <th style=" border: 1px solid #ddd; width: 10%;">Promedio Horas</th>
+                <th *ngIf="totalMes.FormatoAnterior"  style=" border: 1px solid #ddd; width: 10%;">Total Publicaciones</th>
+                <th *ngIf="totalMes.FormatoAnterior" style=" border: 1px solid #ddd; width: 10%;">Promedio Publicaciones</th>
+                <th *ngIf="totalMes.FormatoAnterior" style=" border: 1px solid #ddd; width: 10%;">Total Videos</th>
+                <th *ngIf="totalMes.FormatoAnterior" style=" border: 1px solid #ddd; width: 10%;">Promedio Videos</th>
+                <th *ngIf="totalMes.FormatoAnterior" style=" border: 1px solid #ddd; width: 10%;">Total Revisitas</th>
+                <th *ngIf="totalMes.FormatoAnterior" style=" border: 1px solid #ddd; width: 10%;">Promedio Revisitas</th>
+                <th style=" border: 1px solid #ddd; width: 10%;">Total Cursos</th>
+                <th style=" border: 1px solid #ddd; width: 10%;">Promedio Cursos</th>
+            </tr>
+            <tr>
+              <td style=" border: 1px solid #ddd;">Publicadores ({{totalMes.reporte.Publicadores.cantidad}})</td>
+              <td style=" border: 1px solid #ddd;">
+                <span *ngIf="totalMes.FormatoAnterior">
+                  {{totalMes.reporte.Publicadores.sumaPublicaciones}}
+                </span>
+                <span *ngIf="!totalMes.FormatoAnterior">-</span>
+              </td>
+              <td style=" border: 1px solid #ddd;">
+                <span *ngIf="totalMes.FormatoAnterior">
+                  {{totalMes.reporte.Publicadores.promedioHoras| number : '1.2-2'}}
+                </span>
+                <span *ngIf="!totalMes.FormatoAnterior">-</span>
+              </td>
+              <td *ngIf="totalMes.FormatoAnterior" style=" border: 1px solid #ddd;">{{totalMes.reporte.Publicadores.sumaPublicaciones}}</td>
+              <td *ngIf="totalMes.FormatoAnterior" style=" border: 1px solid #ddd;">{{totalMes.reporte.Publicadores.promedioPublicaciones| number : '1.2-2'}}</td>
+              <td *ngIf="totalMes.FormatoAnterior" style=" border: 1px solid #ddd;">{{totalMes.reporte.Publicadores.sumaVideos}}</td>
+              <td *ngIf="totalMes.FormatoAnterior" style=" border: 1px solid #ddd;">{{totalMes.reporte.Publicadores.promedioVideos| number : '1.2-2'}}</td>
+              <td *ngIf="totalMes.FormatoAnterior" style=" border: 1px solid #ddd;">{{totalMes.reporte.Publicadores.sumaRevisitas}}</td>
+              <td *ngIf="totalMes.FormatoAnterior" style=" border: 1px solid #ddd;">{{totalMes.reporte.Publicadores.promedioRevisitas| number : '1.2-2'}}</td>
+              <td style=" border: 1px solid #ddd;">{{totalMes.reporte.Publicadores.sumaCursos}}</td>
+              <td style=" border: 1px solid #ddd;">{{totalMes.reporte.Publicadores.promedioCursos| number : '1.2-2'}}</td>
+            </tr>
+            <tr>
+              <td style=" border: 1px solid #ddd;">Precursores Auxiliares ({{totalMes.reporte.Auxiliares.cantidad}})</td>
+              <td style=" border: 1px solid #ddd;">{{totalMes.reporte.Auxiliares.sumaHoras}}</td>
+              <td style=" border: 1px solid #ddd;">{{totalMes.reporte.Auxiliares.promedioHoras| number : '1.2-2'}}</td>
+              <td *ngIf="totalMes.FormatoAnterior" style=" border: 1px solid #ddd;">{{totalMes.reporte.Auxiliares.sumaPublicaciones}}</td>
+              <td *ngIf="totalMes.FormatoAnterior" style=" border: 1px solid #ddd;"> {{totalMes.reporte.Auxiliares.promedioPublicaciones| number : '1.2-2'}}</td>
+              <td *ngIf="totalMes.FormatoAnterior" style=" border: 1px solid #ddd;">{{totalMes.reporte.Auxiliares.sumaVideos}}</td>
+              <td *ngIf="totalMes.FormatoAnterior" style=" border: 1px solid #ddd;">{{totalMes.reporte.Auxiliares.promedioVideos| number : '1.2-2'}}</td>
+              <td *ngIf="totalMes.FormatoAnterior" style=" border: 1px solid #ddd;">{{totalMes.reporte.Auxiliares.sumaRevisitas}}</td>
+              <td *ngIf="totalMes.FormatoAnterior" style=" border: 1px solid #ddd;">{{totalMes.reporte.Auxiliares.promedioRevisitas| number : '1.2-2'}}</td>
+              <td style=" border: 1px solid #ddd;">{{totalMes.reporte.Auxiliares.sumaCursos}}</td>
+              <td style=" border: 1px solid #ddd;">{{totalMes.reporte.Auxiliares.promedioCursos| number : '1.2-2'}}</td>
+            </tr>
+            <tr>
+              <td style=" border: 1px solid #ddd;">Precursores Regulares ({{totalMes.reporte.Regulares.cantidad}})</td>
+              <td style=" border: 1px solid #ddd;">{{totalMes.reporte.Regulares.sumaHoras}}</td>
+              <td style=" border: 1px solid #ddd;">{{totalMes.reporte.Regulares.promedioHoras| number : '1.2-2'}}</td>
+              <td *ngIf="totalMes.FormatoAnterior" style=" border: 1px solid #ddd;">{{totalMes.reporte.Regulares.sumaPublicaciones}}</td>
+              <td *ngIf="totalMes.FormatoAnterior" style=" border: 1px solid #ddd;"> {{totalMes.reporte.Regulares.promedioPublicaciones| number : '1.2-2'}}</td>
+              <td *ngIf="totalMes.FormatoAnterior" style=" border: 1px solid #ddd;">{{totalMes.reporte.Regulares.sumaVideos}}</td>
+              <td *ngIf="totalMes.FormatoAnterior" style=" border: 1px solid #ddd;">{{totalMes.reporte.Regulares.promedioVideos| number : '1.2-2'}}</td>
+              <td *ngIf="totalMes.FormatoAnterior" style=" border: 1px solid #ddd;">{{totalMes.reporte.Regulares.sumaRevisitas}}</td>
+              <td *ngIf="totalMes.FormatoAnterior" style=" border: 1px solid #ddd;">{{totalMes.reporte.Regulares.promedioRevisitas| number : '1.2-2'}}</td>
+              <td style=" border: 1px solid #ddd;">{{totalMes.reporte.Regulares.sumaCursos}}</td>
+              <td style=" border: 1px solid #ddd;">{{totalMes.reporte.Regulares.promedioCursos| number : '1.2-2'}}</td>
+            </tr>
+            <tr>
+              <td style=" border: 1px solid #ddd;">Precursores Especiales ({{totalMes.reporte.Especiales.cantidad}})</td>
+              <td style=" border: 1px solid #ddd;">{{totalMes.reporte.Especiales.sumaHoras}}</td>
+              <td style=" border: 1px solid #ddd;">{{totalMes.reporte.Especiales.promedioHoras| number : '1.2-2'}}</td>
+              <td *ngIf="totalMes.FormatoAnterior" style=" border: 1px solid #ddd;">{{totalMes.reporte.Especiales.sumaPublicaciones}}</td>
+              <td *ngIf="totalMes.FormatoAnterior" style=" border: 1px solid #ddd;"> {{totalMes.reporte.Especiales.promedioPublicaciones| number : '1.2-2'}}</td>
+              <td *ngIf="totalMes.FormatoAnterior" style=" border: 1px solid #ddd;">{{totalMes.reporte.Especiales.sumaVideos}}</td>
+              <td *ngIf="totalMes.FormatoAnterior" style=" border: 1px solid #ddd;">{{totalMes.reporte.Especiales.promedioVideos| number : '1.2-2'}}</td>
+              <td *ngIf="totalMes.FormatoAnterior" style=" border: 1px solid #ddd;">{{totalMes.reporte.Especiales.sumaRevisitas}}</td>
+              <td *ngIf="totalMes.FormatoAnterior" style=" border: 1px solid #ddd;">{{totalMes.reporte.Especiales.promedioRevisitas| number : '1.2-2'}}</td>
+              <td style=" border: 1px solid #ddd;">{{totalMes.reporte.Especiales.sumaCursos}}</td>
+              <td style=" border: 1px solid #ddd;">{{totalMes.reporte.Especiales.promedioCursos| number : '1.2-2'}}</td>
+            </tr>
+            <tr>
+              <td style=" border: 1px solid #ddd;">Congregacion ({{totalMes.reporte.Congregacion.cantidad}})</td>
+              <td style=" border: 1px solid #ddd;">{{totalMes.reporte.Congregacion.sumaHoras}}</td>
+              <td style=" border: 1px solid #ddd;">{{totalMes.reporte.Congregacion.promedioHoras| number : '1.2-2'}}</td>
+              <td *ngIf="totalMes.FormatoAnterior" style=" border: 1px solid #ddd;">{{totalMes.reporte.Congregacion.sumaPublicaciones}}</td>
+              <td *ngIf="totalMes.FormatoAnterior" style=" border: 1px solid #ddd;"> {{totalMes.reporte.Congregacion.promedioPublicaciones| number : '1.2-2'}}</td>
+              <td *ngIf="totalMes.FormatoAnterior" style=" border: 1px solid #ddd;">{{totalMes.reporte.Congregacion.sumaVideos}}</td>
+              <td *ngIf="totalMes.FormatoAnterior" style=" border: 1px solid #ddd;">{{totalMes.reporte.Congregacion.promedioVideos| number : '1.2-2'}}</td>
+              <td *ngIf="totalMes.FormatoAnterior" style=" border: 1px solid #ddd;">{{totalMes.reporte.Congregacion.sumaRevisitas}}</td>
+              <td *ngIf="totalMes.FormatoAnterior" style=" border: 1px solid #ddd;">{{totalMes.reporte.Congregacion.promedioRevisitas| number : '1.2-2'}}</td>
+              <td style=" border: 1px solid #ddd;">{{totalMes.reporte.Congregacion.sumaCursos}}</td>
+              <td style=" border: 1px solid #ddd;">{{totalMes.reporte.Congregacion.promedioCursos| number : '1.2-2'}}</td>
+            </tr>
+            <br>
+        </table>
+    
+    
+        </div>
+    
+
+        <H2 style="font-family: Arial, Helvetica, sans-serif; padding-left: 6px; font-size: x-large;" >Precursores Regulares y Especiales</H2>
+        <!-- PRECURSORES -->
+        <div *ngFor="let publicador of reportePrecursores">
+          <table *ngIf="publicador.precursor!='no'" style="width: 100%; font-family: Arial, Helvetica, sans-serif; border-collapse: collapse;">
               
               <tr style=" border: 1px solid #ddd; font-weight: bold;">
                   <th style=" border: 1px solid #ddd; font-weight: bold; width: 20%;">{{publicador.nombre}}</th>
@@ -104,10 +159,7 @@
               </tr>
               <tr *ngFor="let informePub of publicador.informes">
                   <td style=" border: 1px solid #ddd;">{{informePub.monthName}}</td>
-                  <td style=" border: 1px solid #ddd;">
-                    <p *ngIf="!informePub.informe.FormatoAnterior && informePub.informe.servicio!='auxiliar'"> - </p>
-                    <p *ngIf="informePub.informe.FormatoAnterior || informePub.informe.servicio=='auxiliar'"> {{informePub.informe.horas}}</p>
-                  </td>
+                  <td style=" border: 1px solid #ddd;">{{informePub.informe.horas}}</td>
                   <td style=" border: 1px solid #ddd;">
                     <p *ngIf="!informePub.informe.FormatoAnterior"> - </p>
                     <p *ngIf="informePub.informe.FormatoAnterior"> {{informePub.informe.publicaciones}}</p>  
@@ -121,48 +173,97 @@
                     <p *ngIf="informePub.informe.FormatoAnterior"> {{informePub.informe.revisitas}}</p>
                   </td>
                   <td style=" border: 1px solid #ddd;">{{informePub.informe.cursos}}</td>
-                  <td style=" border: 1px solid #ddd;">
-                    <p *ngIf="informePub.informe.servicio=='auxiliar'" style="font-weight: bold;">Precursor Auxiliar </p>
-                    <div *ngIf="!informePub.informe.FormatoAnterior && informePub.informe.servicio!='auxiliar'">
-                      <p *ngIf="informePub.informe.participo">Participó en la predicación</p>
-                      <p *ngIf="!informePub.informe.participo"><span style="font-weight: bold;">NO</span> Participó en la predicación</p>
-                    </div>
-                    <p *ngIf="informePub.informe.observacion "> {{informePub.informe.observacion}}</p>
-                    
-                  </td>
+                  <td style=" border: 1px solid #ddd;">Pecursor {{publicador.precursor}} <br> {{informePub.informe.observacion}}</td>
               </tr>
-              <!-- Repite las filas para cada mes -->
-              <!-- ... -->
-              <!-- <tr class="totals">
-                  <td>Sumatoria</td>
-                  <td>30</td>
-                  <td>44</td>
-                  <td>35</td>
-                  <td>52</td>
-                  <td>58</td>
-                  <td>52</td>
+    
+    
+              <tr>
+                <td style=" border: 1px solid #ddd; font-weight: bold;">Totales: </td>
+                <td style=" border: 1px solid #ddd; ">{{publicador.totales.horas}}</td>
+                <td style=" border: 1px solid #ddd; ">{{publicador.totales.publicaciones}} </td>
+                <td style=" border: 1px solid #ddd; ">{{publicador.totales.videos}} </td>
+                <td style=" border: 1px solid #ddd; ">{{publicador.totales.revisitas}}</td>
+                <td style=" border: 1px solid #ddd; ">{{publicador.totales.cursos}}</td>
+                <td style=" border: 1px solid #ddd; ">-</td>
               </tr>
-              <tr class="totals">
-                  <td>Promedio</td>
-                  <td>5</td>
-                  <td>7.33</td>
-                  <td>5.83</td>
-                  <td>8.67</td>
-                  <td>9.67</td>
-                  <td>8.67</td>
-              </tr> -->
+    
               <br>
           </table>
+          
         </div>
+    
+
+        <H2 style="font-family: Arial, Helvetica, sans-serif; padding-left: 6px; font-size: x-large;" >Publicadores Activos</H2>
+        <!-- CONGREGACION -->
+        <div *ngFor="let grupo of reporte; let i = index">
+          <div *ngIf="i!=0" >
+            <H2 style="font-family: Arial, Helvetica, sans-serif; padding-left: 6px; font-size: x-large;" >Grupo {{i}}:</H2>
+            <p style="font-family: Arial, Helvetica, sans-serif; padding-left: 6px; color: gray; font-size: small;">
+              Encargado: {{grupo.Encargado}}
+              <br>
+              Auxiliar: {{grupo.Auxiliar}}
+            </p>
+        <hr style="border-top: 6px solid #bbb; border-radius: 5px;">
+            <div *ngFor="let publicador of grupo.Publicadores">
+              <table *ngIf="publicador.precursor=='no'" style="width: 100%; font-family: Arial, Helvetica, sans-serif; border-collapse: collapse;">
+                  
+                  <tr style=" border: 1px solid #ddd; font-weight: bold;">
+                      <th style=" border: 1px solid #ddd; font-weight: bold; width: 20%;">{{publicador.nombre}}</th>
+                      <th style=" border: 1px solid #ddd; width: 10%;">Horas</th>
+                      <th style=" border: 1px solid #ddd; width: 10%;">Publicaciones</th>
+                      <th style=" border: 1px solid #ddd; width: 10%;">Videos</th>
+                      <th style=" border: 1px solid #ddd; width: 10%;">Revisitas</th>
+                      <th style=" border: 1px solid #ddd; width: 10%;">Cursos</th>
+                      <th style=" border: 1px solid #ddd; width: 30%;">Observaciones</th>
+                  </tr>
+                  <tr *ngFor="let informePub of publicador.informes">
+                      <td style=" border: 1px solid #ddd;">{{informePub.monthName}}</td>
+                      <td style=" border: 1px solid #ddd;">
+                        <p *ngIf="!informePub.informe.FormatoAnterior && informePub.informe.servicio!='auxiliar'"> - </p>
+                        <p *ngIf="informePub.informe.FormatoAnterior || informePub.informe.servicio=='auxiliar'"> {{informePub.informe.horas}}</p>
+                      </td>
+                      <td style=" border: 1px solid #ddd;">
+                        <p *ngIf="!informePub.informe.FormatoAnterior"> - </p>
+                        <p *ngIf="informePub.informe.FormatoAnterior"> {{informePub.informe.publicaciones}}</p>  
+                      </td>
+                      <td style=" border: 1px solid #ddd;">
+                        <p *ngIf="!informePub.informe.FormatoAnterior"> - </p>
+                        <p *ngIf="informePub.informe.FormatoAnterior"> {{informePub.informe.videos}}</p>
+                      </td>
+                      <td style=" border: 1px solid #ddd;">
+                        <p *ngIf="!informePub.informe.FormatoAnterior"> - </p>
+                        <p *ngIf="informePub.informe.FormatoAnterior"> {{informePub.informe.revisitas}}</p>
+                      </td>
+                      <td style=" border: 1px solid #ddd;">{{informePub.informe.cursos}}</td>
+                      <td style=" border: 1px solid #ddd;">
+                        <p *ngIf="informePub.informe.servicio=='auxiliar'" style="font-weight: bold;">Precursor Auxiliar </p>
+                        <div *ngIf="!informePub.informe.FormatoAnterior && informePub.informe.servicio!='auxiliar'">
+                          <p *ngIf="informePub.informe.participo">Participó en la predicación</p>
+                          <p *ngIf="!informePub.informe.participo"><span style="font-weight: bold;">NO</span> Participó en la predicación</p>
+                        </div>
+                        <p *ngIf="informePub.informe.observacion "> {{informePub.informe.observacion}}</p>
+                        
+                      </td>
+                  </tr>
+                  <tr>
+                    <td style=" border: 1px solid #ddd; font-weight: bold;">Totales: </td>
+                    <td style=" border: 1px solid #ddd; ">{{publicador.totales.horas}}</td>
+                    <td style=" border: 1px solid #ddd; ">{{publicador.totales.publicaciones}} </td>
+                    <td style=" border: 1px solid #ddd; ">{{publicador.totales.videos}} </td>
+                    <td style=" border: 1px solid #ddd; ">{{publicador.totales.revisitas}}</td>
+                    <td style=" border: 1px solid #ddd; ">{{publicador.totales.cursos}}</td>
+                    <td style=" border: 1px solid #ddd; ">-</td>
+                  </tr>
+                  <br>
+              </table>
+            </div>
+          </div>
+    
+        </div>
+    
+    
+        <H2 style="font-family: Arial, Helvetica, sans-serif; padding-left: 6px;" >Publicadores Inactivos</H2>
       </div>
-
-    </div>
-
-
-    <H2 style="font-family: Arial, Helvetica, sans-serif; padding-left: 6px;" >Publicadores Inactivos</H2>
-  </div>
-    
-    
-
-
+    </ion-card-content>
+  </ion-card>
 </ion-content>

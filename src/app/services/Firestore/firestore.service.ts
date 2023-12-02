@@ -3,13 +3,14 @@ import { Firestore, collection, deleteDoc, setDoc, doc, getDoc, query, where, ge
 import { publicador } from 'src/app/Classes/publicador';
 import { from } from 'rxjs';
 import { informe } from 'src/app/Classes/informe';
+import { ReportesService } from '../Reportes/reportes.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class FirestoreService {
 
-  constructor(public firestore:Firestore) { }
+  constructor(public firestore:Firestore, private reporteService:ReportesService) { }
   userPrivs:any;
   //PUBLICADORES--------------------------------------------------------------------------------------------------
 
@@ -357,8 +358,15 @@ export class FirestoreService {
         
 
         let informes:any=[];
+        let totales:any={
+          horas:0,
+          publicaciones:0,
+          videos:0,
+          revisitas:0,
+          cursos:"-" //LOS CURSOS NO SON ACUMULATIVOS
+        };
         
-        meses.forEach(async ( month:any) => {
+        await meses.forEach(async ( month:any) => {
           let informePub:any=new informe(document.data()["id"],document.data()["nombre"]);
           informePub.participo=false;
           const InformeSnap = await getDoc(doc(this.firestore, "Informes/"+month.year+"/"+month.month, document.data()["id"]))
@@ -380,24 +388,24 @@ export class FirestoreService {
             monthName:month.monthName,
             informe:informePub
           }
+
+          totales.horas+=informePub.horas;
+          totales.publicaciones+=informePub.publicaciones;
+          totales.videos+=informePub.videos;
+          totales.revisitas+=informePub.revisitas;
+          //totales.cursos+=informePub.cursos;
+
           informes.push(informeMes);
         });
 
-        
-        //obtener informe
-        
-        
-        
-       
         const tempPub:any={
           id:document.data()["id"],
           nombre:document.data()["nombre"],
           precursor:document.data()["precursor"],
-          "informes":informes
+          "informes":informes,
+          "totales": totales
         }
 
-        
-        
         gruposConPublicadores[document.data()["grupo"]]["Publicadores"].push(tempPub)
         
       });
@@ -405,6 +413,40 @@ export class FirestoreService {
       return gruposConPublicadores;
 }
 
+  async getOnlyInformesMes(month:any){
+    let informes:any=[]
+    const querySnapshot = await getDocs(collection(this.firestore, "Informes/"+month.year+"/"+month.month));
+      querySnapshot.forEach((doc) => {
+        
+        informes.push(doc.data())
+        
+      });
+    
+    return informes;
+  }
+  
+  async getTotalesMeses(meses:any){
+ 
+    let totales:any=[]
+    await meses.forEach(async ( month:any) => {
+      let Reporte
+      await this.getOnlyInformesMes(month).then((informes:any)=>{
+
+        Reporte= this.reporteService.ReporteTotalesInformes(informes)
+      })
+
+      let reporteMensual:any={
+        mes:month.month,
+        anio:month.year,
+        monthName:month.monthName,
+        reporte:Reporte,
+        FormatoAnterior:(month.month<10 && month.year<=2023)
+      }
+      totales.push(reporteMensual)
+    });
+
+    return totales
+}
 
 
 

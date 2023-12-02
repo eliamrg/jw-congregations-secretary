@@ -25,6 +25,7 @@ export class PredicacionVisitaPage implements OnInit {
   reportePrecursores:any=[];
   mesesSeleccionados: string[] = [];
   Ultimos15meses:any;
+  totales:any;
   reporteGenerado=false;
   ngOnInit() {
     this.Ultimos15meses=this.getLastMonths(15)
@@ -34,13 +35,21 @@ export class PredicacionVisitaPage implements OnInit {
   }
 
   async GenerarReporte(){
+    this.reporte=null;
     //console.log(this.getSelectedMonths(this.Ultimos15meses))
     await this.firestore.getInformeMeses(this.getSelectedMonths(this.Ultimos15meses)).then(report=>{
       this.reporte=report;
       this.getOnlyPrecursores();
     
     });
-    console.log(this.reporte)
+    //console.log(this.reporte)
+
+    this.totales=null;
+    await this.firestore.getTotalesMeses(this.getSelectedMonths(this.Ultimos15meses)).then(totales=>{
+      this.totales=totales;
+      console.log(totales);
+    });
+
     this.reporteGenerado=true;
   }
 
@@ -52,7 +61,7 @@ export class PredicacionVisitaPage implements OnInit {
       });
     });
 
-    console.log(this.ordenarPorNombre(this.reportePrecursores))
+    //console.log(this.ordenarPorNombre(this.reportePrecursores))
   }
 
   ordenarPorNombre(arr:any) {
@@ -75,21 +84,21 @@ export class PredicacionVisitaPage implements OnInit {
   
   getLastMonths(numMonths: number): MonthInfo[] {
     const today = new Date();
-      const currentYear = today.getFullYear();
-      const currentMonth = today.getMonth() + 1; // Suma 1 para ajustar al formato de meses (1-12)
+    const currentYear = today.getFullYear();
+    const currentMonth = today.getMonth() + 1; // Suma 1 para ajustar al formato de meses (1-12)
 
-      const lastMonths: MonthInfo[] = [];
+    const lastMonths: MonthInfo[] = [];
 
-      for (let i = 0; i < numMonths; i++) {
-          const year = currentMonth - i <= 0 ? currentYear - 1 : currentYear;
-          const month = ((currentMonth - i - 1) + 12) % 12 + 1; // Asegura que obtenemos números de mes válidos entre 1 y 12
-          const monthName = this.getMonthName(month) + ' ' + year;
-          
-          lastMonths.push({ year, month, monthName, selected: false });
-      }
+    for (let i = 1; i <= numMonths; i++) {
+        const year = currentMonth - i < 1 ? currentYear - 1 : currentYear;
+        const month = ((currentMonth - i - 1) + 12) % 12 + 1; // Asegura que obtenemos números de mes válidos entre 1 y 12
+        const monthName = this.getMonthName(month) + ' ' + year;
 
-      return lastMonths;
-  }
+        lastMonths.push({ year, month, monthName, selected: false });
+    }
+
+    return lastMonths;
+}
 
   private getMonthName(month: number): string {
     const monthNames = [

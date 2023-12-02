@@ -160,7 +160,7 @@ export class ReportePredicacionPage implements OnInit {
   }
 
   GenerarReporte(){
-    this.ReporteInforme=this.reporteService.ReporteInformes(this.InformesPorGrupo)
+    this.ReporteInforme=this.reporteService.ReporteTotalesInformesPorGrupo(this.InformesPorGrupo)
     console.log(this.ReporteInforme)
 
     this.ReporteGenerado=true;

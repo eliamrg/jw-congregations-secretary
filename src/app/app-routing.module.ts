@@ -89,7 +89,7 @@ const routes: Routes = [
     path: '**', 
     loadChildren: () => import('./pages/agregar-informe/agregar-informe.module').then( m => m.AgregarInformePageModule),
     ...canActivate(()=>redirectUnauthorizedTo(['/login'])) 
-  },
+  }
   
   
 
