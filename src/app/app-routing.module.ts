@@ -54,6 +54,10 @@ const routes: Routes = [
     loadChildren: () => import('./pages/audio-video/audio-video.module').then( m => m.AudioVideoPageModule)
   },
   {
+    path: 'acomodadores',
+    loadChildren: () => import('./pages/acomodadores/acomodadores.module').then( m => m.AcomodadoresPageModule)
+  },
+  {
     path: 'reporte-asistencia',
     loadChildren: () => import('./Reportes/reporte-asistencia/reporte-asistencia.module').then( m => m.ReporteAsistenciaPageModule),
     ...canActivate(()=>redirectUnauthorizedTo(['/login'])),
@@ -89,7 +93,8 @@ const routes: Routes = [
     path: '**', 
     loadChildren: () => import('./pages/agregar-informe/agregar-informe.module').then( m => m.AgregarInformePageModule),
     ...canActivate(()=>redirectUnauthorizedTo(['/login'])) 
-  }
+  },
+ 
   
   
 

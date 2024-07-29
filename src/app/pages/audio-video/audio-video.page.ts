@@ -1,6 +1,7 @@
 import { Component, OnInit,  ViewChild } from '@angular/core';
 import { IonModal, MenuController } from '@ionic/angular';
 import { OverlayEventDetail } from '@ionic/core/components';
+import { FirestoreService } from 'src/app/services/Firestore/firestore.service';
 
 @Component({
   selector: 'app-audio-video',
@@ -12,11 +13,6 @@ export class AudioVideoPage implements OnInit {
 
   print=false;
   encargados=[
-    // "Gamaliel Orozco",
-    "Antonio Garza",
-    "Santiago Ramirez",
-    "Jaziel Cisneros",
-    "Carlos Gallegos",
   ]
 
   weeks: { 
@@ -30,18 +26,27 @@ export class AudioVideoPage implements OnInit {
     plataforma2:string | undefined;
   }[] | undefined;
 
-  constructor( public menuCtrl: MenuController) { }
+  constructor( public menuCtrl: MenuController, private firestore: FirestoreService) { }
   wheelDate:any;
   stringDate:any;
+  Publicadores:any;
   
 
-  ngOnInit() {
+  async ngOnInit() {
 
+    
+    await this.firestore.getSonido().then(PUBS=>{
+      this.Publicadores=PUBS;
+      this.encargados=PUBS.map((publicador: { Nombre: any; }) => publicador.Nombre);
+      
+    });
+    console.log(this.Publicadores);
     this.wheelDate=new Date().toISOString();
-    this.showdate();
+      this.showdate();
     //this.weeks=this.getWeeksInMonth(2023,6);
 
   }
+  
 
   ionViewWillEnter() {
     this.menuCtrl.enable(false);
@@ -62,6 +67,9 @@ export class AudioVideoPage implements OnInit {
     
   }
 
+  //  obtenerNombres( Publicadores: any) {
+  //   return Publicadores.map((publicador: { Nombre: any; }) => publicador.Nombre);
+  // }
   getWeeksInMonth(year:number, month:number) {
     //EL RANGO DE MESES ES DE 0 A 11 
     var d = new Date(year,month,1),

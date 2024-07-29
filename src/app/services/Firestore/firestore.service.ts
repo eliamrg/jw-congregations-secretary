@@ -55,6 +55,8 @@ export class FirestoreService {
     }
   }
 
+ 
+
   async getPublicadoresPorGrupo(){
     
     let gruposConPublicadores:any= await this.getGrupos();
@@ -115,6 +117,26 @@ export class FirestoreService {
     return temp;
   }
 
+
+  async getSonido(){
+    let Publicadores:any=[]
+    const q = query(collection(this.firestore, "Sonido"),orderBy("Nombre","asc"));
+    const querySnapshot = await getDocs(q);
+    querySnapshot.forEach((doc) => {
+      Publicadores.push(doc.data())
+    });
+    return Publicadores;
+  }
+
+  async getVarones(){
+    let Publicadores:any=[]
+    const q = query(collection(this.firestore, "Sonido"),orderBy("Nombre","asc"));
+    const querySnapshot = await getDocs(q);
+    querySnapshot.forEach((doc) => {
+      Publicadores.push(doc.data())
+    });
+    return Publicadores;
+  }
 
   //GRUPOS---------------------------------------------------------------------------------------------------------
 

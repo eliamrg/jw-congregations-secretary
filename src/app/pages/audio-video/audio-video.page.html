@@ -82,19 +82,31 @@
             </ion-col>
             <ion-col>
               <ion-item>
-                <ion-input label="Audio" labelPlacement="stacked" placeholder="Enter text" value="{{week.audio1}}"></ion-input>
+                <ion-select label="Audio" labelPlacement="stacked" placeholder="Seleccionar" value="{{week.audio1}}">
+                  <ion-select-option *ngFor="let publicador of Publicadores" [value]="publicador.Nombre">
+                    {{ publicador.Nombre }}
+                  </ion-select-option>
+                </ion-select>
               </ion-item>
               
             </ion-col>
             <ion-col>
               <ion-item>
-                <ion-input label="Video" labelPlacement="stacked" placeholder="Enter text" value="{{week.video1}}"></ion-input>
+                <ion-select label="Video" labelPlacement="stacked" placeholder="Seleccionar" value="{{week.video1}}">
+                  <ion-select-option *ngFor="let publicador of Publicadores" [value]="publicador.Nombre">
+                    {{ publicador.Nombre }}
+                  </ion-select-option>
+                </ion-select>
               </ion-item>
               
             </ion-col>
             <ion-col>
               <ion-item>
-                <ion-input label="Plataforma" labelPlacement="stacked" placeholder="Enter text" value="{{week.plataforma1}}"></ion-input>
+                <ion-select label="Plataforma" labelPlacement="stacked" placeholder="Seleccionar" value="{{week.plataforma1}}">
+                  <ion-select-option *ngFor="let publicador of Publicadores" [value]="publicador.Nombre">
+                    {{ publicador.Nombre }}
+                  </ion-select-option>
+                </ion-select>
               </ion-item>
               
             </ion-col>
@@ -105,20 +117,34 @@
               <p style="font-weight: bold;">Fin de Semana:</p>
             </ion-col>
             <ion-col>
-              <ion-item>
+              <!-- <ion-item>
                 <ion-input label="Audio" labelPlacement="stacked" placeholder="Enter text" value="{{week.audio2}}"></ion-input>
+              </ion-item> -->
+              <ion-item>
+                <ion-select label="Audio" labelPlacement="stacked" placeholder="Seleccionar" value="{{week.audio2}}">
+                  <ion-select-option *ngFor="let publicador of Publicadores" [value]="publicador.Nombre">
+                    {{ publicador.Nombre }}
+                  </ion-select-option>
+                </ion-select>
+              </ion-item>
+            </ion-col>
+            <ion-col>
+              <ion-item>
+                <ion-select label="Video" labelPlacement="stacked" placeholder="Seleccionar" value="{{week.video2}}">
+                  <ion-select-option *ngFor="let publicador of Publicadores" [value]="publicador.Nombre" >
+                    {{ publicador.Nombre }}
+                  </ion-select-option>
+                </ion-select>
               </ion-item>
               
             </ion-col>
             <ion-col>
               <ion-item>
-                <ion-input label="Video" labelPlacement="stacked" placeholder="Enter text" value="{{week.video2}}"></ion-input>
-              </ion-item>
-              
-            </ion-col>
-            <ion-col>
-              <ion-item>
-                <ion-input label="Plataforma" labelPlacement="stacked" placeholder="Enter text" value="{{week.plataforma2}}"></ion-input>
+                <ion-select label="Plataforma" labelPlacement="stacked" placeholder="Seleccionar" value="{{week.plataforma2}}">
+                  <ion-select-option *ngFor="let publicador of Publicadores" [value]="publicador.Nombre">
+                    {{ publicador.Nombre }}
+                  </ion-select-option>
+                </ion-select>
               </ion-item>
               
             </ion-col>

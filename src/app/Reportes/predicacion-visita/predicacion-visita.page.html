@@ -151,16 +151,16 @@
               <tr style=" border: 1px solid #ddd; font-weight: bold;">
                   <th style=" border: 1px solid #ddd; font-weight: bold; width: 20%;">{{publicador.nombre}}</th>
                   <th style=" border: 1px solid #ddd; width: 10%;">Horas</th>
-                  <th style=" border: 1px solid #ddd; width: 10%;">Publicaciones</th>
+                  <!-- <th style=" border: 1px solid #ddd; width: 10%;">Publicaciones</th>
                   <th style=" border: 1px solid #ddd; width: 10%;">Videos</th>
-                  <th style=" border: 1px solid #ddd; width: 10%;">Revisitas</th>
+                  <th style=" border: 1px solid #ddd; width: 10%;">Revisitas</th> -->
                   <th style=" border: 1px solid #ddd; width: 10%;">Cursos</th>
                   <th style=" border: 1px solid #ddd; width: 30%;">Observaciones</th>
               </tr>
               <tr *ngFor="let informePub of publicador.informes">
                   <td style=" border: 1px solid #ddd;">{{informePub.monthName}}</td>
                   <td style=" border: 1px solid #ddd;">{{informePub.informe.horas}}</td>
-                  <td style=" border: 1px solid #ddd;">
+                  <!-- <td style=" border: 1px solid #ddd;">
                     <p *ngIf="!informePub.informe.FormatoAnterior"> - </p>
                     <p *ngIf="informePub.informe.FormatoAnterior"> {{informePub.informe.publicaciones}}</p>  
                   </td>
@@ -171,7 +171,7 @@
                   <td style=" border: 1px solid #ddd;">
                     <p *ngIf="!informePub.informe.FormatoAnterior"> - </p>
                     <p *ngIf="informePub.informe.FormatoAnterior"> {{informePub.informe.revisitas}}</p>
-                  </td>
+                  </td> -->
                   <td style=" border: 1px solid #ddd;">{{informePub.informe.cursos}}</td>
                   <td style=" border: 1px solid #ddd;">Pecursor {{publicador.precursor}} <br> {{informePub.informe.observacion}}</td>
               </tr>
@@ -180,9 +180,9 @@
               <tr>
                 <td style=" border: 1px solid #ddd; font-weight: bold;">Totales: </td>
                 <td style=" border: 1px solid #ddd; ">{{publicador.totales.horas}}</td>
-                <td style=" border: 1px solid #ddd; ">{{publicador.totales.publicaciones}} </td>
+                <!-- <td style=" border: 1px solid #ddd; ">{{publicador.totales.publicaciones}} </td>
                 <td style=" border: 1px solid #ddd; ">{{publicador.totales.videos}} </td>
-                <td style=" border: 1px solid #ddd; ">{{publicador.totales.revisitas}}</td>
+                <td style=" border: 1px solid #ddd; ">{{publicador.totales.revisitas}}</td> -->
                 <td style=" border: 1px solid #ddd; ">{{publicador.totales.cursos}}</td>
                 <td style=" border: 1px solid #ddd; ">-</td>
               </tr>
@@ -210,9 +210,9 @@
                   <tr style=" border: 1px solid #ddd; font-weight: bold;">
                       <th style=" border: 1px solid #ddd; font-weight: bold; width: 20%;">{{publicador.nombre}}</th>
                       <th style=" border: 1px solid #ddd; width: 10%;">Horas</th>
-                      <th style=" border: 1px solid #ddd; width: 10%;">Publicaciones</th>
+                      <!-- <th style=" border: 1px solid #ddd; width: 10%;">Publicaciones</th>
                       <th style=" border: 1px solid #ddd; width: 10%;">Videos</th>
-                      <th style=" border: 1px solid #ddd; width: 10%;">Revisitas</th>
+                      <th style=" border: 1px solid #ddd; width: 10%;">Revisitas</th> -->
                       <th style=" border: 1px solid #ddd; width: 10%;">Cursos</th>
                       <th style=" border: 1px solid #ddd; width: 30%;">Observaciones</th>
                   </tr>
@@ -222,7 +222,7 @@
                         <p *ngIf="!informePub.informe.FormatoAnterior && informePub.informe.servicio!='auxiliar'"> - </p>
                         <p *ngIf="informePub.informe.FormatoAnterior || informePub.informe.servicio=='auxiliar'"> {{informePub.informe.horas}}</p>
                       </td>
-                      <td style=" border: 1px solid #ddd;">
+                      <!-- <td style=" border: 1px solid #ddd;">
                         <p *ngIf="!informePub.informe.FormatoAnterior"> - </p>
                         <p *ngIf="informePub.informe.FormatoAnterior"> {{informePub.informe.publicaciones}}</p>  
                       </td>
@@ -233,7 +233,7 @@
                       <td style=" border: 1px solid #ddd;">
                         <p *ngIf="!informePub.informe.FormatoAnterior"> - </p>
                         <p *ngIf="informePub.informe.FormatoAnterior"> {{informePub.informe.revisitas}}</p>
-                      </td>
+                      </td> -->
                       <td style=" border: 1px solid #ddd;">{{informePub.informe.cursos}}</td>
                       <td style=" border: 1px solid #ddd;">
                         <p *ngIf="informePub.informe.servicio=='auxiliar'" style="font-weight: bold;">Precursor Auxiliar </p>
@@ -248,9 +248,9 @@
                   <tr>
                     <td style=" border: 1px solid #ddd; font-weight: bold;">Totales: </td>
                     <td style=" border: 1px solid #ddd; ">{{publicador.totales.horas}}</td>
-                    <td style=" border: 1px solid #ddd; ">{{publicador.totales.publicaciones}} </td>
+                    <!-- <td style=" border: 1px solid #ddd; ">{{publicador.totales.publicaciones}} </td>
                     <td style=" border: 1px solid #ddd; ">{{publicador.totales.videos}} </td>
-                    <td style=" border: 1px solid #ddd; ">{{publicador.totales.revisitas}}</td>
+                    <td style=" border: 1px solid #ddd; ">{{publicador.totales.revisitas}}</td> -->
                     <td style=" border: 1px solid #ddd; ">{{publicador.totales.cursos}}</td>
                     <td style=" border: 1px solid #ddd; ">-</td>
                   </tr>
